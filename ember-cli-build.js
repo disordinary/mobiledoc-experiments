@@ -7,6 +7,24 @@ module.exports = function(defaults) {
     // Add options here
   });
 
+  //app.import('mobiledoc-kit');
+  /////Users/ryanmccarvill/Projects/GhostFoundation/mobiledoc-experiments/bower_components/mobiledoc-kit/dist/amd
+  app.import('bower_components/mobiledoc-kit/dist/amd/mobiledoc-kit.js');
+  
+
+/*, {
+  exports: {
+    'mobiledoc-kit': [
+      'default',
+      'Mobiledoc'
+    ]
+  }
+}*/
+
+
+//Using `app.import` with a file in the root of `vendor/` causes a significant performance penalty. Please move `mobiledoc-kit` into a subdirectory.
+//You must pass a file to `app.import`. For directories specify them to the constructor under the `trees` option.
+
   // Use `app.import` to add additional libraries to the generated
   // output files.
   //
