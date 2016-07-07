@@ -1,0 +1,3 @@
+[submodule "mobiledoc-kit"]
+	path = mobiledoc-kit
+	url = git@github.com:disordinary/mobiledoc-kit.git
