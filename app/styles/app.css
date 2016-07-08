@@ -1,0 +1,18 @@
+* {
+	outline:none;
+
+}
+body {
+	font-family: helvetica;
+
+}
+.content {
+    display: table;
+    margin: 0 auto;
+    width:50%;
+    outline:none;
+}
+
+h1 {
+	font-family: "open sans";
+}

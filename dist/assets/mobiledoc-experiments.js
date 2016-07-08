@@ -50,6 +50,65 @@ define('mobiledoc-experiments/components/app-version', ['exports', 'ember-cli-ap
     name: name
   });
 });
+define('mobiledoc-experiments/components/form-body', ['exports', 'ember', 'mobiledoc-kit'], function (exports, _ember, _mobiledocKit) {
+
+  //import cards from '../cards/index.js';
+
+  var simpleMobiledoc = {
+    version: "0.3.0",
+    markups: [],
+    atoms: [],
+    cards: [],
+    sections: [[1, "h1", [[0, [], 0, "Title"]]], [1, "p", [[0, [], 0, "Body"]]]]
+  };
+
+  var section = {
+    tagName: "h1",
+    //onCreate : _ => alert("CREATE"),
+    onBeforeDelete: function onBeforeDelete() {
+      return true;
+    }
+  };
+
+  //onDelete : _ => alert("DID DELETE")
+  exports['default'] = _ember['default'].Component.extend({
+    didRender: function didRender() {
+      var options = { mobiledoc: simpleMobiledoc, sections: [section] };
+      var editor = new _mobiledocKit['default'].Editor(options);
+
+      this.$('#h1')[0].onclick = function (_) {
+        return editor.run(function (postEditor) {
+          postEditor.toggleSection('h1');
+        });
+      };
+
+      editor.render(this.$('.body')[0]);
+    }
+  });
+});
+define('mobiledoc-experiments/components/form-title', ['exports', 'ember', 'mobiledoc-kit'], function (exports, _ember, _mobiledocKit) {
+  //import cards from '../cards/index.js';
+
+  var simpleMobiledoc = {
+    version: "0.3.0",
+    markups: [],
+    atoms: [],
+    cards: [],
+    sections: [[1, "h2", [[0, [], 0, "Ghost Blog"]]]]
+  };
+
+  exports['default'] = _ember['default'].Component.extend({
+    didRender: function didRender() {
+      var options = { mobiledoc: simpleMobiledoc };
+      var editor = new _mobiledocKit['default'].Editor(options);
+
+      editor.render(this.$('.title')[0]);
+    }
+  });
+});
+define('mobiledoc-experiments/components/form-toolbar', ['exports', 'ember'], function (exports, _ember) {
+  exports['default'] = _ember['default'].Component.extend({});
+});
 define('mobiledoc-experiments/components/mobile-doc', ['exports', 'ember', 'mobiledoc-kit', 'mobiledoc-experiments/cards/index.js'], function (exports, _ember, _mobiledocKit, _mobiledocExperimentsCardsIndexJs) {
 
   var simpleMobiledoc = {
@@ -259,7 +318,7 @@ define("mobiledoc-experiments/templates/application", ["exports"], function (exp
       meta: {
         "fragmentReason": {
           "name": "missing-wrapper",
-          "problems": ["multiple-nodes", "wrong-type"]
+          "problems": ["wrong-type", "multiple-nodes"]
         },
         "revision": "Ember@2.6.1",
         "loc": {
@@ -269,8 +328,8 @@ define("mobiledoc-experiments/templates/application", ["exports"], function (exp
             "column": 0
           },
           "end": {
-            "line": 2,
-            "column": 14
+            "line": 5,
+            "column": 10
           }
         },
         "moduleName": "mobiledoc-experiments/templates/application.hbs"
@@ -281,23 +340,191 @@ define("mobiledoc-experiments/templates/application", ["exports"], function (exp
       hasRendered: false,
       buildFragment: function buildFragment(dom) {
         var el0 = dom.createDocumentFragment();
-        var el1 = dom.createElement("h1");
-        var el2 = dom.createTextNode("application");
+        var el1 = dom.createComment("");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createElement("content");
+        var el2 = dom.createTextNode("\n\n");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createComment("");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+        var morphs = new Array(2);
+        morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+        morphs[1] = dom.createMorphAt(dom.childAt(fragment, [2]), 1, 1);
+        dom.insertBoundary(fragment, 0);
+        return morphs;
+      },
+      statements: [["content", "form-toolbar", ["loc", [null, [1, 0], [1, 16]]]], ["content", "form-body", ["loc", [null, [4, 0], [4, 13]]]]],
+      locals: [],
+      templates: []
+    };
+  })());
+});
+define("mobiledoc-experiments/templates/components/form-body", ["exports"], function (exports) {
+  exports["default"] = Ember.HTMLBars.template((function () {
+    return {
+      meta: {
+        "fragmentReason": {
+          "name": "missing-wrapper",
+          "problems": ["multiple-nodes", "wrong-type"]
+        },
+        "revision": "Ember@2.6.1",
+        "loc": {
+          "source": null,
+          "start": {
+            "line": 1,
+            "column": 0
+          },
+          "end": {
+            "line": 6,
+            "column": 0
+          }
+        },
+        "moduleName": "mobiledoc-experiments/templates/components/form-body.hbs"
+      },
+      isEmpty: false,
+      arity: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      buildFragment: function buildFragment(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createElement("div");
+        dom.setAttribute(el1, "class", "content");
+        var el2 = dom.createTextNode("\n	");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("button");
+        dom.setAttribute(el2, "id", "h1");
+        var el3 = dom.createTextNode("H1");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n	");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2, "class", "body");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
         dom.appendChild(el1, el2);
         dom.appendChild(el0, el1);
         var el1 = dom.createTextNode("\n");
         dom.appendChild(el0, el1);
         var el1 = dom.createComment("");
         dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
         return el0;
       },
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
         var morphs = new Array(1);
         morphs[0] = dom.createMorphAt(fragment, 2, 2, contextualElement);
-        dom.insertBoundary(fragment, null);
         return morphs;
       },
-      statements: [["content", "mobile-doc", ["loc", [null, [2, 0], [2, 14]]]]],
+      statements: [["content", "yield", ["loc", [null, [5, 0], [5, 9]]]]],
+      locals: [],
+      templates: []
+    };
+  })());
+});
+define("mobiledoc-experiments/templates/components/form-title", ["exports"], function (exports) {
+  exports["default"] = Ember.HTMLBars.template((function () {
+    return {
+      meta: {
+        "fragmentReason": {
+          "name": "missing-wrapper",
+          "problems": ["multiple-nodes", "wrong-type"]
+        },
+        "revision": "Ember@2.6.1",
+        "loc": {
+          "source": null,
+          "start": {
+            "line": 1,
+            "column": 0
+          },
+          "end": {
+            "line": 5,
+            "column": 0
+          }
+        },
+        "moduleName": "mobiledoc-experiments/templates/components/form-title.hbs"
+      },
+      isEmpty: false,
+      arity: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      buildFragment: function buildFragment(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createElement("div");
+        dom.setAttribute(el1, "class", "title");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n\n");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createComment("");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+        var morphs = new Array(1);
+        morphs[0] = dom.createMorphAt(fragment, 3, 3, contextualElement);
+        return morphs;
+      },
+      statements: [["content", "yield", ["loc", [null, [4, 0], [4, 9]]]]],
+      locals: [],
+      templates: []
+    };
+  })());
+});
+define("mobiledoc-experiments/templates/components/form-toolbar", ["exports"], function (exports) {
+  exports["default"] = Ember.HTMLBars.template((function () {
+    return {
+      meta: {
+        "fragmentReason": {
+          "name": "missing-wrapper",
+          "problems": ["wrong-type", "multiple-nodes"]
+        },
+        "revision": "Ember@2.6.1",
+        "loc": {
+          "source": null,
+          "start": {
+            "line": 1,
+            "column": 0
+          },
+          "end": {
+            "line": 3,
+            "column": 0
+          }
+        },
+        "moduleName": "mobiledoc-experiments/templates/components/form-toolbar.hbs"
+      },
+      isEmpty: false,
+      arity: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      buildFragment: function buildFragment(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createTextNode("TOOLBAR\n");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createComment("");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+        var morphs = new Array(1);
+        morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+        return morphs;
+      },
+      statements: [["content", "yield", ["loc", [null, [2, 0], [2, 9]]]]],
       locals: [],
       templates: []
     };
@@ -391,7 +618,7 @@ catch(err) {
 /* jshint ignore:start */
 
 if (!runningTests) {
-  require("mobiledoc-experiments/app")["default"].create({"name":"mobiledoc-experiments","version":"0.0.0+851584b4"});
+  require("mobiledoc-experiments/app")["default"].create({"name":"mobiledoc-experiments","version":"0.0.0+fe15cf30"});
 }
 
 /* jshint ignore:end */
