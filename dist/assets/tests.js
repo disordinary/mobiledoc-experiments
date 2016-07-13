@@ -25,40 +25,22 @@ define('mobiledoc-experiments/tests/cards/testCard.jshint', ['exports'], functio
     assert.ok(true, 'cards/testCard.js should pass jshint.');
   });
 });
+define('mobiledoc-experiments/tests/components/card-picker.jshint', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('JSHint | components/card-picker.js');
+  QUnit.test('should pass jshint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'components/card-picker.js should pass jshint.');
+  });
+});
 define('mobiledoc-experiments/tests/components/form-body.jshint', ['exports'], function (exports) {
   'use strict';
 
   QUnit.module('JSHint | components/form-body.js');
   QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
-    assert.ok(false, 'components/form-body.js should pass jshint.\ncomponents/form-body.js: line 26, col 2, Missing semicolon.\n\n1 error');
-  });
-});
-define('mobiledoc-experiments/tests/components/form-title.jshint', ['exports'], function (exports) {
-  'use strict';
-
-  QUnit.module('JSHint | components/form-title.js');
-  QUnit.test('should pass jshint', function (assert) {
-    assert.expect(1);
-    assert.ok(true, 'components/form-title.js should pass jshint.');
-  });
-});
-define('mobiledoc-experiments/tests/components/form-toolbar.jshint', ['exports'], function (exports) {
-  'use strict';
-
-  QUnit.module('JSHint | components/form-toolbar.js');
-  QUnit.test('should pass jshint', function (assert) {
-    assert.expect(1);
-    assert.ok(true, 'components/form-toolbar.js should pass jshint.');
-  });
-});
-define('mobiledoc-experiments/tests/components/mobile-doc.jshint', ['exports'], function (exports) {
-  'use strict';
-
-  QUnit.module('JSHint | components/mobile-doc.js');
-  QUnit.test('should pass jshint', function (assert) {
-    assert.expect(1);
-    assert.ok(true, 'components/mobile-doc.js should pass jshint.');
+    assert.ok(false, 'components/form-body.js should pass jshint.\ncomponents/form-body.js: line 90, col 2, Missing semicolon.\ncomponents/form-body.js: line 107, col 2, Missing semicolon.\ncomponents/form-body.js: line 115, col 62, Missing semicolon.\ncomponents/form-body.js: line 118, col 62, Missing semicolon.\ncomponents/form-body.js: line 121, col 56, Missing semicolon.\n\n5 errors');
   });
 });
 define('mobiledoc-experiments/tests/helpers/destroy-app', ['exports', 'ember'], function (exports, _ember) {
@@ -157,6 +139,155 @@ define('mobiledoc-experiments/tests/helpers/start-app.jshint', ['exports'], func
   QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
     assert.ok(true, 'helpers/start-app.js should pass jshint.');
+  });
+});
+define('mobiledoc-experiments/tests/integration/components/card-picker-test', ['exports', 'ember-qunit'], function (exports, _emberQunit) {
+
+  (0, _emberQunit.moduleForComponent)('card-picker', 'Integration | Component | card picker', {
+    integration: true
+  });
+
+  (0, _emberQunit.test)('it renders', function (assert) {
+    // Set any properties with this.set('myProperty', 'value');
+    // Handle any actions with this.on('myAction', function(val) { ... });
+
+    this.render(Ember.HTMLBars.template((function () {
+      return {
+        meta: {
+          'fragmentReason': {
+            'name': 'missing-wrapper',
+            'problems': ['wrong-type']
+          },
+          'revision': 'Ember@2.6.1',
+          'loc': {
+            'source': null,
+            'start': {
+              'line': 1,
+              'column': 0
+            },
+            'end': {
+              'line': 1,
+              'column': 15
+            }
+          }
+        },
+        isEmpty: false,
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createComment('');
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+          dom.insertBoundary(fragment, 0);
+          dom.insertBoundary(fragment, null);
+          return morphs;
+        },
+        statements: [['content', 'card-picker', ['loc', [null, [1, 0], [1, 15]]]]],
+        locals: [],
+        templates: []
+      };
+    })()));
+
+    assert.equal(this.$().text().trim(), '');
+
+    // Template block usage:
+    this.render(Ember.HTMLBars.template((function () {
+      var child0 = (function () {
+        return {
+          meta: {
+            'fragmentReason': false,
+            'revision': 'Ember@2.6.1',
+            'loc': {
+              'source': null,
+              'start': {
+                'line': 2,
+                'column': 4
+              },
+              'end': {
+                'line': 4,
+                'column': 4
+              }
+            }
+          },
+          isEmpty: false,
+          arity: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createTextNode('      template block text\n');
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes() {
+            return [];
+          },
+          statements: [],
+          locals: [],
+          templates: []
+        };
+      })();
+
+      return {
+        meta: {
+          'fragmentReason': {
+            'name': 'missing-wrapper',
+            'problems': ['wrong-type']
+          },
+          'revision': 'Ember@2.6.1',
+          'loc': {
+            'source': null,
+            'start': {
+              'line': 1,
+              'column': 0
+            },
+            'end': {
+              'line': 5,
+              'column': 2
+            }
+          }
+        },
+        isEmpty: false,
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode('\n');
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment('');
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode('  ');
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+          return morphs;
+        },
+        statements: [['block', 'card-picker', [], [], 0, null, ['loc', [null, [2, 4], [4, 20]]]]],
+        locals: [],
+        templates: [child0]
+      };
+    })()));
+
+    assert.equal(this.$().text().trim(), 'template block text');
+  });
+});
+define('mobiledoc-experiments/tests/integration/components/card-picker-test.jshint', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('JSHint | integration/components/card-picker-test.js');
+  QUnit.test('should pass jshint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'integration/components/card-picker-test.js should pass jshint.');
   });
 });
 define('mobiledoc-experiments/tests/integration/components/form-body-test', ['exports', 'ember-qunit'], function (exports, _emberQunit) {

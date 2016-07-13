@@ -4,15 +4,79 @@
 }
 body {
 	font-family: helvetica;
+	text-align:justify;
 
 }
 .content {
     display: table;
     margin: 0 auto;
-    width:50%;
+    width:800px;
     outline:none;
 }
 
 h1 {
 	font-family: "open sans";
+}
+
+	.card-right {
+		float: right;
+		margin:-10px 0 0 10px;
+		
+		padding:0;
+		width:400px;
+	}
+
+	.card-left {
+		float: left;
+		margin:-10px 10px 0 0;
+		padding:0;
+		width:400px;
+	}
+	.card {
+		margin: 10px 10px 0 0;
+		padding:0;
+		width:800px;
+	}
+	p {
+		
+		margin 0 0 12px;
+		padding:0;
+	}
+	.test {
+			width:200px;
+			height:200px;
+			background-color:pink;
+			border:100px solid yellow;
+			margin:0;
+			padding:0;
+	}
+	.card .test {
+		width:600px;
+	}
+	.__mobiledoc-card {
+		margin:0;
+		padding:0;
+	}
+
+comment {
+	background-color: yellow;
+}
+
+
+.dropper-left {
+	box-shadow: -7px 0px 13px -10px rgba(0,6,255,1);
+}
+
+
+.dropper-right {
+	box-shadow: 7px 0px 13px -10px rgba(0,6,255,1);
+}
+
+.dropper-top {
+	/*box-shadow: inset 0px 7px 29px -12px rgba(128,128,128,1);*/
+	box-shadow: 0px -7px 13px -10px rgba(0,6,255,1);
+}
+
+.dropper-bottom {
+	box-shadow: 0px 7px 13px -10px rgba(0,6,255,1);
 }
