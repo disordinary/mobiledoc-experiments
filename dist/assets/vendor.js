@@ -71278,7 +71278,8 @@ define('mobiledoc-kit/models/markup-node', ['exports', 'mobiledoc-kit/utils/asse
               return _this._didRenderCallbacks.push(callback);
             },
             name: markup.tagName,
-            element: _this.element
+            element: _this.element,
+            editor: _this.editor
           });
         });
       }

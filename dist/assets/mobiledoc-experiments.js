@@ -22,24 +22,6 @@ define('mobiledoc-experiments/app', ['exports', 'ember', 'mobiledoc-experiments/
 
   exports['default'] = App;
 });
-define("mobiledoc-experiments/cards/index", ["exports"], function (exports) {
-  exports["default"] = cards = "test";
-});
-define('mobiledoc-experiments/cards/testCard', ['exports'], function (exports) {
-  exports['default'] = testCard = {
-    name: 'testCard',
-    type: 'dom',
-    render: function render(_ref) {
-      var env = _ref.env;
-      var options = _ref.options;
-      var payload = _ref.payload;
-
-      var test = document.createElement('div');
-      test.className = "test";
-      return test;
-    }
-  };
-});
 define('mobiledoc-experiments/components/app-version', ['exports', 'ember-cli-app-version/components/app-version', 'mobiledoc-experiments/config/environment'], function (exports, _emberCliAppVersionComponentsAppVersion, _mobiledocExperimentsConfigEnvironment) {
 
   var name = _mobiledocExperimentsConfigEnvironment['default'].APP.name;
@@ -51,11 +33,19 @@ define('mobiledoc-experiments/components/app-version', ['exports', 'ember-cli-ap
   });
 });
 define('mobiledoc-experiments/components/card-picker', ['exports', 'ember'], function (exports, _ember) {
-  exports['default'] = _ember['default'].Component.extend({});
+	exports['default'] = _ember['default'].Component.extend({
+		didRender: function didRender() {
+			this.$('#card-drop')[0].addEventListener('dragstart', function (event) {
+				return window.dragel = "kitten";
+			});
+			this.$('#card-drop2')[0].addEventListener('dragstart', function (event) {
+				return window.dragel = "graph";
+			});
+		}
+	});
 });
-define('mobiledoc-experiments/components/form-body', ['exports', 'ember', 'mobiledoc-kit'], function (exports, _ember, _mobiledocKit) {
-
-  //import cards from '../cards/index.js';
+define('mobiledoc-experiments/components/form-body', ['exports', 'ember', 'mobiledoc-kit', 'mobiledoc-experiments/ghost-cards', 'mobiledoc-experiments/ghost-atoms', 'mobiledoc-experiments/ghost-sections', 'mobiledoc-experiments/ghost-markups'], function (exports, _ember, _mobiledocKit, _mobiledocExperimentsGhostCards, _mobiledocExperimentsGhostAtoms, _mobiledocExperimentsGhostSections, _mobiledocExperimentsGhostMarkups) {
+  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
   var simpleMobiledoc = {
     version: "0.3.0",
@@ -65,133 +55,30 @@ define('mobiledoc-experiments/components/form-body', ['exports', 'ember', 'mobil
     sections: [[1, "h1", [[0, [], 0, "Title"]]], [1, "p", [[0, [], 0, "Body"]]]]
   };
 
-  var section = {
-    tagName: "p",
-    //onCreate : _ => alert("CREATE"),
-    render: function render(env) {
-      env.element.addEventListener("mouseenter", function (event) {});
+  var Comment = function Comment(user, comment) {
+    _classCallCheck(this, Comment);
 
-      env.element.addEventListener("mouseleave", function (event) {
-        event.target.className = '';
-      });
-      env.element.addEventListener("drop", function (event) {
-        env.editor.run(function (postEditor) {
-          var offset = event.srcElement.getBoundingClientRect();
-          var mouseX = event.pageX - offset.left;
-          var mouseY = event.pageY - offset.top;
-          var pos = "top";
-
-          if (mouseX < 33) {
-            pos = "left";
-          } else if (mouseX > offset.width - 33) {
-            pos = "right";
-          } else if (mouseY > offset.height / 2) {
-            pos = "bottom";
-          } else {
-            pos = "top";
-          }
-          if (pos === "bottom") {
-            pos = "top";
-            console.log("INSERTING AT BOTTOM");
-            var card = postEditor.builder.createCardSection("testCard", { pos: pos });
-            postEditor.insertSectionBefore(env.editor.post.sections, card, env.section.next);
-          } else {
-            console.log("INSERTING AT TOP");
-            var card = postEditor.builder.createCardSection("testCard", { pos: pos });
-            postEditor.insertSectionBefore(env.editor.post.sections, card, env.section);
-          }
-        });
-        event.target.className = '';
-      });
-      env.element.addEventListener("dragenter", function (event) {});
-
-      env.element.addEventListener("dragover", function (event) {
-        var offset = event.srcElement.getBoundingClientRect();
-        var mouseX = event.pageX - offset.left;
-        var mouseY = event.pageY - offset.top;
-
-        if (mouseX < 33) {
-          event.srcElement.className = 'dropper-left';
-        } else if (mouseX > offset.width - 33) {
-          event.srcElement.className = 'dropper-right';
-        } else if (mouseY > offset.height / 2) {
-          event.srcElement.className = 'dropper-bottom';
-        } else {
-          event.srcElement.className = 'dropper-top';
-        }
-
-        event.preventDefault();
-      }, false);
-
-      env.element.addEventListener("dragleave", function (event) {
-        event.target.className = '';
-      });
-    }
-    //onDelete : _ => alert("DID DELETE")
-  };
-
-  var markup = {
-    tagName: "mark",
-    //onCreate : _ => alert("CREATE"),
-    render: function render(env) {
-      env.element.addEventListener("mouseenter", function (event) {
-        event.target.style = "background-color:red;";
-      });
-
-      env.element.addEventListener("mouseleave", function (event) {
-        event.target.style = "";
-      });
-    }
-    //onDelete : _ => alert("DID DELETE")
-  };
-
-  var testCard = {
-    name: 'testCard',
-    type: 'dom',
-    render: function render(_ref) {
-      var env = _ref.env;
-      var options = _ref.options;
-      var payload = _ref.payload;
-
-      switch (payload.pos) {
-        case "left":
-          env.postModel.renderNode.element.className = "card-left";
-          break;
-        case "right":
-          env.postModel.renderNode.element.className = "card-right";
-          break;
-        default:
-          env.postModel.renderNode.element.className = "card";
-
-      }
-
-      var test = document.createElement('div');
-      test.className = "test";
-      return test;
-    }
+    this.user = user;
+    this.comment = comment;
   };
 
   exports['default'] = _ember['default'].Component.extend({
     didRender: function didRender() {
-      var options = { mobiledoc: simpleMobiledoc, sections: [section], cards: [testCard], markups: [markup] };
+      var options = { mobiledoc: simpleMobiledoc, sections: _mobiledocExperimentsGhostSections['default'], cards: _mobiledocExperimentsGhostCards['default'], markups: _mobiledocExperimentsGhostMarkups['default'] };
       var editor = new _mobiledocKit['default'].Editor(options);
+
+      editor.comments = [];
 
       this.$('#h1')[0].onclick = function (_) {
         return editor.run(function (postEditor) {
           postEditor.toggleSection('h1');
         });
       };
-      this.$('#card')[0].onclick = function (_) {
-        return editor.insertCard("testCard");
-      };
       this.$('#b')[0].onclick = function (_) {
         return editor.run(function (postEditor) {
-          console.log(postEditor);
-          var card = postEditor.builder.createCardSection("testCard");
-          postEditor.insertSectionBefore(editor.post.sections, card, editor.range.tail.section);
-          //postEditor.insertMarkers(editor.range.head, [card]);
+          postEditor.toggleMarkup('strong');
         });
-      }; //editor.run( postEditor => console.log( postEditor , editor ) );//editor.run(postEditor => {postEditor.toggleMarkup('strong');});
+      };
       this.$('#i')[0].onclick = function (_) {
         return editor.run(function (postEditor) {
           postEditor.toggleMarkup('em');
@@ -199,13 +86,245 @@ define('mobiledoc-experiments/components/form-body', ['exports', 'ember', 'mobil
       };
       this.$('#comment')[0].onclick = function (_) {
         return editor.run(function (postEditor) {
-          postEditor.toggleMarkup('mark');
+          postEditor.toggleMarkup(editor.builder.createMarkup("mark", { href: editor.comments.push(new Comment(0, "")) })); //temporary solution as href is the only allowed attribute right now.
         });
       };
 
       editor.render(this.$('.body')[0]);
     }
   });
+});
+define("mobiledoc-experiments/ghost-atoms/index", ["exports"], function (exports) {
+  exports["default"] = [];
+});
+define('mobiledoc-experiments/ghost-cards/card', ['exports'], function (exports) {
+  var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+  var Card = (function () {
+    function Card() {
+      _classCallCheck(this, Card);
+
+      this.name = 'kitten';
+      this.type = 'dom';
+      this.resizeMode = this.resizeModeEnum.both;
+    }
+
+    _createClass(Card, [{
+      key: 'render',
+      value: function render(_ref) {
+        var env = _ref.env;
+        var options = _ref.options;
+        var payload = _ref.payload;
+
+        var img = document.createElement('img');
+        switch (payload.pos) {
+          case "left":
+            env.postModel.renderNode.element.className = "card-left";
+            img.src = "https://placekitten.com/400/400";
+            break;
+          case "right":
+            env.postModel.renderNode.element.className = "card-right";
+            img.src = "https://placekitten.com/401/401";
+            break;
+          default:
+            env.postModel.renderNode.element.className = "card";
+            img.src = "https://placekitten.com/800/400";
+        }
+
+        return img;
+      }
+    }, {
+      key: 'resizeModeEnum',
+      get: function get() {
+        return {
+          full_width_only: Symbol(),
+          half_width_only: Symbol(),
+          both: Symbol()
+        };
+      }
+    }]);
+
+    return Card;
+  })();
+
+  exports['default'] = Card;
+});
+define('mobiledoc-experiments/ghost-cards/graph', ['exports', 'mobiledoc-experiments/ghost-cards/card'], function (exports, _mobiledocExperimentsGhostCardsCard) {
+  var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+  var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+
+  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+  function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+  var Graph = (function (_Card) {
+    _inherits(Graph, _Card);
+
+    function Graph() {
+      _classCallCheck(this, Graph);
+
+      _get(Object.getPrototypeOf(Graph.prototype), 'constructor', this).call(this);
+      this.name = 'graph';
+      this.type = 'dom';
+    }
+
+    _createClass(Graph, [{
+      key: 'render',
+      value: function render(_ref) {
+        var env = _ref.env;
+        var options = _ref.options;
+        var payload = _ref.payload;
+
+        var img = document.createElement('img');
+        switch (payload.pos) {
+          case "left":
+            env.postModel.renderNode.element.className = "card-left";
+            img.src = "http://Chartholdr.io/pie/400";
+            break;
+          case "right":
+            env.postModel.renderNode.element.className = "card-right";
+            img.src = "http://Chartholdr.io/line/400/400";
+            break;
+          default:
+            env.postModel.renderNode.element.className = "card";
+            img.src = "http://Chartholdr.io/bar/800/400";
+        }
+
+        return img;
+      }
+    }]);
+
+    return Graph;
+  })(_mobiledocExperimentsGhostCardsCard['default']);
+
+  exports['default'] = Graph;
+});
+define('mobiledoc-experiments/ghost-cards/index', ['exports', 'mobiledoc-experiments/ghost-cards/card', 'mobiledoc-experiments/ghost-cards/graph'], function (exports, _mobiledocExperimentsGhostCardsCard, _mobiledocExperimentsGhostCardsGraph) {
+	exports['default'] = [new _mobiledocExperimentsGhostCardsCard['default'](), new _mobiledocExperimentsGhostCardsGraph['default']()];
+});
+define("mobiledoc-experiments/ghost-markups/comment", ["exports"], function (exports) {
+  var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+  var Comment = (function () {
+    function Comment() {
+      _classCallCheck(this, Comment);
+
+      this.tagName = "mark";
+    }
+
+    _createClass(Comment, [{
+      key: "render",
+      value: function render(env) {
+        console.log(env);
+        env.element.addEventListener("mouseenter", function (event) {
+          event.target.style = "background-color:red;";
+        });
+
+        env.element.addEventListener("mouseleave", function (event) {
+          event.target.style = "";
+        });
+
+        //env.onTeardown( _ => alert("TEARDOWN"));
+      }
+    }]);
+
+    return Comment;
+  })();
+
+  exports["default"] = Comment;
+});
+define('mobiledoc-experiments/ghost-markups/index', ['exports', 'mobiledoc-experiments/ghost-markups/comment'], function (exports, _mobiledocExperimentsGhostMarkupsComment) {
+	exports['default'] = [new _mobiledocExperimentsGhostMarkupsComment['default']()];
+});
+define('mobiledoc-experiments/ghost-sections/index', ['exports', 'mobiledoc-experiments/ghost-sections/section'], function (exports, _mobiledocExperimentsGhostSectionsSection) {
+	exports['default'] = [new _mobiledocExperimentsGhostSectionsSection['default']()];
+});
+define("mobiledoc-experiments/ghost-sections/section", ["exports"], function (exports) {
+  var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+  var Section = (function () {
+    function Section() {
+      _classCallCheck(this, Section);
+
+      this.tagName = "p";
+    }
+
+    _createClass(Section, [{
+      key: "render",
+      value: function render(env) {
+        env.element.addEventListener("mouseenter", function (event) {});
+
+        env.element.addEventListener("mouseleave", function (event) {
+          event.target.className = '';
+        });
+        env.element.addEventListener("drop", function (event) {
+          env.editor.run(function (postEditor) {
+            var offset = event.srcElement.getBoundingClientRect();
+            var mouseX = event.pageX - offset.left;
+            var mouseY = event.pageY - offset.top;
+            var pos = "top";
+
+            if (mouseX < 33) {
+              pos = "left";
+            } else if (mouseX > offset.width - 33) {
+              pos = "right";
+            } else if (mouseY > offset.height / 2) {
+              pos = "bottom";
+            } else {
+              pos = "top";
+            }
+            if (pos === "bottom") {
+              pos = "top";
+
+              var card = postEditor.builder.createCardSection(window.dragel || "kitten", { pos: pos });
+              postEditor.insertSectionBefore(env.editor.post.sections, card, env.section.next);
+            } else {
+
+              var card = postEditor.builder.createCardSection(window.dragel || "kitten", { pos: pos });
+              postEditor.insertSectionBefore(env.editor.post.sections, card, env.section);
+            }
+          });
+          event.target.className = '';
+        });
+        env.element.addEventListener("dragenter", function (event) {});
+
+        env.element.addEventListener("dragover", function (event) {
+          var offset = event.srcElement.getBoundingClientRect();
+          var mouseX = event.pageX - offset.left;
+          var mouseY = event.pageY - offset.top;
+
+          if (mouseX < 33) {
+            event.srcElement.className = 'dropper-left';
+          } else if (mouseX > offset.width - 33) {
+            event.srcElement.className = 'dropper-right';
+          } else if (mouseY > offset.height / 2) {
+            event.srcElement.className = 'dropper-bottom';
+          } else {
+            event.srcElement.className = 'dropper-top';
+          }
+
+          event.preventDefault();
+        }, false);
+
+        env.element.addEventListener("dragleave", function (event) {
+          event.target.className = '';
+        });
+      }
+
+      //onDelete : _ => alert("DID DELETE")
+    }]);
+
+    return Section;
+  })();
+
+  exports["default"] = Section;
 });
 define('mobiledoc-experiments/helpers/pluralize', ['exports', 'ember-inflector/lib/helpers/pluralize'], function (exports, _emberInflectorLibHelpersPluralize) {
   exports['default'] = _emberInflectorLibHelpersPluralize['default'];
@@ -468,7 +587,7 @@ define("mobiledoc-experiments/templates/components/card-picker", ["exports"], fu
             "column": 0
           },
           "end": {
-            "line": 5,
+            "line": 6,
             "column": 6
           }
         },
@@ -485,12 +604,21 @@ define("mobiledoc-experiments/templates/components/card-picker", ["exports"], fu
         var el1 = dom.createTextNode("\n");
         dom.appendChild(el0, el1);
         var el1 = dom.createElement("div");
+        dom.setAttribute(el1, "id", "card-holder");
         var el2 = dom.createTextNode("\n	");
         dom.appendChild(el1, el2);
         var el2 = dom.createElement("div");
-        dom.setAttribute(el2, "class", "card");
+        dom.setAttribute(el2, "id", "card-drop");
         dom.setAttribute(el2, "draggable", "true");
-        var el3 = dom.createTextNode("card");
+        var el3 = dom.createTextNode("kitten");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n	");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2, "id", "card-drop2");
+        dom.setAttribute(el2, "draggable", "true");
+        var el3 = dom.createTextNode("chart");
         dom.appendChild(el2, el3);
         dom.appendChild(el1, el2);
         var el2 = dom.createTextNode("\n\n");
@@ -526,7 +654,7 @@ define("mobiledoc-experiments/templates/components/form-body", ["exports"], func
             "column": 0
           },
           "end": {
-            "line": 11,
+            "line": 17,
             "column": 0
           }
         },
@@ -542,37 +670,65 @@ define("mobiledoc-experiments/templates/components/form-body", ["exports"], func
         dom.setAttribute(el1, "class", "content");
         var el2 = dom.createTextNode("\n	");
         dom.appendChild(el1, el2);
-        var el2 = dom.createElement("button");
-        dom.setAttribute(el2, "id", "h1");
-        var el3 = dom.createTextNode("H1");
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2, "id", "toolbar");
+        var el3 = dom.createTextNode("\n		");
         dom.appendChild(el2, el3);
-        dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n	");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createElement("button");
-        dom.setAttribute(el2, "id", "b");
-        var el3 = dom.createTextNode("B");
+        var el3 = dom.createElement("button");
+        dom.setAttribute(el3, "id", "h1");
+        var el4 = dom.createTextNode("H1");
+        dom.appendChild(el3, el4);
         dom.appendChild(el2, el3);
-        dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n	");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createElement("button");
-        dom.setAttribute(el2, "id", "i");
-        var el3 = dom.createTextNode("I");
+        var el3 = dom.createTextNode("\n		");
         dom.appendChild(el2, el3);
-        dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n	");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createElement("button");
-        dom.setAttribute(el2, "id", "card");
-        var el3 = dom.createTextNode("card");
+        var el3 = dom.createElement("button");
+        dom.setAttribute(el3, "id", "h2");
+        var el4 = dom.createTextNode("H2");
+        dom.appendChild(el3, el4);
         dom.appendChild(el2, el3);
-        dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n	");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createElement("button");
-        dom.setAttribute(el2, "id", "comment");
-        var el3 = dom.createTextNode("Comment");
+        var el3 = dom.createTextNode("\n		");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("button");
+        dom.setAttribute(el3, "id", "h3");
+        var el4 = dom.createTextNode("H3");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n		");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("button");
+        dom.setAttribute(el3, "id", "b");
+        var el4 = dom.createTextNode("B");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n		");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("button");
+        dom.setAttribute(el3, "id", "i");
+        var el4 = dom.createTextNode("I");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n		");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("button");
+        dom.setAttribute(el3, "id", "ul");
+        var el4 = dom.createTextNode("UL");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n		");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("button");
+        dom.setAttribute(el3, "id", "ul");
+        var el4 = dom.createTextNode("OL");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n		\n		");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("button");
+        dom.setAttribute(el3, "id", "comment");
+        var el4 = dom.createTextNode("Comment");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n	");
         dom.appendChild(el2, el3);
         dom.appendChild(el1, el2);
         var el2 = dom.createTextNode("\n	");
@@ -596,7 +752,7 @@ define("mobiledoc-experiments/templates/components/form-body", ["exports"], func
         morphs[0] = dom.createMorphAt(fragment, 2, 2, contextualElement);
         return morphs;
       },
-      statements: [["content", "yield", ["loc", [null, [10, 0], [10, 9]]]]],
+      statements: [["content", "yield", ["loc", [null, [16, 0], [16, 9]]]]],
       locals: [],
       templates: []
     };
@@ -634,7 +790,7 @@ catch(err) {
 /* jshint ignore:start */
 
 if (!runningTests) {
-  require("mobiledoc-experiments/app")["default"].create({"name":"mobiledoc-experiments","version":"0.0.0+dffacb10"});
+  require("mobiledoc-experiments/app")["default"].create({"name":"mobiledoc-experiments","version":"0.0.0+cce3a147"});
 }
 
 /* jshint ignore:end */

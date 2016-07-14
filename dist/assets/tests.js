@@ -7,24 +7,6 @@ define('mobiledoc-experiments/tests/app.jshint', ['exports'], function (exports)
     assert.ok(true, 'app.js should pass jshint.');
   });
 });
-define('mobiledoc-experiments/tests/cards/index.jshint', ['exports'], function (exports) {
-  'use strict';
-
-  QUnit.module('JSHint | cards/index.js');
-  QUnit.test('should pass jshint', function (assert) {
-    assert.expect(1);
-    assert.ok(true, 'cards/index.js should pass jshint.');
-  });
-});
-define('mobiledoc-experiments/tests/cards/testCard.jshint', ['exports'], function (exports) {
-  'use strict';
-
-  QUnit.module('JSHint | cards/testCard.js');
-  QUnit.test('should pass jshint', function (assert) {
-    assert.expect(1);
-    assert.ok(true, 'cards/testCard.js should pass jshint.');
-  });
-});
 define('mobiledoc-experiments/tests/components/card-picker.jshint', ['exports'], function (exports) {
   'use strict';
 
@@ -40,7 +22,79 @@ define('mobiledoc-experiments/tests/components/form-body.jshint', ['exports'], f
   QUnit.module('JSHint | components/form-body.js');
   QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
-    assert.ok(false, 'components/form-body.js should pass jshint.\ncomponents/form-body.js: line 90, col 2, Missing semicolon.\ncomponents/form-body.js: line 107, col 2, Missing semicolon.\ncomponents/form-body.js: line 115, col 62, Missing semicolon.\ncomponents/form-body.js: line 118, col 62, Missing semicolon.\ncomponents/form-body.js: line 121, col 56, Missing semicolon.\n\n5 errors');
+    assert.ok(true, 'components/form-body.js should pass jshint.');
+  });
+});
+define('mobiledoc-experiments/tests/ghost-atoms/index.jshint', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('JSHint | ghost-atoms/index.js');
+  QUnit.test('should pass jshint', function (assert) {
+    assert.expect(1);
+    assert.ok(false, 'ghost-atoms/index.js should pass jshint.\nghost-atoms/index.js: line 4, col 2, Missing semicolon.\n\n1 error');
+  });
+});
+define('mobiledoc-experiments/tests/ghost-cards/card.jshint', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('JSHint | ghost-cards/card.js');
+  QUnit.test('should pass jshint', function (assert) {
+    assert.expect(1);
+    assert.ok(false, 'ghost-cards/card.js should pass jshint.\nghost-cards/card.js: line 15, col 63, Missing semicolon.\nghost-cards/card.js: line 19, col 64, Missing semicolon.\nghost-cards/card.js: line 23, col 58, Missing semicolon.\nghost-cards/card.js: line 35, col 6, Missing semicolon.\n\n4 errors');
+  });
+});
+define('mobiledoc-experiments/tests/ghost-cards/graph.jshint', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('JSHint | ghost-cards/graph.js');
+  QUnit.test('should pass jshint', function (assert) {
+    assert.expect(1);
+    assert.ok(false, 'ghost-cards/graph.js should pass jshint.\nghost-cards/graph.js: line 16, col 63, Missing semicolon.\nghost-cards/graph.js: line 20, col 64, Missing semicolon.\nghost-cards/graph.js: line 24, col 58, Missing semicolon.\n\n3 errors');
+  });
+});
+define('mobiledoc-experiments/tests/ghost-cards/index.jshint', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('JSHint | ghost-cards/index.js');
+  QUnit.test('should pass jshint', function (assert) {
+    assert.expect(1);
+    assert.ok(false, 'ghost-cards/index.js should pass jshint.\nghost-cards/index.js: line 7, col 2, Missing semicolon.\n\n1 error');
+  });
+});
+define('mobiledoc-experiments/tests/ghost-markups/comment.jshint', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('JSHint | ghost-markups/comment.js');
+  QUnit.test('should pass jshint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'ghost-markups/comment.js should pass jshint.');
+  });
+});
+define('mobiledoc-experiments/tests/ghost-markups/index.jshint', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('JSHint | ghost-markups/index.js');
+  QUnit.test('should pass jshint', function (assert) {
+    assert.expect(1);
+    assert.ok(false, 'ghost-markups/index.js should pass jshint.\nghost-markups/index.js: line 6, col 2, Missing semicolon.\n\n1 error');
+  });
+});
+define('mobiledoc-experiments/tests/ghost-sections/index.jshint', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('JSHint | ghost-sections/index.js');
+  QUnit.test('should pass jshint', function (assert) {
+    assert.expect(1);
+    assert.ok(false, 'ghost-sections/index.js should pass jshint.\nghost-sections/index.js: line 6, col 2, Missing semicolon.\n\n1 error');
+  });
+});
+define('mobiledoc-experiments/tests/ghost-sections/section.jshint', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('JSHint | ghost-sections/section.js');
+  QUnit.test('should pass jshint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'ghost-sections/section.js should pass jshint.');
   });
 });
 define('mobiledoc-experiments/tests/helpers/destroy-app', ['exports', 'ember'], function (exports, _ember) {
@@ -139,6 +193,304 @@ define('mobiledoc-experiments/tests/helpers/start-app.jshint', ['exports'], func
   QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
     assert.ok(true, 'helpers/start-app.js should pass jshint.');
+  });
+});
+define('mobiledoc-experiments/tests/integration/components/card-base-test', ['exports', 'ember-qunit'], function (exports, _emberQunit) {
+
+  (0, _emberQunit.moduleForComponent)('card-base', 'Integration | Component | card base', {
+    integration: true
+  });
+
+  (0, _emberQunit.test)('it renders', function (assert) {
+    // Set any properties with this.set('myProperty', 'value');
+    // Handle any actions with this.on('myAction', function(val) { ... });
+
+    this.render(Ember.HTMLBars.template((function () {
+      return {
+        meta: {
+          'fragmentReason': {
+            'name': 'missing-wrapper',
+            'problems': ['wrong-type']
+          },
+          'revision': 'Ember@2.6.1',
+          'loc': {
+            'source': null,
+            'start': {
+              'line': 1,
+              'column': 0
+            },
+            'end': {
+              'line': 1,
+              'column': 13
+            }
+          }
+        },
+        isEmpty: false,
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createComment('');
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+          dom.insertBoundary(fragment, 0);
+          dom.insertBoundary(fragment, null);
+          return morphs;
+        },
+        statements: [['content', 'card-base', ['loc', [null, [1, 0], [1, 13]]]]],
+        locals: [],
+        templates: []
+      };
+    })()));
+
+    assert.equal(this.$().text().trim(), '');
+
+    // Template block usage:
+    this.render(Ember.HTMLBars.template((function () {
+      var child0 = (function () {
+        return {
+          meta: {
+            'fragmentReason': false,
+            'revision': 'Ember@2.6.1',
+            'loc': {
+              'source': null,
+              'start': {
+                'line': 2,
+                'column': 4
+              },
+              'end': {
+                'line': 4,
+                'column': 4
+              }
+            }
+          },
+          isEmpty: false,
+          arity: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createTextNode('      template block text\n');
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes() {
+            return [];
+          },
+          statements: [],
+          locals: [],
+          templates: []
+        };
+      })();
+
+      return {
+        meta: {
+          'fragmentReason': {
+            'name': 'missing-wrapper',
+            'problems': ['wrong-type']
+          },
+          'revision': 'Ember@2.6.1',
+          'loc': {
+            'source': null,
+            'start': {
+              'line': 1,
+              'column': 0
+            },
+            'end': {
+              'line': 5,
+              'column': 2
+            }
+          }
+        },
+        isEmpty: false,
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode('\n');
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment('');
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode('  ');
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+          return morphs;
+        },
+        statements: [['block', 'card-base', [], [], 0, null, ['loc', [null, [2, 4], [4, 18]]]]],
+        locals: [],
+        templates: [child0]
+      };
+    })()));
+
+    assert.equal(this.$().text().trim(), 'template block text');
+  });
+});
+define('mobiledoc-experiments/tests/integration/components/card-base-test.jshint', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('JSHint | integration/components/card-base-test.js');
+  QUnit.test('should pass jshint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'integration/components/card-base-test.js should pass jshint.');
+  });
+});
+define('mobiledoc-experiments/tests/integration/components/card-kitten-test', ['exports', 'ember-qunit'], function (exports, _emberQunit) {
+
+  (0, _emberQunit.moduleForComponent)('card-kitten', 'Integration | Component | card kitten', {
+    integration: true
+  });
+
+  (0, _emberQunit.test)('it renders', function (assert) {
+    // Set any properties with this.set('myProperty', 'value');
+    // Handle any actions with this.on('myAction', function(val) { ... });
+
+    this.render(Ember.HTMLBars.template((function () {
+      return {
+        meta: {
+          'fragmentReason': {
+            'name': 'missing-wrapper',
+            'problems': ['wrong-type']
+          },
+          'revision': 'Ember@2.6.1',
+          'loc': {
+            'source': null,
+            'start': {
+              'line': 1,
+              'column': 0
+            },
+            'end': {
+              'line': 1,
+              'column': 15
+            }
+          }
+        },
+        isEmpty: false,
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createComment('');
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+          dom.insertBoundary(fragment, 0);
+          dom.insertBoundary(fragment, null);
+          return morphs;
+        },
+        statements: [['content', 'card-kitten', ['loc', [null, [1, 0], [1, 15]]]]],
+        locals: [],
+        templates: []
+      };
+    })()));
+
+    assert.equal(this.$().text().trim(), '');
+
+    // Template block usage:
+    this.render(Ember.HTMLBars.template((function () {
+      var child0 = (function () {
+        return {
+          meta: {
+            'fragmentReason': false,
+            'revision': 'Ember@2.6.1',
+            'loc': {
+              'source': null,
+              'start': {
+                'line': 2,
+                'column': 4
+              },
+              'end': {
+                'line': 4,
+                'column': 4
+              }
+            }
+          },
+          isEmpty: false,
+          arity: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createTextNode('      template block text\n');
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes() {
+            return [];
+          },
+          statements: [],
+          locals: [],
+          templates: []
+        };
+      })();
+
+      return {
+        meta: {
+          'fragmentReason': {
+            'name': 'missing-wrapper',
+            'problems': ['wrong-type']
+          },
+          'revision': 'Ember@2.6.1',
+          'loc': {
+            'source': null,
+            'start': {
+              'line': 1,
+              'column': 0
+            },
+            'end': {
+              'line': 5,
+              'column': 2
+            }
+          }
+        },
+        isEmpty: false,
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode('\n');
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment('');
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode('  ');
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+          return morphs;
+        },
+        statements: [['block', 'card-kitten', [], [], 0, null, ['loc', [null, [2, 4], [4, 20]]]]],
+        locals: [],
+        templates: [child0]
+      };
+    })()));
+
+    assert.equal(this.$().text().trim(), 'template block text');
+  });
+});
+define('mobiledoc-experiments/tests/integration/components/card-kitten-test.jshint', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('JSHint | integration/components/card-kitten-test.js');
+  QUnit.test('should pass jshint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'integration/components/card-kitten-test.js should pass jshint.');
   });
 });
 define('mobiledoc-experiments/tests/integration/components/card-picker-test', ['exports', 'ember-qunit'], function (exports, _emberQunit) {
