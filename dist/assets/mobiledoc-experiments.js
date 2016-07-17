@@ -41,13 +41,16 @@ define('mobiledoc-experiments/components/card-picker', ['exports', 'ember'], fun
 			this.$('#card-drop2')[0].addEventListener('dragstart', function (event) {
 				return window.dragel = "graph";
 			});
+			this.$('#card-drop3')[0].addEventListener('dragstart', function (event) {
+				return window.dragel = "slide-show";
+			});
 		}
 	});
 });
 define('mobiledoc-experiments/components/form-body', ['exports', 'ember', 'mobiledoc-kit', 'mobiledoc-experiments/ghost-cards', 'mobiledoc-experiments/ghost-atoms', 'mobiledoc-experiments/ghost-sections', 'mobiledoc-experiments/ghost-markups'], function (exports, _ember, _mobiledocKit, _mobiledocExperimentsGhostCards, _mobiledocExperimentsGhostAtoms, _mobiledocExperimentsGhostSections, _mobiledocExperimentsGhostMarkups) {
   function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-  var simpleMobiledoc = {
+  var mobiledoc = {
     version: "0.3.0",
     markups: [],
     atoms: [],
@@ -60,11 +63,12 @@ define('mobiledoc-experiments/components/form-body', ['exports', 'ember', 'mobil
 
     this.user = user;
     this.comment = comment;
+    this._dom = null;
   };
 
   exports['default'] = _ember['default'].Component.extend({
     didRender: function didRender() {
-      var options = { mobiledoc: simpleMobiledoc, sections: _mobiledocExperimentsGhostSections['default'], cards: _mobiledocExperimentsGhostCards['default'], markups: _mobiledocExperimentsGhostMarkups['default'] };
+      var options = { mobiledoc: mobiledoc, sections: _mobiledocExperimentsGhostSections['default'], cards: _mobiledocExperimentsGhostCards['default'], markups: _mobiledocExperimentsGhostMarkups['default'], atoms: _mobiledocExperimentsGhostAtoms['default'] };
       var editor = new _mobiledocKit['default'].Editor(options);
 
       editor.comments = [];
@@ -86,7 +90,17 @@ define('mobiledoc-experiments/components/form-body', ['exports', 'ember', 'mobil
       };
       this.$('#comment')[0].onclick = function (_) {
         return editor.run(function (postEditor) {
-          postEditor.toggleMarkup(editor.builder.createMarkup("mark", { href: editor.comments.push(new Comment(0, "")) })); //temporary solution as href is the only allowed attribute right now.
+          var mark = editor.builder.createMarkup("mark", { "data-comment-id": editor.comments.push(new Comment(0, "")) });
+          //postEditor.toggleMarkup(mark); //temporary solution as href is the only allowed attribute right now.
+          postEditor.addMarkupToRange(postEditor._range, mark);
+          /*let atom;
+          let { range } = ed;
+          ed.run(postEditor => {
+            let position = range.head;
+            position.offset++;
+            atom = postEditor.builder.createAtom("comment", "", {});
+            postEditor.insertMarkers(position, [atom]);
+          });*/
         });
       };
 
@@ -94,8 +108,39 @@ define('mobiledoc-experiments/components/form-body', ['exports', 'ember', 'mobil
     }
   });
 });
-define("mobiledoc-experiments/ghost-atoms/index", ["exports"], function (exports) {
-  exports["default"] = [];
+define('mobiledoc-experiments/ghost-atoms/comment', ['exports'], function (exports) {
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+	var comment = (function () {
+		function comment() {
+			_classCallCheck(this, comment);
+
+			this.name = 'comment';
+			this.type = 'dom';
+		}
+
+		_createClass(comment, [{
+			key: 'render',
+			value: function render(_ref) {
+				var env = _ref.env;
+				var options = _ref.options;
+				var value = _ref.value;
+				var payload = _ref.payload;
+
+				return document.createTextNode('COMMENT');
+			}
+		}]);
+
+		return comment;
+	})();
+
+	exports['default'] = comment;
+	;
+});
+define('mobiledoc-experiments/ghost-atoms/index', ['exports', 'mobiledoc-experiments/ghost-atoms/comment'], function (exports, _mobiledocExperimentsGhostAtomsComment) {
+	exports['default'] = [new _mobiledocExperimentsGhostAtomsComment['default']()];
 });
 define('mobiledoc-experiments/ghost-cards/card', ['exports'], function (exports) {
   var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -106,7 +151,7 @@ define('mobiledoc-experiments/ghost-cards/card', ['exports'], function (exports)
     function Card() {
       _classCallCheck(this, Card);
 
-      this.name = 'kitten';
+      this.name = 'card';
       this.type = 'dom';
       this.resizeMode = this.resizeModeEnum.both;
     }
@@ -118,22 +163,26 @@ define('mobiledoc-experiments/ghost-cards/card', ['exports'], function (exports)
         var options = _ref.options;
         var payload = _ref.payload;
 
-        var img = document.createElement('img');
+        this.doFloat(env, payload);
+      }
+    }, {
+      key: 'preview',
+      value: function preview() {
+        //returns a place holder
+      }
+    }, {
+      key: 'doFloat',
+      value: function doFloat(env, payload) {
         switch (payload.pos) {
           case "left":
             env.postModel.renderNode.element.className = "card-left";
-            img.src = "https://placekitten.com/400/400";
             break;
           case "right":
             env.postModel.renderNode.element.className = "card-right";
-            img.src = "https://placekitten.com/401/401";
             break;
           default:
             env.postModel.renderNode.element.className = "card";
-            img.src = "https://placekitten.com/800/400";
         }
-
-        return img;
       }
     }, {
       key: 'resizeModeEnum',
@@ -152,6 +201,57 @@ define('mobiledoc-experiments/ghost-cards/card', ['exports'], function (exports)
   exports['default'] = Card;
 });
 define('mobiledoc-experiments/ghost-cards/graph', ['exports', 'mobiledoc-experiments/ghost-cards/card'], function (exports, _mobiledocExperimentsGhostCardsCard) {
+   var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+   var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+
+   function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+   function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+   var Graph = (function (_Card) {
+      _inherits(Graph, _Card);
+
+      function Graph() {
+         _classCallCheck(this, Graph);
+
+         _get(Object.getPrototypeOf(Graph.prototype), 'constructor', this).call(this);
+         this.name = 'graph';
+      }
+
+      _createClass(Graph, [{
+         key: 'render',
+         value: function render(_ref) {
+            var env = _ref.env;
+            var options = _ref.options;
+            var payload = _ref.payload;
+
+            _get(Object.getPrototypeOf(Graph.prototype), 'doFloat', this).call(this, env, payload);
+            var img = document.createElement('img');
+            switch (payload.pos) {
+               case "left":
+                  img.src = "http://Chartholdr.io/pie/400";
+                  break;
+               case "right":
+                  img.src = "http://Chartholdr.io/line/400/400";
+                  break;
+               default:
+                  img.src = "http://Chartholdr.io/bar/800/400";
+            }
+
+            return img;
+         }
+      }]);
+
+      return Graph;
+   })(_mobiledocExperimentsGhostCardsCard['default']);
+
+   exports['default'] = Graph;
+});
+define('mobiledoc-experiments/ghost-cards/index', ['exports', 'mobiledoc-experiments/ghost-cards/kitten', 'mobiledoc-experiments/ghost-cards/graph', 'mobiledoc-experiments/ghost-cards/slide-show'], function (exports, _mobiledocExperimentsGhostCardsKitten, _mobiledocExperimentsGhostCardsGraph, _mobiledocExperimentsGhostCardsSlideShow) {
+	exports['default'] = [new _mobiledocExperimentsGhostCardsKitten['default'](), new _mobiledocExperimentsGhostCardsGraph['default'](), new _mobiledocExperimentsGhostCardsSlideShow['default']()];
+});
+define('mobiledoc-experiments/ghost-cards/kitten', ['exports', 'mobiledoc-experiments/ghost-cards/card'], function (exports, _mobiledocExperimentsGhostCardsCard) {
   var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
   var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
@@ -160,50 +260,132 @@ define('mobiledoc-experiments/ghost-cards/graph', ['exports', 'mobiledoc-experim
 
   function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-  var Graph = (function (_Card) {
-    _inherits(Graph, _Card);
+  var Kitten = (function (_Card) {
+    _inherits(Kitten, _Card);
 
-    function Graph() {
-      _classCallCheck(this, Graph);
+    function Kitten() {
+      _classCallCheck(this, Kitten);
 
-      _get(Object.getPrototypeOf(Graph.prototype), 'constructor', this).call(this);
-      this.name = 'graph';
-      this.type = 'dom';
+      _get(Object.getPrototypeOf(Kitten.prototype), 'constructor', this).call(this);
+      this.name = 'kitten';
     }
 
-    _createClass(Graph, [{
+    _createClass(Kitten, [{
       key: 'render',
       value: function render(_ref) {
         var env = _ref.env;
         var options = _ref.options;
         var payload = _ref.payload;
 
+        _get(Object.getPrototypeOf(Kitten.prototype), 'doFloat', this).call(this, env, payload);
+
         var img = document.createElement('img');
+
         switch (payload.pos) {
           case "left":
-            env.postModel.renderNode.element.className = "card-left";
-            img.src = "http://Chartholdr.io/pie/400";
+            img.src = "https://placekitten.com/400/400";
             break;
           case "right":
-            env.postModel.renderNode.element.className = "card-right";
-            img.src = "http://Chartholdr.io/line/400/400";
+            img.src = "https://placekitten.com/401/401";
             break;
           default:
-            env.postModel.renderNode.element.className = "card";
-            img.src = "http://Chartholdr.io/bar/800/400";
+            img.src = "https://placekitten.com/800/400";
         }
-
         return img;
       }
     }]);
 
-    return Graph;
+    return Kitten;
   })(_mobiledocExperimentsGhostCardsCard['default']);
 
-  exports['default'] = Graph;
+  exports['default'] = Kitten;
 });
-define('mobiledoc-experiments/ghost-cards/index', ['exports', 'mobiledoc-experiments/ghost-cards/card', 'mobiledoc-experiments/ghost-cards/graph'], function (exports, _mobiledocExperimentsGhostCardsCard, _mobiledocExperimentsGhostCardsGraph) {
-	exports['default'] = [new _mobiledocExperimentsGhostCardsCard['default'](), new _mobiledocExperimentsGhostCardsGraph['default']()];
+define('mobiledoc-experiments/ghost-cards/slide-show', ['exports', 'mobiledoc-experiments/ghost-cards/card', 'jquery'], function (exports, _mobiledocExperimentsGhostCardsCard, _jquery) {
+  var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+  var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+
+  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+  function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+  var SlideShow = (function (_Card) {
+    _inherits(SlideShow, _Card);
+
+    function SlideShow() {
+      _classCallCheck(this, SlideShow);
+
+      _get(Object.getPrototypeOf(SlideShow.prototype), 'constructor', this).call(this);
+      this.name = 'slide-show';
+    }
+
+    _createClass(SlideShow, [{
+      key: 'render',
+      value: function render(_ref) {
+        var env = _ref.env;
+        var options = _ref.options;
+        var payload = _ref.payload;
+
+        _get(Object.getPrototypeOf(SlideShow.prototype), 'doFloat', this).call(this, env, payload);
+        if (!payload.images) payload.images = [];
+        var holder = document.createElement('div');
+        var img = document.createElement("img");
+        var img2 = document.createElement("img");
+        img.style.width = "100%";
+        img2.style.width = "100%";
+        img.style.position = "absolute";
+        img2.style.position = "absolute";
+        holder.style.position = "relative";
+
+        env.postModel.renderNode.element.style.border = "1px solid black";
+        env.postModel.renderNode.element.style.width = '400px';
+        env.postModel.renderNode.element.style.height = '400px';
+        env.postModel.renderNode.element.style.overflow = "hidden";
+        env.postModel.renderNode.element.addEventListener("dragover", function (e) {
+          console.log("DRAGGING OVER");
+          e.preventDefault();
+        }, false);
+        env.postModel.renderNode.element.addEventListener("drop", function (e) {
+          e.preventDefault();
+          var file = e.dataTransfer.files[0];
+          var reader = new FileReader();
+          reader.onload = function (e) {
+
+            payload.images.push(e.target.result);
+
+            img.src = e.target.result;
+          };
+
+          reader.readAsDataURL(file);
+        }, false);
+
+        var arrayCursor = 0;
+        setInterval(function (_) {
+          if (arrayCursor & 1) {
+            img.src = payload.images[arrayCursor];
+            (0, _jquery['default'])(img).fadeIn();
+            (0, _jquery['default'])(img2).fadeOut();
+          } else {
+            img2.src = payload.images[arrayCursor];
+            (0, _jquery['default'])(img2).fadeIn();
+            (0, _jquery['default'])(img).fadeOut();
+          }
+
+          arrayCursor++;
+          if (arrayCursor >= payload.images.length) {
+            arrayCursor = 0;
+          }
+        }, 2000);
+        holder.appendChild(img);
+        holder.appendChild(img2);
+        return holder;
+      }
+    }]);
+
+    return SlideShow;
+  })(_mobiledocExperimentsGhostCardsCard['default']);
+
+  exports['default'] = SlideShow;
 });
 define("mobiledoc-experiments/ghost-markups/comment", ["exports"], function (exports) {
   var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -215,12 +397,32 @@ define("mobiledoc-experiments/ghost-markups/comment", ["exports"], function (exp
       _classCallCheck(this, Comment);
 
       this.tagName = "mark";
+      this.commentEl = null;
     }
 
     _createClass(Comment, [{
       key: "render",
       value: function render(env) {
-        console.log(env);
+        var _this = this;
+
+        env.onDelete(function (e) {
+          return alert("DELETE!");
+        });
+        env.didRender(function (e) {
+          var commentOffset = env.element.attributes.getNamedItem('data-comment-id');
+          if (commentOffset == undefined || commentOffset == null) {
+            throw new Error("No comment offset");
+          }
+
+          _this._comment = env.editor.comments[commentOffset.value - 1];
+          var tag = _this.lazyCreateComment(document.getElementsByTagName('body')[0]);
+          var clientRect = env.element.getBoundingClientRect();
+          tag.style.top = clientRect.top + 'px';
+          tag.style.right = 100 + 'px';
+        });
+        env.onTeardown(function (e) {
+          return alert("TEAR DOWN");
+        });
         env.element.addEventListener("mouseenter", function (event) {
           event.target.style = "background-color:red;";
         });
@@ -230,6 +432,19 @@ define("mobiledoc-experiments/ghost-markups/comment", ["exports"], function (exp
         });
 
         //env.onTeardown( _ => alert("TEARDOWN"));
+      }
+    }, {
+      key: "lazyCreateComment",
+      value: function lazyCreateComment(root) {
+        if (this._comment._dom) return this._comment._dom;
+        var tag = document.createElement("div");
+        var text = document.createElement("textarea");
+        tag.appendChild(text);
+        tag.className = "comment";
+        tag.style.position = "absolute";
+        root.appendChild(tag);
+        this._comment._dom = tag;
+        return tag;
       }
     }]);
 
@@ -259,6 +474,7 @@ define("mobiledoc-experiments/ghost-sections/section", ["exports"], function (ex
     _createClass(Section, [{
       key: "render",
       value: function render(env) {
+
         env.element.addEventListener("mouseenter", function (event) {});
 
         env.element.addEventListener("mouseleave", function (event) {
@@ -587,7 +803,7 @@ define("mobiledoc-experiments/templates/components/card-picker", ["exports"], fu
             "column": 0
           },
           "end": {
-            "line": 6,
+            "line": 7,
             "column": 6
           }
         },
@@ -619,6 +835,14 @@ define("mobiledoc-experiments/templates/components/card-picker", ["exports"], fu
         dom.setAttribute(el2, "id", "card-drop2");
         dom.setAttribute(el2, "draggable", "true");
         var el3 = dom.createTextNode("chart");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n	");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2, "id", "card-drop3");
+        dom.setAttribute(el2, "draggable", "true");
+        var el3 = dom.createTextNode("card-picker");
         dom.appendChild(el2, el3);
         dom.appendChild(el1, el2);
         var el2 = dom.createTextNode("\n\n");
@@ -790,7 +1014,7 @@ catch(err) {
 /* jshint ignore:start */
 
 if (!runningTests) {
-  require("mobiledoc-experiments/app")["default"].create({"name":"mobiledoc-experiments","version":"0.0.0+cce3a147"});
+  require("mobiledoc-experiments/app")["default"].create({"name":"mobiledoc-experiments","version":"0.0.0+830fbafe"});
 }
 
 /* jshint ignore:end */

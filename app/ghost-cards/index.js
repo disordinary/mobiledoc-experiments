@@ -1,7 +1,9 @@
-import Card from './card';
+import Kitten from './kitten';
 import Graph from './graph';
+import SlideShow from './slide-show';
 
 export default [
-	new Card(),
-	new Graph()
+	new Kitten(),
+	new Graph(),
+	new SlideShow()
 ]

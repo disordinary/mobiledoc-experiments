@@ -8,7 +8,7 @@ import markups from '../ghost-markups';
 
 
 
-let simpleMobiledoc = {
+let mobiledoc = {
   version: "0.3.0",
   markups: [],
   atoms: [],
@@ -28,12 +28,15 @@ class Comment {
   constructor( user , comment ) {
     this.user = user;
     this.comment = comment;
+    this._dom = null;
   }
 }
 
+
+
 export default Ember.Component.extend({
 	didRender( ) {
-		var options = { mobiledoc: simpleMobiledoc , sections ,  cards  , markups };
+		var options = { mobiledoc , sections ,  cards  , markups ,  atoms };
 		var editor = new Mobiledoc.Editor(options);
 
     editor.comments = [ ];
@@ -42,7 +45,19 @@ export default Ember.Component.extend({
     this.$('#b')[0].onclick = _ => editor.run(postEditor => {postEditor.toggleMarkup('strong');});
     this.$('#i')[0].onclick = _ => editor.run(postEditor => {postEditor.toggleMarkup('em');});
     this.$('#comment')[0].onclick = _ => editor.run(postEditor => {
-      postEditor.toggleMarkup(editor.builder.createMarkup("mark" , {href : editor.comments.push( new Comment(  0 , "" ) )})); //temporary solution as href is the only allowed attribute right now.
+      let mark = editor.builder.createMarkup("mark" , {"data-comment-id" : editor.comments.push( new Comment(  0 , "" ) )});
+      //postEditor.toggleMarkup(mark); //temporary solution as href is the only allowed attribute right now.
+      postEditor.addMarkupToRange( postEditor._range , mark );
+      /*let atom;
+      let { range } = ed;
+      ed.run(postEditor => {
+        let position = range.head;
+        position.offset++;
+        atom = postEditor.builder.createAtom("comment", "", {});
+        postEditor.insertMarkers(position, [atom]);
+    });*/
+
+
     });
 
 

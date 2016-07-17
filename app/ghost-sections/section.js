@@ -3,8 +3,9 @@ export default class Section {
   constructor( ) {
     this.tagName = "p";
   }
-  
+
   render(env) {
+    
     env.element.addEventListener("mouseenter", event => {
         
       } );
