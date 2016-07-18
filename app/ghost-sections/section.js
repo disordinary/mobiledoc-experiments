@@ -20,9 +20,9 @@ export default class Section {
         let mouseY = event.pageY - offset.top;
         let pos = "top";
         
-        if( mouseX < 33 ) {
+        if( mouseX < 33 && window.dragel.card.resizeMode != "full_width_only" ) {
           pos = "left";
-        } else if( mouseX > offset.width-33 ){
+        } else if( mouseX > offset.width-33 && window.dragel.card.resizeMode != "full_width_only"){
           pos = "right";
         } else if( mouseY > offset.height / 2 ) {
           pos = "bottom";
@@ -30,13 +30,12 @@ export default class Section {
           pos = "top";
         }
         if( pos === "bottom" ) {
+          //placing on the bottom is simply placing at the top of the next section
           pos = "top";
-
-          let card = postEditor.builder.createCardSection(window.dragel || "kitten", { pos });
+          let card = postEditor.builder.createCardSection(window.dragel.card.name || "kitten", { pos });
           postEditor.insertSectionBefore(env.editor.post.sections, card, env.section.next);
         } else {
-                   
-          let card = postEditor.builder.createCardSection(window.dragel || "kitten", { pos } );
+          let card = postEditor.builder.createCardSection(window.dragel.card.name || "kitten", { pos } );
           postEditor.insertSectionBefore(env.editor.post.sections, card, env.section);
         }
       } );
@@ -49,18 +48,19 @@ export default class Section {
 
 
    env.element.addEventListener("dragover", function( event ) {
-        let offset = event.srcElement.getBoundingClientRect();
+    
+        let offset = env.element.getBoundingClientRect();//event.srcElement.getBoundingClientRect();
         let mouseX = event.pageX - offset.left;
         let mouseY = event.pageY - offset.top;
         
-        if( mouseX < 33 ) {
-          event.srcElement.className='dropper-left';
-        } else if( mouseX > offset.width-33 ){
-          event.srcElement.className='dropper-right';
+        if( mouseX < 33 && window.dragel.card.resizeMode != "full_width_only" ) {
+          env.element.className='dropper-left';
+        } else if( mouseX > offset.width-33  && window.dragel.card.resizeMode != "full_width_only" ){
+          env.element.className='dropper-right';
         } else if( mouseY > offset.height / 2 ) {
-          event.srcElement.className='dropper-bottom';
+          env.element.className='dropper-bottom';
         } else {
-         event.srcElement.className='dropper-top';
+         env.element.className='dropper-top';
         }
 
         event.preventDefault();

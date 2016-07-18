@@ -33,9 +33,9 @@ export default class Card {
 
   get resizeModeEnum() {
     return {
-      full_width_only : Symbol(),
-      half_width_only : Symbol(),
-      both            : Symbol()
+      full_width_only : "full_width_only",
+      half_width_only : "half_width_only",
+      both            : "both"
     }
   }
 

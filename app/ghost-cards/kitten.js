@@ -5,7 +5,7 @@ export default class Kitten extends Card {
   constructor( ) {
     super();
     this.name = 'kitten';
-    this.previewName = 'kitten';
+    this.previewName = 'placeholder kitten';
     this.previewImage = 'https://placekitten.com/160/100';
   }
 
