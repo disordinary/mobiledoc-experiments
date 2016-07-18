@@ -6,7 +6,7 @@ import atoms from '../ghost-atoms';
 import sections from '../ghost-sections';
 import markups from '../ghost-markups';
 
-
+let something = "SOMETHING";
 
 let mobiledoc = {
   version: "0.3.0",
@@ -35,6 +35,7 @@ class Comment {
 
 
 export default Ember.Component.extend({
+  cards : cards,
 	didRender( ) {
 		var options = { mobiledoc , sections ,  cards  , markups ,  atoms };
 		var editor = new Mobiledoc.Editor(options);

@@ -3,5 +3,7 @@
 	<div id="card-drop" draggable="true">kitten</div>
 	<div id="card-drop2" draggable="true">chart</div>
 	<div id="card-drop3" draggable="true">card-picker</div>
-
+	{{#each cards as |card|}}
+		<div class="card-drop" draggable="true" style="background-image: url('{{card.previewImage}}')"><label>{{card.previewName}}</label></div>
+	{{/each}}
 </div>

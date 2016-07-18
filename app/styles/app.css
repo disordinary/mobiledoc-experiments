@@ -96,29 +96,22 @@ comment {
 	left:10px;
 	top:10px;
 }
-#card-drop {
+
+
+.card-drop {
 	width:160px;
 	height:100px;
-	border:1px solid;
+	border:1px solid #333;
 	border-radius: 5px;
-	background-image: url('https://placekitten.com/160/100');
+	
 	text-align: center;
-	color: #cecece;
+	color: #fff;
 	line-height: 100px;
-	   opacity: 0.5;
-	   margin:10px;
+   opacity: 0.5;
+   margin:10px;
 }
 
-#card-drop2 {
-	width:160px;
-	height:100px;
-	border:1px solid;
-	border-radius: 5px;
-	background-image: url('http://Chartholdr.io/line/160/100');
-	text-align: center;
-	color: #111111;
-	line-height: 100px;
-	   opacity: 0.5;
-	   margin:10px;
+.card-drop label {
+	background-color: rgba(3,3,3,0.3);
+	padding:0 10px 0 10px;
 }
-

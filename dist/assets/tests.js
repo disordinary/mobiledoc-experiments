@@ -49,7 +49,7 @@ define('mobiledoc-experiments/tests/ghost-cards/card.jshint', ['exports'], funct
   QUnit.module('JSHint | ghost-cards/card.js');
   QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
-    assert.ok(false, 'ghost-cards/card.js should pass jshint.\nghost-cards/card.js: line 22, col 63, Missing semicolon.\nghost-cards/card.js: line 25, col 64, Missing semicolon.\nghost-cards/card.js: line 28, col 58, Missing semicolon.\nghost-cards/card.js: line 37, col 6, Missing semicolon.\n\n4 errors');
+    assert.ok(false, 'ghost-cards/card.js should pass jshint.\nghost-cards/card.js: line 24, col 63, Missing semicolon.\nghost-cards/card.js: line 27, col 64, Missing semicolon.\nghost-cards/card.js: line 30, col 58, Missing semicolon.\nghost-cards/card.js: line 39, col 6, Missing semicolon.\n\n4 errors');
   });
 });
 define('mobiledoc-experiments/tests/ghost-cards/graph.jshint', ['exports'], function (exports) {

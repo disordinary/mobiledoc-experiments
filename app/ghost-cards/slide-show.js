@@ -5,7 +5,8 @@ export default class SlideShow extends Card {
   constructor( ) {
     super();
     this.name = 'slide-show';
-
+    this.previewName = 'slide show';
+    this.previewImage = '/assets/cards/picture-preview.png';
   }
 
   render( { env , options , payload } ) {

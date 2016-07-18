@@ -35,6 +35,7 @@ define('mobiledoc-experiments/components/app-version', ['exports', 'ember-cli-ap
 define('mobiledoc-experiments/components/card-picker', ['exports', 'ember'], function (exports, _ember) {
 	exports['default'] = _ember['default'].Component.extend({
 		didRender: function didRender() {
+
 			this.$('#card-drop')[0].addEventListener('dragstart', function (event) {
 				return window.dragel = "kitten";
 			});
@@ -49,6 +50,8 @@ define('mobiledoc-experiments/components/card-picker', ['exports', 'ember'], fun
 });
 define('mobiledoc-experiments/components/form-body', ['exports', 'ember', 'mobiledoc-kit', 'mobiledoc-experiments/ghost-cards', 'mobiledoc-experiments/ghost-atoms', 'mobiledoc-experiments/ghost-sections', 'mobiledoc-experiments/ghost-markups'], function (exports, _ember, _mobiledocKit, _mobiledocExperimentsGhostCards, _mobiledocExperimentsGhostAtoms, _mobiledocExperimentsGhostSections, _mobiledocExperimentsGhostMarkups) {
   function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+  var something = "SOMETHING";
 
   var mobiledoc = {
     version: "0.3.0",
@@ -67,6 +70,7 @@ define('mobiledoc-experiments/components/form-body', ['exports', 'ember', 'mobil
   };
 
   exports['default'] = _ember['default'].Component.extend({
+    cards: _mobiledocExperimentsGhostCards['default'],
     didRender: function didRender() {
       var options = { mobiledoc: mobiledoc, sections: _mobiledocExperimentsGhostSections['default'], cards: _mobiledocExperimentsGhostCards['default'], markups: _mobiledocExperimentsGhostMarkups['default'], atoms: _mobiledocExperimentsGhostAtoms['default'] };
       var editor = new _mobiledocKit['default'].Editor(options);
@@ -152,6 +156,8 @@ define('mobiledoc-experiments/ghost-cards/card', ['exports'], function (exports)
       _classCallCheck(this, Card);
 
       this.name = 'card';
+      this.previewName = 'card';
+      this.previewImage = 'http://Chartholdr.io/line/160/100';
       this.type = 'dom';
       this.resizeMode = this.resizeModeEnum.both;
     }
@@ -217,6 +223,7 @@ define('mobiledoc-experiments/ghost-cards/graph', ['exports', 'mobiledoc-experim
 
          _get(Object.getPrototypeOf(Graph.prototype), 'constructor', this).call(this);
          this.name = 'graph';
+         this.previewName = 'graph';
       }
 
       _createClass(Graph, [{
@@ -268,6 +275,8 @@ define('mobiledoc-experiments/ghost-cards/kitten', ['exports', 'mobiledoc-experi
 
       _get(Object.getPrototypeOf(Kitten.prototype), 'constructor', this).call(this);
       this.name = 'kitten';
+      this.previewName = 'kitten';
+      this.previewImage = 'https://placekitten.com/160/100';
     }
 
     _createClass(Kitten, [{
@@ -317,6 +326,8 @@ define('mobiledoc-experiments/ghost-cards/slide-show', ['exports', 'mobiledoc-ex
 
       _get(Object.getPrototypeOf(SlideShow.prototype), 'constructor', this).call(this);
       this.name = 'slide-show';
+      this.previewName = 'slide show';
+      this.previewImage = '/assets/cards/picture-preview.png';
     }
 
     _createClass(SlideShow, [{
@@ -732,7 +743,7 @@ define("mobiledoc-experiments/templates/application", ["exports"], function (exp
       meta: {
         "fragmentReason": {
           "name": "missing-wrapper",
-          "problems": ["wrong-type", "multiple-nodes"]
+          "problems": ["wrong-type"]
         },
         "revision": "Ember@2.6.1",
         "loc": {
@@ -742,8 +753,8 @@ define("mobiledoc-experiments/templates/application", ["exports"], function (exp
             "column": 0
           },
           "end": {
-            "line": 7,
-            "column": 15
+            "line": 3,
+            "column": 0
           }
         },
         "moduleName": "mobiledoc-experiments/templates/application.hbs"
@@ -754,34 +765,20 @@ define("mobiledoc-experiments/templates/application", ["exports"], function (exp
       hasRendered: false,
       buildFragment: function buildFragment(dom) {
         var el0 = dom.createDocumentFragment();
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
         var el1 = dom.createComment("");
         dom.appendChild(el0, el1);
         var el1 = dom.createTextNode("\n");
         dom.appendChild(el0, el1);
-        var el1 = dom.createElement("content");
-        var el2 = dom.createTextNode("\n\n");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createComment("");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n");
-        dom.appendChild(el1, el2);
-        dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n\n");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createComment("");
-        dom.appendChild(el0, el1);
         return el0;
       },
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-        var morphs = new Array(3);
-        morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
-        morphs[1] = dom.createMorphAt(dom.childAt(fragment, [2]), 1, 1);
-        morphs[2] = dom.createMorphAt(fragment, 4, 4, contextualElement);
-        dom.insertBoundary(fragment, 0);
-        dom.insertBoundary(fragment, null);
+        var morphs = new Array(1);
+        morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
         return morphs;
       },
-      statements: [["content", "form-toolbar", ["loc", [null, [1, 0], [1, 16]]]], ["content", "form-body", ["loc", [null, [4, 0], [4, 13]]]], ["content", "card-picker", ["loc", [null, [7, 0], [7, 15]]]]],
+      statements: [["content", "form-body", ["loc", [null, [2, 0], [2, 13]]]]],
       locals: [],
       templates: []
     };
@@ -789,6 +786,56 @@ define("mobiledoc-experiments/templates/application", ["exports"], function (exp
 });
 define("mobiledoc-experiments/templates/components/card-picker", ["exports"], function (exports) {
   exports["default"] = Ember.HTMLBars.template((function () {
+    var child0 = (function () {
+      return {
+        meta: {
+          "fragmentReason": false,
+          "revision": "Ember@2.6.1",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 6,
+              "column": 1
+            },
+            "end": {
+              "line": 8,
+              "column": 1
+            }
+          },
+          "moduleName": "mobiledoc-experiments/templates/components/card-picker.hbs"
+        },
+        isEmpty: false,
+        arity: 1,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("		");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("div");
+          dom.setAttribute(el1, "class", "card-drop");
+          dom.setAttribute(el1, "draggable", "true");
+          var el2 = dom.createElement("label");
+          var el3 = dom.createComment("");
+          dom.appendChild(el2, el3);
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var element0 = dom.childAt(fragment, [1]);
+          var morphs = new Array(2);
+          morphs[0] = dom.createAttrMorph(element0, 'style');
+          morphs[1] = dom.createMorphAt(dom.childAt(element0, [0]), 0, 0);
+          return morphs;
+        },
+        statements: [["attribute", "style", ["concat", ["background-image: url('", ["get", "card.previewImage", ["loc", [null, [7, 74], [7, 91]]]], "')"]]], ["content", "card.previewName", ["loc", [null, [7, 104], [7, 124]]]]],
+        locals: ["card"],
+        templates: []
+      };
+    })();
     return {
       meta: {
         "fragmentReason": {
@@ -803,7 +850,7 @@ define("mobiledoc-experiments/templates/components/card-picker", ["exports"], fu
             "column": 0
           },
           "end": {
-            "line": 7,
+            "line": 9,
             "column": 6
           }
         },
@@ -845,20 +892,23 @@ define("mobiledoc-experiments/templates/components/card-picker", ["exports"], fu
         var el3 = dom.createTextNode("card-picker");
         dom.appendChild(el2, el3);
         dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n\n");
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createComment("");
         dom.appendChild(el1, el2);
         dom.appendChild(el0, el1);
         return el0;
       },
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-        var morphs = new Array(1);
+        var morphs = new Array(2);
         morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+        morphs[1] = dom.createMorphAt(dom.childAt(fragment, [2]), 7, 7);
         dom.insertBoundary(fragment, 0);
         return morphs;
       },
-      statements: [["content", "yield", ["loc", [null, [1, 0], [1, 9]]]]],
+      statements: [["content", "yield", ["loc", [null, [1, 0], [1, 9]]]], ["block", "each", [["get", "cards", ["loc", [null, [6, 9], [6, 14]]]]], [], 0, null, ["loc", [null, [6, 1], [8, 10]]]]],
       locals: [],
-      templates: []
+      templates: [child0]
     };
   })());
 });
@@ -878,7 +928,7 @@ define("mobiledoc-experiments/templates/components/form-body", ["exports"], func
             "column": 0
           },
           "end": {
-            "line": 17,
+            "line": 18,
             "column": 0
           }
         },
@@ -960,8 +1010,12 @@ define("mobiledoc-experiments/templates/components/form-body", ["exports"], func
         var el2 = dom.createElement("div");
         dom.setAttribute(el2, "class", "body");
         dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n\n");
+        var el2 = dom.createTextNode("\n	\n");
         dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createComment("");
         dom.appendChild(el0, el1);
         var el1 = dom.createTextNode("\n");
         dom.appendChild(el0, el1);
@@ -972,11 +1026,12 @@ define("mobiledoc-experiments/templates/components/form-body", ["exports"], func
         return el0;
       },
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-        var morphs = new Array(1);
+        var morphs = new Array(2);
         morphs[0] = dom.createMorphAt(fragment, 2, 2, contextualElement);
+        morphs[1] = dom.createMorphAt(fragment, 4, 4, contextualElement);
         return morphs;
       },
-      statements: [["content", "yield", ["loc", [null, [16, 0], [16, 9]]]]],
+      statements: [["inline", "card-picker", [], ["cards", ["subexpr", "@mut", [["get", "cards", ["loc", [null, [16, 20], [16, 25]]]]], [], []]], ["loc", [null, [16, 0], [16, 27]]]], ["content", "yield", ["loc", [null, [17, 0], [17, 9]]]]],
       locals: [],
       templates: []
     };
@@ -1014,7 +1069,7 @@ catch(err) {
 /* jshint ignore:start */
 
 if (!runningTests) {
-  require("mobiledoc-experiments/app")["default"].create({"name":"mobiledoc-experiments","version":"0.0.0+830fbafe"});
+  require("mobiledoc-experiments/app")["default"].create({"name":"mobiledoc-experiments","version":"0.0.0+815955d3"});
 }
 
 /* jshint ignore:end */

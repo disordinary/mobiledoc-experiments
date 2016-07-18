@@ -13,6 +13,7 @@ module.exports = function(defaults) {
   
 
 
+
 //Using `app.import` with a file in the root of `vendor/` causes a significant performance penalty. Please move `mobiledoc-kit` into a subdirectory.
 //You must pass a file to `app.import`. For directories specify them to the constructor under the `trees` option.
 

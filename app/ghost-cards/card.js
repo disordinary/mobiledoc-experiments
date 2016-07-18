@@ -4,6 +4,8 @@
 export default class Card {
   constructor( ) {
     this.name = 'card';
+    this.previewName = 'card';
+    this.previewImage = 'http://Chartholdr.io/line/160/100';
     this.type = 'dom';
     this.resizeMode  = this.resizeModeEnum.both;
   }
@@ -36,5 +38,6 @@ export default class Card {
       both            : Symbol()
     }
   }
+
 
 }

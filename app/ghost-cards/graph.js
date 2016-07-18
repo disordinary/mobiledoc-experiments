@@ -4,6 +4,7 @@ export default class Graph extends Card {
 	constructor( ) {
 	  super();
     this.name = 'graph';
+    this.previewName = 'graph';
   }
 
   render( { env , options , payload } ) {
