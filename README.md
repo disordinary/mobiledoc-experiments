@@ -9,3 +9,5 @@ cd mobiledoc-experiments
 ./install.sh
 ember s
 ```
+
+Visit <http://localhost:4200>
