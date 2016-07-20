@@ -1,7 +1,7 @@
 #!/bin/bash
 
 npm install
-grunt install
+bower install
 cd bower_components
 git clone git@github.com:disordinary/mobiledoc-kit.git
 cd mobiledoc-kit
