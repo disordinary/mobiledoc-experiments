@@ -42,16 +42,20 @@ h1 {
 	width:100%;
 	line-height: 0px;
 }
-p {
-	
-	margin: 0 0 12px;
-	padding:0;
-}
 
 .__mobiledoc-card {
 	margin:0;
 	padding:0;
 	height:100%;
+	line-height: 1em;
+}
+
+
+
+p {
+	
+	margin: 0 0 12px;
+	padding:0;
 }
 
 
@@ -59,6 +63,7 @@ p {
 .dropper-left, .dropper-right, .dropper-top, .dropper-bottom {
 	position:relative;
 }
+
 .dropper-left:before, .dropper-right:after, .dropper-top:before, .dropper-bottom:after {
   content:"";
   display:block;
@@ -91,7 +96,31 @@ p {
   box-shadow: 0px 13px 13px rgba(3,3,3,0.6);;
 }
 
+/*
+ * Experimental version that puts in a place holder to demonstrate how the content will look after dropping, it's anoying.	
+ */
+/*
+.dropper-left:before, .dropper-right:after, .dropper-top:before, .dropper-bottom:after {
+	display:block;
+	background-color: #cecece;
+	content:"DROP HERE";
+}
 
+.dropper-top:before, .dropper-bottom:after	 {
+	width:100%;
+	height:200px;
+}
+.dropper-left:before {
+	float:left;
+	width:50%;
+	height:400px;
+}
+.dropper-right:after {
+	float: right;
+	width:50%;
+	height:400px;
+}
+*/
 
 #toolbar {
 	position:fixed;
@@ -133,8 +162,9 @@ p {
 .card-slideshow {
 	height:100%;
 }
-.card-slideshow p {
+.card-slideshow p, .card-slideshow textarea {
 	display:block;
+	box-sizing: border-box;
 	width:100%;
 	color:#cecece;
 	background-color: rgba(3,3,3,0.6);
@@ -144,6 +174,7 @@ p {
 	bottom:0px;
 	z-index: 9999;
 	margin:0;
+	padding:10px;
 	
 
 	

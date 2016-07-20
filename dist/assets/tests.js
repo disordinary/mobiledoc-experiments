@@ -94,7 +94,7 @@ define('mobiledoc-experiments/tests/ghost-cards/slide-show.jshint', ['exports'],
   QUnit.module('JSHint | ghost-cards/slide-show.js');
   QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
-    assert.ok(false, 'ghost-cards/slide-show.js should pass jshint.\nghost-cards/slide-show.js: line 29, col 77, Missing semicolon.\nghost-cards/slide-show.js: line 82, col 33, Missing semicolon.\n\n2 errors');
+    assert.ok(false, 'ghost-cards/slide-show.js should pass jshint.\nghost-cards/slide-show.js: line 54, col 7, Missing semicolon.\nghost-cards/slide-show.js: line 59, col 75, Missing semicolon.\n\n2 errors');
   });
 });
 define('mobiledoc-experiments/tests/ghost-markups/comment.jshint', ['exports'], function (exports) {

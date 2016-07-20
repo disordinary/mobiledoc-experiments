@@ -338,23 +338,48 @@ define('mobiledoc-experiments/ghost-cards/slide-show', ['exports', 'mobiledoc-ex
 
         _get(Object.getPrototypeOf(SlideShow.prototype), 'doFloat', this).call(this, env, payload);
         if (!payload.images) payload.images = [];
+
+        var currentImage = undefined;
+
+        var arrayCursor = 0;
+        var isEditing = false;
         var holder = document.createElement('div');
-        holder.className = 'card-slideshow';
+
         var img = document.createElement("img");
         var img2 = document.createElement("img");
+        var label = document.createElement("p");
+        var caption = document.createElement("textarea");
+
+        holder.className = 'card-slideshow';
         img.style.width = "100%";
         img2.style.width = "100%";
         img.style.position = "absolute";
         img2.style.position = "absolute";
 
-        var label = document.createElement("p");
         label.innerHTML = "PLACEHOLDER TEXT - DRAG AN IMAGE INTO THIS CONTAINER FOR A PICTURE, DRAG ADDITIONAL IMAGES TO CREATE A SLIDESHOW.";
+        label.addEventListener("click", function (e) {
+          caption.style.display = 'inline';
+          caption.value = label.innerHTML;
+          caption.select();
+          isEditing = true;
+        });
+
+        caption.innerHTML = "ENTER IN TEXT";
+        caption.addEventListener("keypress", function (e) {
+          if (e.keyCode === 13) {
+            isEditing = false;
+            caption.style.display = 'none';
+            payload.images[arrayCursor].content = caption.value;
+            label.innerHTML = caption.value;
+            fadeImage();
+          }
+        });
+
+        caption.style.display = 'none';
 
         if (!payload.images.length) img.src = "/assets/cards/picture-blank.png";
 
         holder.style.position = "relative";
-
-        console.log(env.postModel.renderNode.element);
 
         env.postModel.renderNode.element.style.border = "1px solid black";
         env.postModel.renderNode.element.style.height = '400px';
@@ -369,40 +394,56 @@ define('mobiledoc-experiments/ghost-cards/slide-show', ['exports', 'mobiledoc-ex
           var reader = new FileReader();
           reader.onload = function (e) {
 
-            payload.images.push(e.target.result);
-
-            img.src = e.target.result;
+            payload.images.push({ src: e.target.result, content: "" });
+            fadeImage(payload.images.length);
           };
 
           reader.readAsDataURL(file);
         }, false);
 
-        var arrayCursor = 0;
-        var currentImage = undefined;
-        setInterval(function (_) {
-          if (!payload.images.length) return;
+        function fadeImage(newArrayCursor) {
+          function doSetTimeOut() {
+            setTimeout(fadeImage, 2000);
+          }
+
+          if ((payload.images.length <= 1 || isEditing) && !newArrayCursor) return;
+
+          arrayCursor = newArrayCursor || arrayCursor + 1;
+
+          label.innerHTML = payload.images[arrayCursor - 1].content || "Click here to edit the caption.";
+
           if (currentImage == img2) {
-            img.src = payload.images[arrayCursor];
-            (0, _jquery['default'])(img).fadeIn();
+            img.src = payload.images[arrayCursor - 1].src;
+            (0, _jquery['default'])(img).fadeIn(200, doSetTimeOut);
             (0, _jquery['default'])(img2).fadeOut();
             currentImage = img;
           } else {
-            img2.src = payload.images[arrayCursor];
-            (0, _jquery['default'])(img2).fadeIn();
+            img2.src = payload.images[arrayCursor - 1].src;
+            (0, _jquery['default'])(img2).fadeIn(200, doSetTimeOut);
             (0, _jquery['default'])(img).fadeOut();
             currentImage = img2;
           }
 
-          arrayCursor++;
           if (arrayCursor >= payload.images.length) {
             arrayCursor = 0;
           }
-        }, 2000);
+        }
+
         holder.appendChild(img);
         holder.appendChild(img2);
         holder.appendChild(label);
+        holder.appendChild(caption);
         return holder;
       }
+    }, {
+      key: 'editCurrentSlide',
+      value: function editCurrentSlide() {
+        isEditing = true;
+        var caption = document.createElement("textarea");
+      }
+    }, {
+      key: 'deleteCurrentSlide',
+      value: function deleteCurrentSlide() {}
     }]);
 
     return SlideShow;
@@ -1099,7 +1140,7 @@ catch(err) {
 /* jshint ignore:start */
 
 if (!runningTests) {
-  require("mobiledoc-experiments/app")["default"].create({"name":"mobiledoc-experiments","version":"0.0.0+ed0d461a"});
+  require("mobiledoc-experiments/app")["default"].create({"name":"mobiledoc-experiments","version":"0.0.0+907ddcfc"});
 }
 
 /* jshint ignore:end */
