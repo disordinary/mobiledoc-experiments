@@ -394,18 +394,18 @@ define("mobiledoc-experiments/ghost-cards/slide-show-image-slide", ["exports", "
       }
     }, {
       key: "fadeOut",
-      value: function fadeOut(cb) {
+      value: function fadeOut() {
         var $holder = (0, _jquery["default"])(this.holder);
         var $image = (0, _jquery["default"])(this.img);
         var imageHeight = $image.height();
         var holderHeight = $holder.height();
-        $holder.css("z-index", 0);
-        $holder.fadeOut();
+        //$holder.css("z-index", 0);
+        // $holder.fadeOut();
         $image.animate({
 
           top: -imageHeight
-        }, 2000, function (_) {
-          return cb ? cb() : null;
+        }, 1000, function (_) {
+          return $holder.css("z-index", 0);
         });
       }
     }, {
@@ -632,9 +632,9 @@ define("mobiledoc-experiments/ghost-sections/section", ["exports"], function (ex
             var mouseY = event.pageY - offset.top;
             var pos = "top";
 
-            if (mouseX < 33 && window.dragel.card.resizeMode != "full_width_only") {
+            if (mouseX < 100 && window.dragel.card.resizeMode != "full_width_only") {
               pos = "left";
-            } else if (mouseX > offset.width - 33 && window.dragel.card.resizeMode != "full_width_only") {
+            } else if (mouseX > offset.width - 100 && window.dragel.card.resizeMode != "full_width_only") {
               pos = "right";
             } else if (mouseY > offset.height / 2) {
               pos = "bottom";
@@ -1221,7 +1221,7 @@ catch(err) {
 /* jshint ignore:start */
 
 if (!runningTests) {
-  require("mobiledoc-experiments/app")["default"].create({"name":"mobiledoc-experiments","version":"0.0.0+ba4bc48d"});
+  require("mobiledoc-experiments/app")["default"].create({"name":"mobiledoc-experiments","version":"0.0.0+07afcdd5"});
 }
 
 /* jshint ignore:end */

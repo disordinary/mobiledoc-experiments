@@ -20,9 +20,9 @@ export default class Section {
         let mouseY = event.pageY - offset.top;
         let pos = "top";
         
-        if( mouseX < 33 && window.dragel.card.resizeMode != "full_width_only" ) {
+        if( mouseX < 100 && window.dragel.card.resizeMode != "full_width_only" ) {
           pos = "left";
-        } else if( mouseX > offset.width-33 && window.dragel.card.resizeMode != "full_width_only"){
+        } else if( mouseX > offset.width-100 && window.dragel.card.resizeMode != "full_width_only"){
           pos = "right";
         } else if( mouseY > offset.height / 2 ) {
           pos = "bottom";
