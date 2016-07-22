@@ -1,33 +1,61 @@
 * {
 	outline:none;
+	-webkit-tap-highlight-color: rgba(0,0,0,0);
+    -webkit-font-smoothing: subpixel-antialiased;
 
 }
 body {
 	font-family: "open sans";
-	text-align:justify;
-
+	color: #47525d;
+	font-size: 16px;
+	line-height: 1.6em;
+	font-weight: 300;
 
 }
 .content {
     display: table;
     margin: 0 auto;
-    width:800px;
+    width:720px;
     outline:none;
+	overflow-wrap: break-word;
+    word-wrap: break-word;
+    white-space: normal;
+}
+
+.content img {
+	display: block;
+	max-width: 100%;
 }
 
 h1 {
 	font-family: "open sans";
-	font-size: 3em;
-	margin:30px 0 0 0;
+	font-size: 35px;
+	margin:0 0 28px 0;
 	padding:0;
+	font-weight: 600;
+	letter-spacing: -1px;
+}
+
+p, ul, ol {
+	margin: 0 0 28px 0;
+}
+
+strong {
+	font-weight: 600;
+}
+
+a {
+	color: #5ba4e5;
 }
 
 .card-right {
 	float: right;
 	margin:-10px 0 0 10px;
-	
 	padding:0;
 	width:50%;
+}
+.card-right .__mobiledoc-card {
+	margin: 0 0 0 28px;
 }
 
 .card-left {
@@ -36,6 +64,10 @@ h1 {
 	padding:0;
 	width:50%;
 }
+.card-left .__mobiledoc-card {
+	margin: 0 28px 0 0;
+}
+
 .card {
 
 	padding:0;
@@ -44,20 +76,11 @@ h1 {
 }
 
 .__mobiledoc-card {
-	margin:0;
+	margin: 30px 0 0 0;
 	padding:0;
 	height:100%;
 	line-height: 1em;
 }
-
-
-
-p {
-	
-	margin: 0 0 12px;
-	padding:0;
-}
-
 
 
 .dropper-left, .dropper-right, .dropper-top, .dropper-bottom {
@@ -72,32 +95,34 @@ p {
   line-height:1px;
   width:1px;
   height:100%;
-  box-shadow: -13px 0px 13px 3px rgba(3,3,3,0.6);;
+  box-shadow: -13px 0px 0 2px #5ba4e5;
+  opacity: 0.5
 }
 
 
 .dropper-top:before {
   width:100%;
   height:0px;
-  box-shadow: 0px -13px 13px rgba(3,3,3,0.6);;
+  box-shadow: 0px -13px 0 2px #5ba4e5;
+  opacity: 0.5
 }
 
 .dropper-right:after {
   height:100%;
   width:1px;
-  top:0px;	
+  top:0px;
   right:0px;
-  box-shadow: 13px 0px 13px 3px rgba(3,3,3,0.6);;
+  box-shadow: 13px 0px 0 2px #5ba4e5;
 }
 
 .dropper-bottom:after {
   width:100%;
   height:0px;
-  box-shadow: 0px 13px 13px rgba(3,3,3,0.6);;
+  box-shadow: 0px 13px 0 2px #5ba4e5;
 }
 
 /*
- * Experimental version that puts in a place holder to demonstrate how the content will look after dropping, it's anoying.	
+ * Experimental version that puts in a place holder to demonstrate how the content will look after dropping, it's anoying.
  */
 /*
 .dropper-left:before, .dropper-right:after, .dropper-top:before, .dropper-bottom:after {
@@ -128,30 +153,46 @@ p {
 }
 #card-holder {
 	position:fixed;
-	width:160px;
+	width:145px;
 	left:10px;
 	top:10px;
+}
+#card-holder:hover {
+	cursor: -webkit-grab;
+	cursor: -moz-grab;
 }
 
 
 .card-drop {
-	width:160px;
-	height:100px;
-	border:1px solid #333;
+	width:120px;
+	height:80px;
+	border:1px solid rgba(0,0,0,0.3);
 	border-radius: 5px;
-	
+	font-size: 12px;
+	line-height: 20px;
+
 	text-align: center;
 	color: #fff;
-	
+
 	vertical-align: bottom;
-   opacity: 0.5;
-   margin:10px;
+   	opacity: 0.7;
+   	margin:10px;
+	transition: all ease 0.3s;
+}
+.card-drop:hover {
+	opacity: 1;
+	cursor: -webkit-grab;
+	cursor: -moz-grab;
+}
+.card-drop:active {
+	cursor: -webkit-grabbing;
+	cursor: -moz-grabbing;
 }
 
 .card-drop label {
 	display: block;
 	background-color: rgba(3,3,3,0.6);
-	
+
 	width:100%;
 }
 
@@ -175,7 +216,11 @@ p {
 	z-index: 9999;
 	margin:0;
 	padding:10px;
-	
 
-	
+
+
+}
+
+.__mobiledoc-editor {
+	margin: 80px 0;
 }
