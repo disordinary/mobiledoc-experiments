@@ -71,17 +71,17 @@ export default class ImageSlide {
     this.cbs.push( cb );
   }
 
-  fadeOut( ) { 
+  fadeOut( cb ) { 
     let $holder = $(this.holder);
     let $image = $(this.img);
     let imageHeight = $image.height( );
     let holderHeight = $holder.height(); 
-    //$holder.css("z-index", 0);
-   // $holder.fadeOut();
+    $holder.css("z-index", 0);
+    $holder.fadeOut();
     $image.animate({
       
       top: -imageHeight,
-      }, 1000, _ => $holder.css("z-index", 0) );
+      }, 2000, _ => cb ? cb() : null );
   }
 
   fadeIn( cb ) {
