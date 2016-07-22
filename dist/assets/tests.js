@@ -88,13 +88,22 @@ define('mobiledoc-experiments/tests/ghost-cards/kitten.jshint', ['exports'], fun
     assert.ok(true, 'ghost-cards/kitten.js should pass jshint.');
   });
 });
+define('mobiledoc-experiments/tests/ghost-cards/slide-show-image-slide.jshint', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('JSHint | ghost-cards/slide-show-image-slide.js');
+  QUnit.test('should pass jshint', function (assert) {
+    assert.expect(1);
+    assert.ok(false, 'ghost-cards/slide-show-image-slide.js should pass jshint.\nghost-cards/slide-show-image-slide.js: line 27, col 10, Expected an assignment or function call and instead saw an expression.\n\n1 error');
+  });
+});
 define('mobiledoc-experiments/tests/ghost-cards/slide-show.jshint', ['exports'], function (exports) {
   'use strict';
 
   QUnit.module('JSHint | ghost-cards/slide-show.js');
   QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
-    assert.ok(false, 'ghost-cards/slide-show.js should pass jshint.\nghost-cards/slide-show.js: line 54, col 7, Missing semicolon.\nghost-cards/slide-show.js: line 59, col 75, Missing semicolon.\n\n2 errors');
+    assert.ok(false, 'ghost-cards/slide-show.js should pass jshint.\nghost-cards/slide-show.js: line 69, col 55, Missing semicolon.\n\n1 error');
   });
 });
 define('mobiledoc-experiments/tests/ghost-markups/comment.jshint', ['exports'], function (exports) {

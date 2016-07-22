@@ -307,7 +307,126 @@ define('mobiledoc-experiments/ghost-cards/kitten', ['exports', 'mobiledoc-experi
 
   exports['default'] = Kitten;
 });
-define('mobiledoc-experiments/ghost-cards/slide-show', ['exports', 'mobiledoc-experiments/ghost-cards/card', 'jquery'], function (exports, _mobiledocExperimentsGhostCardsCard, _jquery) {
+define("mobiledoc-experiments/ghost-cards/slide-show-image-slide", ["exports", "jquery"], function (exports, _jquery) {
+  var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+  var ImageSlide = (function () {
+    function ImageSlide() {
+      _classCallCheck(this, ImageSlide);
+
+      this.cbs = [];
+      this.isEditing = false;
+      this.holder = document.createElement("div");
+
+      this.img = document.createElement("img");
+      this.caption = document.createElement("p");
+
+      this.holder.className = "slideshow-slide-holder";
+      this.holder.style.position = "absolute";
+      this.img.style.position = this.caption.style.position = "absolute";
+      this.holder.style.top = "0px";
+      this.holder.style.width = this.img.style.width = this.caption.style.width = "100%";
+      this.holder.style.height = "100%";
+
+      this.caption.style.bottom = "0px";
+      this.caption.style.padding = "10px";
+
+      this.holder.appendChild(this.img);
+      this.holder.appendChild(this.caption);
+      this.caption.addEventListener("click", this.edit.bind(this));
+
+      this.slide;
+    }
+
+    _createClass(ImageSlide, [{
+      key: "edit",
+      value: function edit(e) {
+        var _this = this;
+
+        if (this.slide.editable === false) return;
+        var caption = document.createElement("textarea");
+        caption.style.position = "absolute";
+        caption.style.bottom = "0px";
+        this.holder.appendChild(caption);
+        caption.style.display = 'inline';
+        caption.value = this.slide.content;
+        caption.select();
+
+        caption.addEventListener("keypress", function (e) {
+          if (e.keyCode === 13) {
+            _this.isEditing = false;
+            caption.style.display = 'none';
+            _this.slide.content = caption.value;
+            _this.caption.innerHTML = caption.value;
+            _this.holder.removeChild(caption);
+          }
+        });
+        this.isEditing = true;
+      }
+    }, {
+      key: "render",
+      value: function render() {
+        return this.holder;
+      }
+    }, {
+      key: "save",
+      value: function save() {}
+    }, {
+      key: "update",
+      value: function update(slide) {
+        this.slide = slide;
+        this.caption.innerHTML = slide.content || "Click here to enter content!";
+        this.img.src = slide.src;
+      }
+    }, {
+      key: "_doUpdate",
+      value: function _doUpdate() {
+        this.cbs.forEach(function (cb) {
+          return cb();
+        });
+      }
+    }, {
+      key: "onUpdate",
+      value: function onUpdate(cb) {
+        this.cbs.push(cb);
+      }
+    }, {
+      key: "fadeOut",
+      value: function fadeOut(cb) {
+        var $holder = (0, _jquery["default"])(this.holder);
+        var $image = (0, _jquery["default"])(this.img);
+        var imageHeight = $image.height();
+        var holderHeight = $holder.height();
+        $holder.css("z-index", 0);
+        $holder.fadeOut();
+        $image.animate({
+
+          top: -imageHeight
+        }, 2000, function (_) {
+          return cb ? cb() : null;
+        });
+      }
+    }, {
+      key: "fadeIn",
+      value: function fadeIn(cb) {
+        var $holder = (0, _jquery["default"])(this.holder);
+        var $image = (0, _jquery["default"])(this.img);
+        var imageHeight = $image.height();
+        var holderHeight = $holder.height();
+        $holder.css("z-index", 9999);
+        $image.css("top", "0px");
+        $holder.fadeIn();
+      }
+    }]);
+
+    return ImageSlide;
+  })();
+
+  exports["default"] = ImageSlide;
+});
+define('mobiledoc-experiments/ghost-cards/slide-show', ['exports', 'mobiledoc-experiments/ghost-cards/card', 'jquery', 'mobiledoc-experiments/ghost-cards/slide-show-image-slide'], function (exports, _mobiledocExperimentsGhostCardsCard, _jquery, _mobiledocExperimentsGhostCardsSlideShowImageSlide) {
   var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
   var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
@@ -338,48 +457,20 @@ define('mobiledoc-experiments/ghost-cards/slide-show', ['exports', 'mobiledoc-ex
 
         _get(Object.getPrototypeOf(SlideShow.prototype), 'doFloat', this).call(this, env, payload);
         if (!payload.images) payload.images = [];
-
-        var currentImage = undefined;
-
-        var arrayCursor = 0;
-        var isEditing = false;
         var holder = document.createElement('div');
-
-        var img = document.createElement("img");
-        var img2 = document.createElement("img");
-        var label = document.createElement("p");
-        var caption = document.createElement("textarea");
-
+        var image = new _mobiledocExperimentsGhostCardsSlideShowImageSlide['default']();
+        var activeImage = image;
+        var image2 = new _mobiledocExperimentsGhostCardsSlideShowImageSlide['default']();
+        var arrayPosition = 0;
+        var timeoutCounter = undefined;
         holder.className = 'card-slideshow';
-        img.style.width = "100%";
-        img2.style.width = "100%";
-        img.style.position = "absolute";
-        img2.style.position = "absolute";
-
-        label.innerHTML = "PLACEHOLDER TEXT - DRAG AN IMAGE INTO THIS CONTAINER FOR A PICTURE, DRAG ADDITIONAL IMAGES TO CREATE A SLIDESHOW.";
-        label.addEventListener("click", function (e) {
-          caption.style.display = 'inline';
-          caption.value = label.innerHTML;
-          caption.select();
-          isEditing = true;
-        });
-
-        caption.innerHTML = "ENTER IN TEXT";
-        caption.addEventListener("keypress", function (e) {
-          if (e.keyCode === 13) {
-            isEditing = false;
-            caption.style.display = 'none';
-            payload.images[arrayCursor].content = caption.value;
-            label.innerHTML = caption.value;
-            fadeImage();
-          }
-        });
-
-        caption.style.display = 'none';
-
-        if (!payload.images.length) img.src = "/assets/cards/picture-blank.png";
-
         holder.style.position = "relative";
+        holder.appendChild(image.render());
+        holder.appendChild(image2.render());
+
+        image2.fadeOut();
+
+        image.update({ src: "/assets/cards/picture-blank.png", content: "Drag an image here, drag additional images to create a slideshow.", editable: false });
 
         env.postModel.renderNode.element.style.border = "1px solid black";
         env.postModel.renderNode.element.style.height = '400px';
@@ -393,57 +484,47 @@ define('mobiledoc-experiments/ghost-cards/slide-show', ['exports', 'mobiledoc-ex
           var file = e.dataTransfer.files[0];
           var reader = new FileReader();
           reader.onload = function (e) {
+            var newSlide = { src: e.target.result, content: "" };
+            payload.images.push(newSlide);
 
-            payload.images.push({ src: e.target.result, content: "" });
-            fadeImage(payload.images.length);
+            arrayPosition = payload.images.length - 1;
+            //doFade( true );
+            toggleImage(newSlide);
           };
 
           reader.readAsDataURL(file);
         }, false);
 
-        function fadeImage(newArrayCursor) {
-          function doSetTimeOut() {
-            setTimeout(fadeImage, 2000);
-          }
+        function doFade(force) {
+          if (payload.images.length < 2 && !force) return;
+          arrayPosition++;
 
-          if ((payload.images.length <= 1 || isEditing) && !newArrayCursor) return;
+          if (arrayPosition >= payload.images.length) arrayPosition = 0;
 
-          arrayCursor = newArrayCursor || arrayCursor + 1;
+          toggleImage(payload.images[arrayPosition]);
+        }
 
-          label.innerHTML = payload.images[arrayCursor - 1].content || "Click here to edit the caption.";
+        function toggleImage(slide) {
+          clearTimeout(timeoutCounter);
+          timeoutCounter = setTimeout(doFade, 5000);
 
-          if (currentImage == img2) {
-            img.src = payload.images[arrayCursor - 1].src;
-            (0, _jquery['default'])(img).fadeIn(200, doSetTimeOut);
-            (0, _jquery['default'])(img2).fadeOut();
-            currentImage = img;
+          if (activeImage.isEditing) return;
+
+          if (activeImage === image) {
+            image2.update(slide);
+            image.fadeOut();
+            image2.fadeIn();
+            activeImage = image2;
           } else {
-            img2.src = payload.images[arrayCursor - 1].src;
-            (0, _jquery['default'])(img2).fadeIn(200, doSetTimeOut);
-            (0, _jquery['default'])(img).fadeOut();
-            currentImage = img2;
-          }
-
-          if (arrayCursor >= payload.images.length) {
-            arrayCursor = 0;
+            image.update(slide);
+            image2.fadeOut();
+            image.fadeIn();
+            activeImage = image;
           }
         }
 
-        holder.appendChild(img);
-        holder.appendChild(img2);
-        holder.appendChild(label);
-        holder.appendChild(caption);
         return holder;
       }
-    }, {
-      key: 'editCurrentSlide',
-      value: function editCurrentSlide() {
-        isEditing = true;
-        var caption = document.createElement("textarea");
-      }
-    }, {
-      key: 'deleteCurrentSlide',
-      value: function deleteCurrentSlide() {}
     }]);
 
     return SlideShow;
@@ -1140,7 +1221,7 @@ catch(err) {
 /* jshint ignore:start */
 
 if (!runningTests) {
-  require("mobiledoc-experiments/app")["default"].create({"name":"mobiledoc-experiments","version":"0.0.0+745babd8"});
+  require("mobiledoc-experiments/app")["default"].create({"name":"mobiledoc-experiments","version":"0.0.0+ba4bc48d"});
 }
 
 /* jshint ignore:end */

@@ -1,5 +1,7 @@
 import Card from './card';
 import $ from 'jquery';
+import ImageSlide from './slide-show-image-slide';
+
 
 export default class SlideShow extends Card {
   constructor( ) {
@@ -13,71 +15,43 @@ export default class SlideShow extends Card {
   }
 
   render( { env , options , payload } ) {
-     super.doFloat( env ,payload ); 
+    super.doFloat( env ,payload ); 
      if( !payload.images ) payload.images = [ ];
-   
-     let currentImage;
-
-    let arrayCursor = 0;
-    let isEditing = false;
     let holder = document.createElement('div');
-    
-    let img = document.createElement("img");
-    let img2 = document.createElement("img");
-    let label = document.createElement("p");
-    let caption = document.createElement("textarea");
- 
+    let image = new ImageSlide( );
+    let activeImage = image;
+    let image2 = new ImageSlide( );
+    let arrayPosition = 0;
+    let timeoutCounter;
     holder.className='card-slideshow';
-    img.style.width="100%";
-    img2.style.width="100%";
-    img.style.position = "absolute";
-    img2.style.position = "absolute";
+    holder.style.position ="relative";
+    holder.appendChild( image.render() );
+    holder.appendChild( image2.render() );
 
-    
-    label.innerHTML = "PLACEHOLDER TEXT - DRAG AN IMAGE INTO THIS CONTAINER FOR A PICTURE, DRAG ADDITIONAL IMAGES TO CREATE A SLIDESHOW.";
-    label.addEventListener("click" , e => {
-         caption.style.display = 'inline';
-         caption.value = label.innerHTML;
-         caption.select();
-         isEditing = true;
-    });
+    image2.fadeOut();
 
-    caption.innerHTML = "ENTER IN TEXT";
-    caption.addEventListener("keypress" , e => {
-      if( e.keyCode === 13 ) {
-        isEditing = false;
-        caption.style.display = 'none';
-        payload.images[ arrayCursor ].content = caption.value;
-        label.innerHTML = caption.value;
-        fadeImage();
-      }
-    })
-
-    caption.style.display = 'none';
+    image.update({ src : "/assets/cards/picture-blank.png" , content : "Drag an image here, drag additional images to create a slideshow." , editable : false });
 
 
-    if( !payload.images.length ) img.src="/assets/cards/picture-blank.png"
 
-
-     holder.style.position="relative";
-
-    
-     
-     env.postModel.renderNode.element.style.border = "1px solid black";
-     env.postModel.renderNode.element.style.height='400px';
-     env.postModel.renderNode.element.style.overflow="hidden";
-     env.postModel.renderNode.element.addEventListener("dragover", function (e) {
+    env.postModel.renderNode.element.style.border = "1px solid black";
+    env.postModel.renderNode.element.style.height='400px';
+    env.postModel.renderNode.element.style.overflow="hidden";
+    env.postModel.renderNode.element.addEventListener("dragover",  e => {
         
         e.preventDefault();
       }, false);
-     env.postModel.renderNode.element.addEventListener("drop", function( e ) {
+     env.postModel.renderNode.element.addEventListener("drop",  e => {
         e.preventDefault();
         let file = e.dataTransfer.files[ 0 ];
         let reader = new FileReader();
         reader.onload = function( e ) {
+          let newSlide = { src : e.target.result , content : "" };
+          payload.images.push( newSlide );
           
-          payload.images.push( { src : e.target.result , content : "" } );
-          fadeImage( payload.images.length );
+          arrayPosition = payload.images.length - 1;
+          //doFade( true );
+          toggleImage( newSlide );
           
          };
 
@@ -86,58 +60,41 @@ export default class SlideShow extends Card {
      } , false );
 
 
+      function doFade( force ) {
+        if( payload.images.length < 2 && !force ) return;
+        arrayPosition++;
+        
+        if( arrayPosition >= payload.images.length ) arrayPosition = 0;
+
+        toggleImage( payload.images[ arrayPosition ] )
+
+      }
 
      
 
-
-     function fadeImage( newArrayCursor ) {
-        function doSetTimeOut( ) {
-          setTimeout( fadeImage , 2000 );
-        }
-   
-          if( (payload.images.length <= 1  || isEditing) && !newArrayCursor ) return;
-          
-          arrayCursor = newArrayCursor || arrayCursor + 1;
-
-          label.innerHTML = payload.images[ arrayCursor - 1 ].content || "Click here to edit the caption.";
-
-          if( currentImage == img2 ) {
-            img.src = payload.images[ arrayCursor - 1 ].src; 
-            $(img).fadeIn( 200, doSetTimeOut );
-            $(img2).fadeOut(); 
-            currentImage = img;
-          } else {
-            img2.src = payload.images[ arrayCursor - 1 ].src;
-            $(img2).fadeIn( 200, doSetTimeOut );
-            $(img).fadeOut();
-            currentImage = img2;
-          }
-          
-          
-
+     function toggleImage( slide ) {
+      clearTimeout( timeoutCounter );
+      timeoutCounter = setTimeout( doFade , 5000 );
       
-          if( arrayCursor >= payload.images.length ) {
-            arrayCursor = 0;
-          }
-
-
+      if( activeImage.isEditing ) return;
+      
+      if( activeImage === image ) {
+        image2.update( slide );
+        image.fadeOut( );
+        image2.fadeIn( );
+        activeImage = image2;
+      } else {
+        image.update( slide );
+        image2.fadeOut( );
+        image.fadeIn( );
+        activeImage = image;
+      }
+ 
      }
 
 
-     holder.appendChild( img );
-     holder.appendChild( img2 );
-     holder.appendChild( label );
-     holder.appendChild( caption );
-     return holder;
-  }
 
-  editCurrentSlide( ) {
-    isEditing = true;
-    let caption = document.createElement("textarea");
-  }
-
-  deleteCurrentSlide( ) {
-
-  }
+    return holder;
+  } 
 
 }
