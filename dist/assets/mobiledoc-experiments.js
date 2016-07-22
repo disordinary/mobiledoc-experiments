@@ -413,11 +413,13 @@ define("mobiledoc-experiments/ghost-cards/slide-show-image-slide", ["exports", "
       value: function fadeIn(cb) {
         var $holder = (0, _jquery["default"])(this.holder);
         var $image = (0, _jquery["default"])(this.img);
+
+        $holder.fadeIn();
         var imageHeight = $image.height();
         var holderHeight = $holder.height();
+        console.log(imageHeight, holderHeight);
         $holder.css("z-index", 9999);
-        $image.css("top", "0px");
-        $holder.fadeIn();
+        $image.css("top", -(imageHeight / 2 - holderHeight / 2) + 'px');
       }
     }]);
 
@@ -1221,7 +1223,7 @@ catch(err) {
 /* jshint ignore:start */
 
 if (!runningTests) {
-  require("mobiledoc-experiments/app")["default"].create({"name":"mobiledoc-experiments","version":"0.0.0+1bdd583c"});
+  require("mobiledoc-experiments/app")["default"].create({"name":"mobiledoc-experiments","version":"0.0.0+b34540ce"});
 }
 
 /* jshint ignore:end */
