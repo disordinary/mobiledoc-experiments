@@ -43,6 +43,15 @@ define('mobiledoc-experiments/tests/ghost-atoms/index.jshint', ['exports'], func
     assert.ok(true, 'ghost-atoms/index.js should pass jshint.');
   });
 });
+define('mobiledoc-experiments/tests/ghost-cards/a-league.jshint', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('JSHint | ghost-cards/a-league.js');
+  QUnit.test('should pass jshint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'ghost-cards/a-league.js should pass jshint.');
+  });
+});
 define('mobiledoc-experiments/tests/ghost-cards/card.jshint', ['exports'], function (exports) {
   'use strict';
 
@@ -79,6 +88,15 @@ define('mobiledoc-experiments/tests/ghost-cards/kitten.jshint', ['exports'], fun
     assert.ok(true, 'ghost-cards/kitten.js should pass jshint.');
   });
 });
+define('mobiledoc-experiments/tests/ghost-cards/related-posts.jshint', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('JSHint | ghost-cards/related-posts.js');
+  QUnit.test('should pass jshint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'ghost-cards/related-posts.js should pass jshint.');
+  });
+});
 define('mobiledoc-experiments/tests/ghost-cards/slide-show-image-slide.jshint', ['exports'], function (exports) {
   'use strict';
 
@@ -95,6 +113,33 @@ define('mobiledoc-experiments/tests/ghost-cards/slide-show.jshint', ['exports'],
   QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
     assert.ok(true, 'ghost-cards/slide-show.js should pass jshint.');
+  });
+});
+define('mobiledoc-experiments/tests/ghost-cards/soundcloud.jshint', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('JSHint | ghost-cards/soundcloud.js');
+  QUnit.test('should pass jshint', function (assert) {
+    assert.expect(1);
+    assert.ok(false, 'ghost-cards/soundcloud.js should pass jshint.\nghost-cards/soundcloud.js: line 35, col 81, Missing semicolon.\n\n1 error');
+  });
+});
+define('mobiledoc-experiments/tests/ghost-cards/trello-card.jshint', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('JSHint | ghost-cards/trello-card.js');
+  QUnit.test('should pass jshint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'ghost-cards/trello-card.js should pass jshint.');
+  });
+});
+define('mobiledoc-experiments/tests/ghost-cards/whakapapa-snow-report.jshint', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('JSHint | ghost-cards/whakapapa-snow-report.js');
+  QUnit.test('should pass jshint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'ghost-cards/whakapapa-snow-report.js should pass jshint.');
   });
 });
 define('mobiledoc-experiments/tests/ghost-markups/comment.jshint', ['exports'], function (exports) {

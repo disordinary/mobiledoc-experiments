@@ -8,28 +8,32 @@ export default class Card {
     this.previewImage = 'http://Chartholdr.io/line/160/100';
     this.type = 'dom';
     this.resizeMode  = this.resizeModeEnum.both;
+    this.handle = createHandle();
+
+ 
+
   }
 
   render( { env , options , payload } ) {
-    this.doFloat( env , payload );
+    let el = env.postModel.renderNode.element;
+    el.insertBefore( createHandle( options ) , el.firstChild );
+   switch( payload.pos ) {
+    case "left":
+      el.className = "card-left";
+    break;
+    case "right":
+      el.className = "card-right";
+    break;
+    default:
+      el.className = "card";
+   }
   }
 
   preview( ) {
     //returns a place holder
   }
 
-  doFloat( env , payload ) {
-    switch( payload.pos ) {
-    case "left":
-      env.postModel.renderNode.element.className = "card-left";
-    break;
-    case "right":
-      env.postModel.renderNode.element.className = "card-right";
-    break;
-    default:
-      env.postModel.renderNode.element.className = "card";
-   }
-  }
+
 
   get resizeModeEnum() {
     return {
@@ -41,3 +45,33 @@ export default class Card {
 
 
 }
+
+
+   function createHandle( options ) {
+      let holder = document.createElement('div');
+      holder.contentEditable="false";
+      holder.className="card-handle";
+      if( options && options.onEdit ) {
+        let editButton = document.createElement('button');
+        editButton.value = "Edit";
+        editButton.type = "button";
+        editButton.innerHTML="Edit";
+        editButton.addEventListener("click" , options.onEdit );
+
+        holder.appendChild( editButton );
+      }
+      
+
+      let delButtion = document.createElement('button');
+        delButtion.value = "Del";
+        delButtion.type = "button";
+        delButtion.innerHTML="×";
+        delButtion.addEventListener("click" ,e => alert("DELETE CARD"));
+
+        holder.appendChild( delButtion );
+   
+     
+   
+
+      return holder;
+    }

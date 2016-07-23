@@ -113,6 +113,56 @@ define('mobiledoc-experiments/components/form-body', ['exports', 'ember', 'mobil
 define("mobiledoc-experiments/ghost-atoms/index", ["exports"], function (exports) {
 	exports["default"] = [];
 });
+define('mobiledoc-experiments/ghost-cards/a-league', ['exports', 'mobiledoc-experiments/ghost-cards/card'], function (exports, _mobiledocExperimentsGhostCardsCard) {
+  var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+  var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+
+  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+  function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+  var ALeague = (function (_Card) {
+    _inherits(ALeague, _Card);
+
+    function ALeague() {
+      _classCallCheck(this, ALeague);
+
+      _get(Object.getPrototypeOf(ALeague.prototype), 'constructor', this).call(this);
+      this.name = 'a-league';
+      this.previewName = 'a-league ladder';
+      this.previewImage = 'http://www.wellingtonphoenix.com/di/library/Wellington_Phoenix/63/49/wellington-phoenix-and-asia-pacific-football-academy-team-up_00068412-leadimage.jpg?t=966402326&h=80&w=120&quality=85';
+    }
+
+    _createClass(ALeague, [{
+      key: 'render',
+      value: function render(_ref) {
+        var env = _ref.env;
+        var options = _ref.options;
+        var payload = _ref.payload;
+
+        _get(Object.getPrototypeOf(ALeague.prototype), 'render', this).call(this, { env: env, options: options, payload: payload });
+        var wrapper = document.createElement("div");
+        var holder = document.createElement("div");
+
+        holder.innerHTML = '<iframe src="http://widgets.soccerway.com/widget/free/classic/competition/283/8542#d=350x300&amp;f=table,table_colmp,table_colmw,table_colmd,table_colml,table_colgf,table_colga,results,fixtures,scroll&amp;cbackground=FFFFF&amp;ctext=000000&amp;ctitle=000000&amp;cshadow=E8E8E8&amp;cbutton=C0C0C0&amp;cbuttontext=000000&amp;chighlight=FF0000&amp;tbody_family=Tahoma,sans-serif&amp;tbody_size=9&amp;tbody_weight=normal&amp;tbody_style=normal&amp;tbody_decoration=none&amp;tbody_transform=none&amp;ttitle_family=Impact,sans-serif&amp;ttitle_size=13&amp;ttitle_weight=normal&amp;ttitle_style=normal&amp;ttitle_decoration=none&amp;ttitle_transform=none&amp;ttab_family=Tahoma,sans-serif&amp;ttab_size=9&amp;ttab_weight=normal&amp;ttab_style=normal&amp;ttab_decoration=none&amp;ttab_transform=none" width="350" height="300" scrolling="no" frameborder="0" marginwidth="0" marginheight="0"></iframe>';
+
+        wrapper.appendChild(holder);
+
+        wrapper.style.width = "100%";
+        wrapper.style.textAlign = "center";
+
+        holder.style.display = "inline-block";
+
+        return wrapper;
+      }
+    }]);
+
+    return ALeague;
+  })(_mobiledocExperimentsGhostCardsCard['default']);
+
+  exports['default'] = ALeague;
+});
 define('mobiledoc-experiments/ghost-cards/card', ['exports'], function (exports) {
   var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
@@ -127,6 +177,7 @@ define('mobiledoc-experiments/ghost-cards/card', ['exports'], function (exports)
       this.previewImage = 'http://Chartholdr.io/line/160/100';
       this.type = 'dom';
       this.resizeMode = this.resizeModeEnum.both;
+      this.handle = createHandle();
     }
 
     _createClass(Card, [{
@@ -136,26 +187,23 @@ define('mobiledoc-experiments/ghost-cards/card', ['exports'], function (exports)
         var options = _ref.options;
         var payload = _ref.payload;
 
-        this.doFloat(env, payload);
+        var el = env.postModel.renderNode.element;
+        el.insertBefore(createHandle(options), el.firstChild);
+        switch (payload.pos) {
+          case "left":
+            el.className = "card-left";
+            break;
+          case "right":
+            el.className = "card-right";
+            break;
+          default:
+            el.className = "card";
+        }
       }
     }, {
       key: 'preview',
       value: function preview() {
         //returns a place holder
-      }
-    }, {
-      key: 'doFloat',
-      value: function doFloat(env, payload) {
-        switch (payload.pos) {
-          case "left":
-            env.postModel.renderNode.element.className = "card-left";
-            break;
-          case "right":
-            env.postModel.renderNode.element.className = "card-right";
-            break;
-          default:
-            env.postModel.renderNode.element.className = "card";
-        }
       }
     }, {
       key: 'resizeModeEnum',
@@ -172,6 +220,33 @@ define('mobiledoc-experiments/ghost-cards/card', ['exports'], function (exports)
   })();
 
   exports['default'] = Card;
+
+  function createHandle(options) {
+    var holder = document.createElement('div');
+    holder.contentEditable = "false";
+    holder.className = "card-handle";
+    if (options && options.onEdit) {
+      var editButton = document.createElement('button');
+      editButton.value = "Edit";
+      editButton.type = "button";
+      editButton.innerHTML = "Edit";
+      editButton.addEventListener("click", options.onEdit);
+
+      holder.appendChild(editButton);
+    }
+
+    var delButtion = document.createElement('button');
+    delButtion.value = "Del";
+    delButtion.type = "button";
+    delButtion.innerHTML = "×";
+    delButtion.addEventListener("click", function (e) {
+      return alert("DELETE CARD");
+    });
+
+    holder.appendChild(delButtion);
+
+    return holder;
+  }
 });
 define('mobiledoc-experiments/ghost-cards/graph', ['exports', 'mobiledoc-experiments/ghost-cards/card'], function (exports, _mobiledocExperimentsGhostCardsCard) {
    var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -201,7 +276,7 @@ define('mobiledoc-experiments/ghost-cards/graph', ['exports', 'mobiledoc-experim
             var options = _ref.options;
             var payload = _ref.payload;
 
-            _get(Object.getPrototypeOf(Graph.prototype), 'doFloat', this).call(this, env, payload);
+            _get(Object.getPrototypeOf(Graph.prototype), 'render', this).call(this, { env: env, options: options, payload: payload });
             var img = document.createElement('img');
             switch (payload.pos) {
                case "left":
@@ -223,10 +298,63 @@ define('mobiledoc-experiments/ghost-cards/graph', ['exports', 'mobiledoc-experim
 
    exports['default'] = Graph;
 });
-define('mobiledoc-experiments/ghost-cards/index', ['exports', 'mobiledoc-experiments/ghost-cards/kitten', 'mobiledoc-experiments/ghost-cards/graph', 'mobiledoc-experiments/ghost-cards/slide-show'], function (exports, _mobiledocExperimentsGhostCardsKitten, _mobiledocExperimentsGhostCardsGraph, _mobiledocExperimentsGhostCardsSlideShow) {
-	exports['default'] = [new _mobiledocExperimentsGhostCardsKitten['default'](), new _mobiledocExperimentsGhostCardsGraph['default'](), new _mobiledocExperimentsGhostCardsSlideShow['default']()];
+define('mobiledoc-experiments/ghost-cards/index', ['exports', 'mobiledoc-experiments/ghost-cards/kitten', 'mobiledoc-experiments/ghost-cards/graph', 'mobiledoc-experiments/ghost-cards/slide-show', 'mobiledoc-experiments/ghost-cards/whakapapa-snow-report', 'mobiledoc-experiments/ghost-cards/a-league', 'mobiledoc-experiments/ghost-cards/related-posts', 'mobiledoc-experiments/ghost-cards/trello-card', 'mobiledoc-experiments/ghost-cards/soundcloud'], function (exports, _mobiledocExperimentsGhostCardsKitten, _mobiledocExperimentsGhostCardsGraph, _mobiledocExperimentsGhostCardsSlideShow, _mobiledocExperimentsGhostCardsWhakapapaSnowReport, _mobiledocExperimentsGhostCardsALeague, _mobiledocExperimentsGhostCardsRelatedPosts, _mobiledocExperimentsGhostCardsTrelloCard, _mobiledocExperimentsGhostCardsSoundcloud) {
+	exports['default'] = [new _mobiledocExperimentsGhostCardsKitten['default'](), new _mobiledocExperimentsGhostCardsGraph['default'](), new _mobiledocExperimentsGhostCardsSlideShow['default'](), new _mobiledocExperimentsGhostCardsWhakapapaSnowReport['default'](), new _mobiledocExperimentsGhostCardsALeague['default'](), new _mobiledocExperimentsGhostCardsRelatedPosts['default'](),
+	//new TrelloCard(),
+	new _mobiledocExperimentsGhostCardsSoundcloud['default']()];
 });
 define('mobiledoc-experiments/ghost-cards/kitten', ['exports', 'mobiledoc-experiments/ghost-cards/card'], function (exports, _mobiledocExperimentsGhostCardsCard) {
+       var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+       var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+
+       function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+       function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+       var Kitten = (function (_Card) {
+              _inherits(Kitten, _Card);
+
+              function Kitten() {
+                     _classCallCheck(this, Kitten);
+
+                     _get(Object.getPrototypeOf(Kitten.prototype), 'constructor', this).call(this);
+                     this.name = 'kitten';
+                     this.previewName = 'placeholder kitten';
+                     this.previewImage = 'https://placekitten.com/120/80';
+              }
+
+              _createClass(Kitten, [{
+                     key: 'render',
+                     value: function render(_ref) {
+                            var env = _ref.env;
+                            var options = _ref.options;
+                            var payload = _ref.payload;
+
+                            _get(Object.getPrototypeOf(Kitten.prototype), 'render', this).call(this, { env: env, options: options, payload: payload });
+
+                            var img = document.createElement('img');
+
+                            switch (payload.pos) {
+                                   case "left":
+                                          img.src = "https://placekitten.com/400/400";
+                                          break;
+                                   case "right":
+                                          img.src = "https://placekitten.com/401/401";
+                                          break;
+                                   default:
+                                          img.src = "https://placekitten.com/800/400";
+                            }
+                            return img;
+                     }
+              }]);
+
+              return Kitten;
+       })(_mobiledocExperimentsGhostCardsCard['default']);
+
+       exports['default'] = Kitten;
+});
+define('mobiledoc-experiments/ghost-cards/related-posts', ['exports', 'mobiledoc-experiments/ghost-cards/card'], function (exports, _mobiledocExperimentsGhostCardsCard) {
   var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
   var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
@@ -235,47 +363,41 @@ define('mobiledoc-experiments/ghost-cards/kitten', ['exports', 'mobiledoc-experi
 
   function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-  var Kitten = (function (_Card) {
-    _inherits(Kitten, _Card);
+  var RelatedPosts = (function (_Card) {
+    _inherits(RelatedPosts, _Card);
 
-    function Kitten() {
-      _classCallCheck(this, Kitten);
+    function RelatedPosts() {
+      _classCallCheck(this, RelatedPosts);
 
-      _get(Object.getPrototypeOf(Kitten.prototype), 'constructor', this).call(this);
-      this.name = 'kitten';
-      this.previewName = 'placeholder kitten';
-      this.previewImage = 'https://placekitten.com/120/80';
+      _get(Object.getPrototypeOf(RelatedPosts.prototype), 'constructor', this).call(this);
+      this.name = 'related-posts';
+      this.previewName = 'related posts';
+      this.previewImage = 'data:image/png;base64,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';
+      //this.resizeMode  = this.resizeModeEnum.full_width_only;
     }
 
-    _createClass(Kitten, [{
+    _createClass(RelatedPosts, [{
       key: 'render',
       value: function render(_ref) {
         var env = _ref.env;
         var options = _ref.options;
         var payload = _ref.payload;
 
-        _get(Object.getPrototypeOf(Kitten.prototype), 'doFloat', this).call(this, env, payload);
+        _get(Object.getPrototypeOf(RelatedPosts.prototype), 'render', this).call(this, { env: env, options: options, payload: payload });
 
-        var img = document.createElement('img');
+        env.postModel.renderNode.element.style.width = "480px";
+        var holder = document.createElement("div");
 
-        switch (payload.pos) {
-          case "left":
-            img.src = "https://placekitten.com/400/400";
-            break;
-          case "right":
-            img.src = "https://placekitten.com/401/401";
-            break;
-          default:
-            img.src = "https://placekitten.com/800/400";
-        }
-        return img;
+        holder.innerHTML = '<script>!function(){"use strict";function a(a){var b,c=[];if(!a)return"";for(b in a)a.hasOwnProperty(b)&&(a[b]||a[b]===!1)&&c.push(b+"="+encodeURIComponent(a[b]));return c.length?"?"+c.join("&"):""}var b,c,d,e,f="https://dev.ghost.io/ghost/api/v0.1/";d={api:function(){var d,e=Array.prototype.slice.call(arguments),g=f;return d=e.pop(),d&&"object"!=typeof d&&(e.push(d),d={}),d=d||{},d.client_id=b,d.client_secret=c,e.length&&e.forEach(function(a){g+=a.replace(/^/|/$/g,"")+"/"}),g+a(d)}},e=function(a){b=a.clientId?a.clientId:"",c=a.clientSecret?a.clientSecret:"",f=a.url?a.url:f.match(/{{api-url}}/)?"":f},"undefined"!=typeof window&&(window.ghost=window.ghost||{},window.ghost.url=d,window.ghost.init=e),"undefined"!=typeof module&&(module.exports={url:d,init:e})}();</script><script>\n                    ghost.init({\n                      clientId: "ghost-frontend",\n                      clientSecret: "5785edad1ffc"\n                    });\n                  </script>';
+
+        return holder;
       }
     }]);
 
-    return Kitten;
+    return RelatedPosts;
   })(_mobiledocExperimentsGhostCardsCard['default']);
 
-  exports['default'] = Kitten;
+  exports['default'] = RelatedPosts;
 });
 define("mobiledoc-experiments/ghost-cards/slide-show-image-slide", ["exports", "jquery"], function (exports, _jquery) {
   var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -300,7 +422,8 @@ define("mobiledoc-experiments/ghost-cards/slide-show-image-slide", ["exports", "
       this.holder.style.width = this.img.style.width = this.caption.style.width = "100%";
       this.holder.style.height = "100%";
 
-      this.caption.style.bottom = "0px";
+      this.caption.style.top = "370px";
+      this.caption.style.height = "30px";
       this.caption.style.padding = "10px";
 
       this.holder.appendChild(this.img);
@@ -318,7 +441,8 @@ define("mobiledoc-experiments/ghost-cards/slide-show-image-slide", ["exports", "
         if (this.slide.editable === false) return;
         var caption = document.createElement("textarea");
         caption.style.position = "absolute";
-        caption.style.bottom = "0px";
+        caption.style.top = "370px";
+        caption.style.height = "30px";
         this.holder.appendChild(caption);
         caption.style.display = 'inline';
         caption.value = this.slide.content;
@@ -427,7 +551,7 @@ define('mobiledoc-experiments/ghost-cards/slide-show', ['exports', 'mobiledoc-ex
         var options = _ref.options;
         var payload = _ref.payload;
 
-        _get(Object.getPrototypeOf(SlideShow.prototype), 'doFloat', this).call(this, env, payload);
+        _get(Object.getPrototypeOf(SlideShow.prototype), 'render', this).call(this, { env: env, options: options, payload: payload });
         if (!payload.images) payload.images = [];
         var holder = document.createElement('div');
         var image = new _mobiledocExperimentsGhostCardsSlideShowImageSlide['default']();
@@ -503,6 +627,170 @@ define('mobiledoc-experiments/ghost-cards/slide-show', ['exports', 'mobiledoc-ex
   })(_mobiledocExperimentsGhostCardsCard['default']);
 
   exports['default'] = SlideShow;
+});
+define('mobiledoc-experiments/ghost-cards/soundcloud', ['exports', 'mobiledoc-experiments/ghost-cards/card'], function (exports, _mobiledocExperimentsGhostCardsCard) {
+  var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+  var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+
+  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+  function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+  var SoundCloud = (function (_Card) {
+    _inherits(SoundCloud, _Card);
+
+    function SoundCloud() {
+      _classCallCheck(this, SoundCloud);
+
+      _get(Object.getPrototypeOf(SoundCloud.prototype), 'constructor', this).call(this);
+      this.name = 'sound-cloud';
+      this.previewName = 'soundcloud player';
+      this.previewImage = 'data:image/jpeg;base64,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';
+    }
+
+    _createClass(SoundCloud, [{
+      key: 'render',
+      value: function render(_ref) {
+        var env = _ref.env;
+        var options = _ref.options;
+        var payload = _ref.payload;
+
+        options.onEdit = function () {
+          doEdit();
+        };
+        _get(Object.getPrototypeOf(SoundCloud.prototype), 'render', this).call(this, { env: env, options: options, payload: payload });
+
+        var holder = document.createElement("div");
+        holder.className = "card-soundcloud";
+
+        function doEdit() {
+          var label = document.createElement("label");
+          var input = document.createElement("input");
+
+          input.addEventListener("keyup", function (e) {
+
+            if (e.keyCode === 13) {
+              payload.url = encodeURI(input.value);
+              doRender();
+            }
+          });
+
+          input.value = payload.url || "https://api.soundcloud.com/tracks/169381837";
+          label.appendChild(document.createTextNode("Paste the URL to the soundcloud song: "));
+          label.appendChild(input);
+          holder.innerHTML = "";
+          holder.appendChild(label);
+        }
+
+        function doRender() {
+          holder.innerHTML = '<iframe width="100%" height="450" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=' + payload.url + '&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false&amp;visual=true"></iframe>';
+        }
+
+        if (!payload.url) {
+          doEdit();
+        } else {
+          doRender();
+        }
+
+        return holder;
+      }
+    }]);
+
+    return SoundCloud;
+  })(_mobiledocExperimentsGhostCardsCard['default']);
+
+  exports['default'] = SoundCloud;
+});
+define('mobiledoc-experiments/ghost-cards/trello-card', ['exports', 'mobiledoc-experiments/ghost-cards/card'], function (exports, _mobiledocExperimentsGhostCardsCard) {
+  var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+  var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+
+  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+  function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+  var TrelloCard = (function (_Card) {
+    _inherits(TrelloCard, _Card);
+
+    function TrelloCard() {
+      _classCallCheck(this, TrelloCard);
+
+      _get(Object.getPrototypeOf(TrelloCard.prototype), 'constructor', this).call(this);
+      this.name = 'trello-card';
+      this.previewName = 'trello task';
+      this.previewImage = 'https://d2k1ftgv7pobq7.cloudfront.net/meta/p/res/images/c13d1cd96a2cff30f0460a5e1860c5ea/header-logo-blue.svg';
+      //this.resizeMode  = this.resizeModeEnum.full_width_only;
+    }
+
+    _createClass(TrelloCard, [{
+      key: 'render',
+      value: function render(_ref) {
+        var env = _ref.env;
+        var options = _ref.options;
+        var payload = _ref.payload;
+
+        _get(Object.getPrototypeOf(TrelloCard.prototype), 'render', this).call(this, { env: env, options: options, payload: payload });
+
+        env.postModel.renderNode.element.style.width = "480px";
+        var holder = document.createElement("div");
+
+        holder.innerHTML = '<script>!function(){"use strict";function a(a){var b,c=[];if(!a)return"";for(b in a)a.hasOwnProperty(b)&&(a[b]||a[b]===!1)&&c.push(b+"="+encodeURIComponent(a[b]));return c.length?"?"+c.join("&"):""}var b,c,d,e,f="https://dev.ghost.io/ghost/api/v0.1/";d={api:function(){var d,e=Array.prototype.slice.call(arguments),g=f;return d=e.pop(),d&&"object"!=typeof d&&(e.push(d),d={}),d=d||{},d.client_id=b,d.client_secret=c,e.length&&e.forEach(function(a){g+=a.replace(/^/|/$/g,"")+"/"}),g+a(d)}},e=function(a){b=a.clientId?a.clientId:"",c=a.clientSecret?a.clientSecret:"",f=a.url?a.url:f.match(/{{api-url}}/)?"":f},"undefined"!=typeof window&&(window.ghost=window.ghost||{},window.ghost.url=d,window.ghost.init=e),"undefined"!=typeof module&&(module.exports={url:d,init:e})}();</script><script>\n                    ghost.init({\n                      clientId: "ghost-frontend",\n                      clientSecret: "5785edad1ffc"\n                    });\n                  </script>';
+
+        return holder;
+      }
+    }]);
+
+    return TrelloCard;
+  })(_mobiledocExperimentsGhostCardsCard['default']);
+
+  exports['default'] = TrelloCard;
+});
+define('mobiledoc-experiments/ghost-cards/whakapapa-snow-report', ['exports', 'mobiledoc-experiments/ghost-cards/card'], function (exports, _mobiledocExperimentsGhostCardsCard) {
+  var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+  var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+
+  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+  function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+  var WhakapapaSnowReport = (function (_Card) {
+    _inherits(WhakapapaSnowReport, _Card);
+
+    function WhakapapaSnowReport() {
+      _classCallCheck(this, WhakapapaSnowReport);
+
+      _get(Object.getPrototypeOf(WhakapapaSnowReport.prototype), 'constructor', this).call(this);
+      this.name = 'whakapapa-snow-report';
+      this.previewName = 'whakapapa forecast';
+      this.previewImage = 'http://www.mtruapehu.com/content/plugins/tradegallery/thumbnail/1U0A2931.jpg';
+      //this.resizeMode  = this.resizeModeEnum.full_width_only;
+    }
+
+    _createClass(WhakapapaSnowReport, [{
+      key: 'render',
+      value: function render(_ref) {
+        var env = _ref.env;
+        var options = _ref.options;
+        var payload = _ref.payload;
+
+        _get(Object.getPrototypeOf(WhakapapaSnowReport.prototype), 'render', this).call(this, { env: env, options: options, payload: payload });
+
+        env.postModel.renderNode.element.style.width = "480px";
+        var holder = document.createElement("div");
+
+        holder.innerHTML = '<link href="//www.snow-forecast.com/stylesheets/feed.css" media="screen" rel="stylesheet" type="text/css" /><div id="wf-weatherfeed"><iframe style="overflow:hidden;border:none;" allowtransparency="true" height="272" width="469" src="//www.snow-forecast.com/resorts/Whakapapa/forecasts/feed/top/m" scrolling="no" frameborder="0" marginwidth="0" marginheight="0"><p>Your browser does not support iframes.</p></iframe><div id="wf-link"><a href="http://www.snow-forecast.com/"><img alt="Snow Forecast" src="//www.snow-forecast.com/images/feed/snowlogo-150.png"/></a><p id="cmt">View detailed snow forecast for <a href="http://www.snow-forecast.com/resorts/Whakapapa/6day/mid">Whakapapa</a> at:<br /><a href="http://www.snow-forecast.com/"><strong>snow-forecast.com</strong></a></p><div style="clear: both;"></div></div></div>';
+
+        return holder;
+      }
+    }]);
+
+    return WhakapapaSnowReport;
+  })(_mobiledocExperimentsGhostCardsCard['default']);
+
+  exports['default'] = WhakapapaSnowReport;
 });
 define("mobiledoc-experiments/ghost-markups/comment", ["exports"], function (exports) {
   var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -1199,7 +1487,7 @@ catch(err) {
 /* jshint ignore:start */
 
 if (!runningTests) {
-  require("mobiledoc-experiments/app")["default"].create({"name":"mobiledoc-experiments","version":"0.0.0+25cd27a5"});
+  require("mobiledoc-experiments/app")["default"].create({"name":"mobiledoc-experiments","version":"0.0.0+e0bbaee3"});
 }
 
 /* jshint ignore:end */

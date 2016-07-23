@@ -15,7 +15,7 @@ export default class SlideShow extends Card {
   }
 
   render( { env , options , payload } ) {
-    super.doFloat( env ,payload ); 
+     super.render( { env , options , payload } ); 
      if( !payload.images ) payload.images = [ ];
     let holder = document.createElement('div');
     let image = new ImageSlide( );

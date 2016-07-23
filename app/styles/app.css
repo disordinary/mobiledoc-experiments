@@ -78,7 +78,7 @@ a {
 .__mobiledoc-card {
 	margin: 0 0 0 0;
 	padding:0;
-	height:100%;
+	
 	line-height: 1em;
 }
 
@@ -221,10 +221,58 @@ a {
 
 }
 
+/**SOUNDCLOUD CARD**/
+.card-soundcloud {
+	background-color:#f50;
+
+	text-align: center;
+}
+
+.card-soundcloud label {
+	display:block;
+	padding:100px 0px 100px 0px;
+	font-size:2em;
+	color:#fff;
+}
+.card-soundcloud input {
+	width:80%;
+	font-size:0.8em;
+	margin:10px;
+}
 .__mobiledoc-editor {
 	margin: 80px 0;
 
 /*	color: red;
 	-webkit-text-fill-color: black;
 */
+}
+
+
+.card .card-handle, .card-left .card-handle, .card-right .card-handle {
+	
+	position:relative;
+	margin-top:-1.3em;
+	height:1.3em;
+	background-color:#5ba4e5;
+	
+	cursor: -webkit-grab;
+	cursor: -moz-grab;
+
+	padding:0px 10px 0px 10px;
+	text-align:right;
+	overflow:hidden;
+	display:none;
+}
+
+.card:hover .card-handle, .card-left:hover .card-handle, .card-right:hover .card-handle 
+{
+ 	display:block;
+}
+
+.card .card-handle button, .card-left .card-handle button, .card-right .card-handle button {
+	margin-top:1px;
+	background-color:#e9e8dd;
+	border:none;
+	border-radius:5px;
+	margin-left:10px;
 }

@@ -10,7 +10,7 @@ export default class Kitten extends Card {
   }
 
   render( { env , options , payload } ) {
-    super.doFloat( env ,payload );  
+     super.render( { env , options , payload } ); 
 
     let img = document.createElement('img');
     

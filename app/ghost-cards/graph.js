@@ -9,7 +9,7 @@ export default class Graph extends Card {
   }
 
   render( { env , options , payload } ) {
-    super.doFloat( env , payload );  
+    super.render( { env , options , payload } ); 
     let img = document.createElement('img');
     switch( payload.pos ) {
     case "left":
