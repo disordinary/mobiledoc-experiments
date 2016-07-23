@@ -21,13 +21,13 @@ export default class Card {
   doFloat( env , payload ) {
     switch( payload.pos ) {
     case "left":
-      env.postModel.renderNode.element.className = "card-left"
+      env.postModel.renderNode.element.className = "card-left";
     break;
     case "right":
-      env.postModel.renderNode.element.className = "card-right"
+      env.postModel.renderNode.element.className = "card-right";
     break;
     default:
-      env.postModel.renderNode.element.className = "card"
+      env.postModel.renderNode.element.className = "card";
    }
   }
 
@@ -36,7 +36,7 @@ export default class Card {
       full_width_only : "full_width_only",
       half_width_only : "half_width_only",
       both            : "both"
-    }
+    };
   }
 
 

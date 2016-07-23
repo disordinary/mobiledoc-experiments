@@ -139,7 +139,6 @@ define('mobiledoc-experiments/ghost-atoms/comment', ['exports'], function (expor
 	})();
 
 	exports['default'] = comment;
-	;
 });
 define('mobiledoc-experiments/ghost-atoms/index', ['exports', 'mobiledoc-experiments/ghost-atoms/comment'], function (exports, _mobiledocExperimentsGhostAtomsComment) {
 	exports['default'] = [new _mobiledocExperimentsGhostAtomsComment['default']()];
@@ -337,7 +336,7 @@ define("mobiledoc-experiments/ghost-cards/slide-show-image-slide", ["exports", "
       this.holder.appendChild(this.caption);
       this.caption.addEventListener("click", this.edit.bind(this));
 
-      this.slide;
+      this.slide = null;
     }
 
     _createClass(ImageSlide, [{
@@ -557,7 +556,7 @@ define("mobiledoc-experiments/ghost-markups/comment", ["exports"], function (exp
         });
         env.didRender(function (e) {
           var commentOffset = env.element.attributes.getNamedItem('data-comment-id');
-          if (commentOffset == undefined || commentOffset == null) {
+          if (commentOffset === undefined || commentOffset === null) {
             throw new Error("No comment offset");
           }
 
@@ -1223,7 +1222,7 @@ catch(err) {
 /* jshint ignore:start */
 
 if (!runningTests) {
-  require("mobiledoc-experiments/app")["default"].create({"name":"mobiledoc-experiments","version":"0.0.0+b1014bc1"});
+  require("mobiledoc-experiments/app")["default"].create({"name":"mobiledoc-experiments","version":"0.0.0+567cb10d"});
 }
 
 /* jshint ignore:end */

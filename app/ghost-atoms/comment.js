@@ -7,4 +7,4 @@ export default class comment {
 	  render({ env, options, value, payload}) {
 	    return document.createTextNode('COMMENT');
 	  }
-};
+}

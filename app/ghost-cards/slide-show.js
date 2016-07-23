@@ -66,7 +66,7 @@ export default class SlideShow extends Card {
         
         if( arrayPosition >= payload.images.length ) arrayPosition = 0;
 
-        toggleImage( payload.images[ arrayPosition ] )
+        toggleImage( payload.images[ arrayPosition ] );
 
       }
 

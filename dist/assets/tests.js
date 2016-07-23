@@ -40,7 +40,7 @@ define('mobiledoc-experiments/tests/ghost-atoms/comment.jshint', ['exports'], fu
   QUnit.module('JSHint | ghost-atoms/comment.js');
   QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
-    assert.ok(false, 'ghost-atoms/comment.js should pass jshint.\nghost-atoms/comment.js: line 10, col 2, Unnecessary semicolon.\n\n1 error');
+    assert.ok(true, 'ghost-atoms/comment.js should pass jshint.');
   });
 });
 define('mobiledoc-experiments/tests/ghost-atoms/index.jshint', ['exports'], function (exports) {
@@ -58,7 +58,7 @@ define('mobiledoc-experiments/tests/ghost-cards/card.jshint', ['exports'], funct
   QUnit.module('JSHint | ghost-cards/card.js');
   QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
-    assert.ok(false, 'ghost-cards/card.js should pass jshint.\nghost-cards/card.js: line 24, col 63, Missing semicolon.\nghost-cards/card.js: line 27, col 64, Missing semicolon.\nghost-cards/card.js: line 30, col 58, Missing semicolon.\nghost-cards/card.js: line 39, col 6, Missing semicolon.\n\n4 errors');
+    assert.ok(true, 'ghost-cards/card.js should pass jshint.');
   });
 });
 define('mobiledoc-experiments/tests/ghost-cards/graph.jshint', ['exports'], function (exports) {
@@ -76,7 +76,7 @@ define('mobiledoc-experiments/tests/ghost-cards/index.jshint', ['exports'], func
   QUnit.module('JSHint | ghost-cards/index.js');
   QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
-    assert.ok(false, 'ghost-cards/index.js should pass jshint.\nghost-cards/index.js: line 9, col 2, Missing semicolon.\n\n1 error');
+    assert.ok(true, 'ghost-cards/index.js should pass jshint.');
   });
 });
 define('mobiledoc-experiments/tests/ghost-cards/kitten.jshint', ['exports'], function (exports) {
@@ -94,7 +94,7 @@ define('mobiledoc-experiments/tests/ghost-cards/slide-show-image-slide.jshint', 
   QUnit.module('JSHint | ghost-cards/slide-show-image-slide.js');
   QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
-    assert.ok(false, 'ghost-cards/slide-show-image-slide.js should pass jshint.\nghost-cards/slide-show-image-slide.js: line 27, col 10, Expected an assignment or function call and instead saw an expression.\n\n1 error');
+    assert.ok(true, 'ghost-cards/slide-show-image-slide.js should pass jshint.');
   });
 });
 define('mobiledoc-experiments/tests/ghost-cards/slide-show.jshint', ['exports'], function (exports) {
@@ -103,7 +103,7 @@ define('mobiledoc-experiments/tests/ghost-cards/slide-show.jshint', ['exports'],
   QUnit.module('JSHint | ghost-cards/slide-show.js');
   QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
-    assert.ok(false, 'ghost-cards/slide-show.js should pass jshint.\nghost-cards/slide-show.js: line 69, col 55, Missing semicolon.\n\n1 error');
+    assert.ok(true, 'ghost-cards/slide-show.js should pass jshint.');
   });
 });
 define('mobiledoc-experiments/tests/ghost-markups/comment.jshint', ['exports'], function (exports) {
@@ -112,7 +112,7 @@ define('mobiledoc-experiments/tests/ghost-markups/comment.jshint', ['exports'], 
   QUnit.module('JSHint | ghost-markups/comment.js');
   QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
-    assert.ok(false, 'ghost-markups/comment.js should pass jshint.\nghost-markups/comment.js: line 13, col 25, Use \'===\' to compare with \'undefined\'.\nghost-markups/comment.js: line 13, col 55, Use \'===\' to compare with \'null\'.\n\n2 errors');
+    assert.ok(true, 'ghost-markups/comment.js should pass jshint.');
   });
 });
 define('mobiledoc-experiments/tests/ghost-markups/index.jshint', ['exports'], function (exports) {
@@ -121,7 +121,7 @@ define('mobiledoc-experiments/tests/ghost-markups/index.jshint', ['exports'], fu
   QUnit.module('JSHint | ghost-markups/index.js');
   QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
-    assert.ok(false, 'ghost-markups/index.js should pass jshint.\nghost-markups/index.js: line 6, col 2, Missing semicolon.\n\n1 error');
+    assert.ok(true, 'ghost-markups/index.js should pass jshint.');
   });
 });
 define('mobiledoc-experiments/tests/ghost-sections/index.jshint', ['exports'], function (exports) {
@@ -130,7 +130,7 @@ define('mobiledoc-experiments/tests/ghost-sections/index.jshint', ['exports'], f
   QUnit.module('JSHint | ghost-sections/index.js');
   QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
-    assert.ok(false, 'ghost-sections/index.js should pass jshint.\nghost-sections/index.js: line 6, col 2, Missing semicolon.\n\n1 error');
+    assert.ok(true, 'ghost-sections/index.js should pass jshint.');
   });
 });
 define('mobiledoc-experiments/tests/ghost-sections/section.jshint', ['exports'], function (exports) {

@@ -6,4 +6,4 @@ export default [
 	new Kitten(),
 	new Graph(),
 	new SlideShow()
-]
+];

@@ -24,7 +24,7 @@ export default class ImageSlide {
     this.holder.appendChild( this.caption );
     this.caption.addEventListener("click" , this.edit.bind( this ) );
 
-    this.slide;
+    this.slide = null;
   }
 
   edit( e ) {  

@@ -10,7 +10,7 @@ export default class Comment {
     env.onDelete( e => alert("DELETE!")); 
     env.didRender( e => {
       let commentOffset = env.element.attributes.getNamedItem('data-comment-id');
-      if( commentOffset == undefined || commentOffset == null ) {
+      if( commentOffset === undefined || commentOffset === null ) {
         throw new Error("No comment offset");
       }
 
