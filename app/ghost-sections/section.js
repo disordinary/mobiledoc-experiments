@@ -35,8 +35,14 @@ export default class Section {
           let card = postEditor.builder.createCardSection(window.dragel.card.name || "kitten", { pos });
           postEditor.insertSectionBefore(env.editor.post.sections, card, env.section.next);
         } else {
+          let section = env.section;
+          //if it's going to the top and isn't floated then put it at the top.
+          
+          while(section.prev.type === 'card-section' && ( section.prev.payload.pos === "left" ||  section.prev.payload.pos === "right" ) ) {
+            section = env.section.prev;
+          }
           let card = postEditor.builder.createCardSection(window.dragel.card.name || "kitten", { pos } );
-          postEditor.insertSectionBefore(env.editor.post.sections, card, env.section);
+          postEditor.insertSectionBefore(env.editor.post.sections, card, section);
         }
       } );
       event.target.className='';
@@ -53,9 +59,9 @@ export default class Section {
         let mouseX = event.pageX - offset.left;
         let mouseY = event.pageY - offset.top;
         
-        if( mouseX < 33 && window.dragel.card.resizeMode != "full_width_only" ) {
+        if( mouseX < 100 && window.dragel.card.resizeMode != "full_width_only" ) {
           env.element.className='dropper-left';
-        } else if( mouseX > offset.width-33  && window.dragel.card.resizeMode != "full_width_only" ){
+        } else if( mouseX > offset.width-100  && window.dragel.card.resizeMode != "full_width_only" ){
           env.element.className='dropper-right';
         } else if( mouseY > offset.height / 2 ) {
           env.element.className='dropper-bottom';

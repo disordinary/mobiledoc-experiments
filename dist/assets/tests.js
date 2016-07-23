@@ -34,15 +34,6 @@ define('mobiledoc-experiments/tests/components/form-body.jshint', ['exports'], f
     assert.ok(true, 'components/form-body.js should pass jshint.');
   });
 });
-define('mobiledoc-experiments/tests/ghost-atoms/comment.jshint', ['exports'], function (exports) {
-  'use strict';
-
-  QUnit.module('JSHint | ghost-atoms/comment.js');
-  QUnit.test('should pass jshint', function (assert) {
-    assert.expect(1);
-    assert.ok(true, 'ghost-atoms/comment.js should pass jshint.');
-  });
-});
 define('mobiledoc-experiments/tests/ghost-atoms/index.jshint', ['exports'], function (exports) {
   'use strict';
 

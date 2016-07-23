@@ -6,7 +6,7 @@ export default class Kitten extends Card {
     super();
     this.name = 'kitten';
     this.previewName = 'placeholder kitten';
-    this.previewImage = 'https://placekitten.com/160/100';
+    this.previewImage = 'https://placekitten.com/120/80';
   }
 
   render( { env , options , payload } ) {

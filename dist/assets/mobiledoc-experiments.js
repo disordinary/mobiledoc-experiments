@@ -110,38 +110,8 @@ define('mobiledoc-experiments/components/form-body', ['exports', 'ember', 'mobil
     }
   });
 });
-define('mobiledoc-experiments/ghost-atoms/comment', ['exports'], function (exports) {
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-
-	var comment = (function () {
-		function comment() {
-			_classCallCheck(this, comment);
-
-			this.name = 'comment';
-			this.type = 'dom';
-		}
-
-		_createClass(comment, [{
-			key: 'render',
-			value: function render(_ref) {
-				var env = _ref.env;
-				var options = _ref.options;
-				var value = _ref.value;
-				var payload = _ref.payload;
-
-				return document.createTextNode('COMMENT');
-			}
-		}]);
-
-		return comment;
-	})();
-
-	exports['default'] = comment;
-});
-define('mobiledoc-experiments/ghost-atoms/index', ['exports', 'mobiledoc-experiments/ghost-atoms/comment'], function (exports, _mobiledocExperimentsGhostAtomsComment) {
-	exports['default'] = [new _mobiledocExperimentsGhostAtomsComment['default']()];
+define("mobiledoc-experiments/ghost-atoms/index", ["exports"], function (exports) {
+	exports["default"] = [];
 });
 define('mobiledoc-experiments/ghost-cards/card', ['exports'], function (exports) {
   var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -221,6 +191,7 @@ define('mobiledoc-experiments/ghost-cards/graph', ['exports', 'mobiledoc-experim
          _get(Object.getPrototypeOf(Graph.prototype), 'constructor', this).call(this);
          this.name = 'graph';
          this.previewName = 'placeholder graph';
+         this.previewImage = 'http://Chartholdr.io/line/120/80';
       }
 
       _createClass(Graph, [{
@@ -273,7 +244,7 @@ define('mobiledoc-experiments/ghost-cards/kitten', ['exports', 'mobiledoc-experi
       _get(Object.getPrototypeOf(Kitten.prototype), 'constructor', this).call(this);
       this.name = 'kitten';
       this.previewName = 'placeholder kitten';
-      this.previewImage = 'https://placekitten.com/160/100';
+      this.previewImage = 'https://placekitten.com/120/80';
     }
 
     _createClass(Kitten, [{
@@ -648,8 +619,14 @@ define("mobiledoc-experiments/ghost-sections/section", ["exports"], function (ex
               var card = postEditor.builder.createCardSection(window.dragel.card.name || "kitten", { pos: pos });
               postEditor.insertSectionBefore(env.editor.post.sections, card, env.section.next);
             } else {
+              var section = env.section;
+              //if it's going to the top and isn't floated then put it at the top.
+
+              while (section.prev.type === 'card-section' && (section.prev.payload.pos === "left" || section.prev.payload.pos === "right")) {
+                section = env.section.prev;
+              }
               var card = postEditor.builder.createCardSection(window.dragel.card.name || "kitten", { pos: pos });
-              postEditor.insertSectionBefore(env.editor.post.sections, card, env.section);
+              postEditor.insertSectionBefore(env.editor.post.sections, card, section);
             }
           });
           event.target.className = '';
@@ -662,9 +639,9 @@ define("mobiledoc-experiments/ghost-sections/section", ["exports"], function (ex
           var mouseX = event.pageX - offset.left;
           var mouseY = event.pageY - offset.top;
 
-          if (mouseX < 33 && window.dragel.card.resizeMode != "full_width_only") {
+          if (mouseX < 100 && window.dragel.card.resizeMode != "full_width_only") {
             env.element.className = 'dropper-left';
-          } else if (mouseX > offset.width - 33 && window.dragel.card.resizeMode != "full_width_only") {
+          } else if (mouseX > offset.width - 100 && window.dragel.card.resizeMode != "full_width_only") {
             env.element.className = 'dropper-right';
           } else if (mouseY > offset.height / 2) {
             env.element.className = 'dropper-bottom';
@@ -1222,7 +1199,7 @@ catch(err) {
 /* jshint ignore:start */
 
 if (!runningTests) {
-  require("mobiledoc-experiments/app")["default"].create({"name":"mobiledoc-experiments","version":"0.0.0+567cb10d"});
+  require("mobiledoc-experiments/app")["default"].create({"name":"mobiledoc-experiments","version":"0.0.0+25cd27a5"});
 }
 
 /* jshint ignore:end */

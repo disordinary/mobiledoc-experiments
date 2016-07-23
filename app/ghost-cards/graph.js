@@ -5,6 +5,7 @@ export default class Graph extends Card {
 	  super();
     this.name = 'graph';
     this.previewName = 'placeholder graph';
+       this.previewImage = 'http://Chartholdr.io/line/120/80';
   }
 
   render( { env , options , payload } ) {
