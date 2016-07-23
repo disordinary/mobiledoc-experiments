@@ -15,10 +15,10 @@ export default class ImageSlide {
     this.img.style.position = this.caption.style.position = "absolute";
     this.holder.style.top = "0px";
     this.holder.style.width = this.img.style.width = this.caption.style.width = "100%";
-    this.holder.style.height = "100%";
+    this.holder.style.height = "400px";
     
-    this.caption.style.top   = "370px";
-    this.caption.style.height   = "30px";
+    this.caption.style.bottom   = "0px";
+    
     this.caption.style.padding = "10px";
 
     this.holder.appendChild( this.img );
@@ -32,8 +32,8 @@ export default class ImageSlide {
         if( this.slide.editable === false ) return;
        let caption = document.createElement("textarea");
        caption.style.position = "absolute";
-       caption.style.top   = "370px";
-      caption.style.height   = "30px";
+       caption.style.bottom   = "0px";
+      
        this.holder.appendChild( caption );
        caption.style.display = 'inline';
        caption.value = this.slide.content;
