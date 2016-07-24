@@ -32,7 +32,7 @@ export default class SlideShow extends Card {
 
     image.update({ src : "/assets/cards/picture-blank.png" , content : "Drag an image here, drag additional images to create a slideshow." , editable : false });
 
-
+    if( payload.images.length ) doFade();
 
     env.postModel.renderNode.element.style.border = "1px solid black";
     env.postModel.renderNode.element.style.height='400px';
@@ -48,6 +48,7 @@ export default class SlideShow extends Card {
         reader.onload = function( e ) {
           let newSlide = { src : e.target.result , content : "" };
           payload.images.push( newSlide );
+          env.save( payload );
           
           arrayPosition = payload.images.length - 1;
           //doFade( true );

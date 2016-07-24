@@ -28,6 +28,7 @@ export default class SoundCloud extends Card {
         
         if( e.keyCode === 13 ) {
           payload.url = encodeURI(input.value);
+          env.save();
           doRender();
         }
       } );

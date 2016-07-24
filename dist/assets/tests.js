@@ -121,7 +121,7 @@ define('mobiledoc-experiments/tests/ghost-cards/soundcloud.jshint', ['exports'],
   QUnit.module('JSHint | ghost-cards/soundcloud.js');
   QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
-    assert.ok(false, 'ghost-cards/soundcloud.js should pass jshint.\nghost-cards/soundcloud.js: line 35, col 73, Missing semicolon.\n\n1 error');
+    assert.ok(false, 'ghost-cards/soundcloud.js should pass jshint.\nghost-cards/soundcloud.js: line 36, col 73, Missing semicolon.\n\n1 error');
   });
 });
 define('mobiledoc-experiments/tests/ghost-cards/trello-card.jshint', ['exports'], function (exports) {

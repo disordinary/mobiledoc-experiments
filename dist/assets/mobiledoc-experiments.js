@@ -51,13 +51,18 @@ define('mobiledoc-experiments/components/form-body', ['exports', 'ember', 'mobil
 
   var something = "SOMETHING";
 
-  var mobiledoc = {
+  var emptymobiledoc = {
     version: "0.3.0",
     markups: [],
     atoms: [],
     cards: [],
     sections: [[1, "h1", [[0, [], 0, "Title"]]], [1, "p", [[0, [], 0, "Body"]]]]
   };
+
+  var mobiledoc = {
+    "version": "0.3.0",
+    "atoms": [],
+    "cards": [["slide-show", { "pos": "top", "images": [{ "src": "/assets/cards/slideshow-phoenix1.png", "content": "Key signing: Argentinian playmaker Gui Finkler should be able to create goal scoring oportunities." }, { "src": "/assets/cards/slideshow-phoenix2.png", "content": "Big money deal: Home coming for NZ international Kosta Barbourouses." }, { "src": "/assets/cards/slideshow-phoenix3.png", "content": "Last chance saloon: Ernie Merick is a proven winner but this year he has to take Wellington to the championship." }, { "src": "/assets/cards/slideshow-phoenix4.png", "content": "Must improve: NZ International Michael McGlinchey needs to reclaim championship winning form." }] }]], "markups": [], "sections": [[1, "h1", [[0, [], 0, "Title"]]], [1, "p", [[0, [], 0, "Body"]]], [10, 0], [1, "p", [[0, [], 0, "sdfsdfsdfd"]]]] };
 
   var Comment = function Comment(user, comment) {
     _classCallCheck(this, Comment);
@@ -75,9 +80,14 @@ define('mobiledoc-experiments/components/form-body', ['exports', 'ember', 'mobil
 
       editor.comments = [];
 
-      this.$('#h1')[0].onclick = function (_) {
+      this.$('#h2')[0].onclick = function (_) {
         return editor.run(function (postEditor) {
-          postEditor.toggleSection('h1');
+          postEditor.toggleSection('h2');
+        });
+      };
+      this.$('#h3')[0].onclick = function (_) {
+        return editor.run(function (postEditor) {
+          postEditor.toggleSection('h3');
         });
       };
       this.$('#b')[0].onclick = function (_) {
@@ -88,6 +98,16 @@ define('mobiledoc-experiments/components/form-body', ['exports', 'ember', 'mobil
       this.$('#i')[0].onclick = function (_) {
         return editor.run(function (postEditor) {
           postEditor.toggleMarkup('em');
+        });
+      };
+      this.$('#ol')[0].onclick = function (_) {
+        return editor.run(function (postEditor) {
+          postEditor.toggleSection('ol');
+        });
+      };
+      this.$('#ul')[0].onclick = function (_) {
+        return editor.run(function (postEditor) {
+          postEditor.toggleSection('ul');
         });
       };
       this.$('#comment')[0].onclick = function (_) {
@@ -570,6 +590,8 @@ define('mobiledoc-experiments/ghost-cards/slide-show', ['exports', 'mobiledoc-ex
 
         image.update({ src: "/assets/cards/picture-blank.png", content: "Drag an image here, drag additional images to create a slideshow.", editable: false });
 
+        if (payload.images.length) doFade();
+
         env.postModel.renderNode.element.style.border = "1px solid black";
         env.postModel.renderNode.element.style.height = '400px';
         env.postModel.renderNode.element.style.overflow = "hidden";
@@ -584,6 +606,7 @@ define('mobiledoc-experiments/ghost-cards/slide-show', ['exports', 'mobiledoc-ex
           reader.onload = function (e) {
             var newSlide = { src: e.target.result, content: "" };
             payload.images.push(newSlide);
+            env.save(payload);
 
             arrayPosition = payload.images.length - 1;
             //doFade( true );
@@ -674,6 +697,7 @@ define('mobiledoc-experiments/ghost-cards/soundcloud', ['exports', 'mobiledoc-ex
 
             if (e.keyCode === 13) {
               payload.url = encodeURI(input.value);
+              env.save();
               doRender();
             }
           });
@@ -1348,7 +1372,7 @@ define("mobiledoc-experiments/templates/components/form-body", ["exports"], func
             "column": 0
           },
           "end": {
-            "line": 18,
+            "line": 17,
             "column": 0
           }
         },
@@ -1366,13 +1390,6 @@ define("mobiledoc-experiments/templates/components/form-body", ["exports"], func
         dom.appendChild(el1, el2);
         var el2 = dom.createElement("div");
         dom.setAttribute(el2, "id", "toolbar");
-        var el3 = dom.createTextNode("\n		");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createElement("button");
-        dom.setAttribute(el3, "id", "h1");
-        var el4 = dom.createTextNode("H1");
-        dom.appendChild(el3, el4);
-        dom.appendChild(el2, el3);
         var el3 = dom.createTextNode("\n		");
         dom.appendChild(el2, el3);
         var el3 = dom.createElement("button");
@@ -1411,7 +1428,7 @@ define("mobiledoc-experiments/templates/components/form-body", ["exports"], func
         var el3 = dom.createTextNode("\n		");
         dom.appendChild(el2, el3);
         var el3 = dom.createElement("button");
-        dom.setAttribute(el3, "id", "ul");
+        dom.setAttribute(el3, "id", "ol");
         var el4 = dom.createTextNode("OL");
         dom.appendChild(el3, el4);
         dom.appendChild(el2, el3);
@@ -1451,7 +1468,7 @@ define("mobiledoc-experiments/templates/components/form-body", ["exports"], func
         morphs[1] = dom.createMorphAt(fragment, 4, 4, contextualElement);
         return morphs;
       },
-      statements: [["inline", "card-picker", [], ["cards", ["subexpr", "@mut", [["get", "cards", ["loc", [null, [16, 20], [16, 25]]]]], [], []]], ["loc", [null, [16, 0], [16, 27]]]], ["content", "yield", ["loc", [null, [17, 0], [17, 9]]]]],
+      statements: [["inline", "card-picker", [], ["cards", ["subexpr", "@mut", [["get", "cards", ["loc", [null, [15, 20], [15, 25]]]]], [], []]], ["loc", [null, [15, 0], [15, 27]]]], ["content", "yield", ["loc", [null, [16, 0], [16, 9]]]]],
       locals: [],
       templates: []
     };
@@ -1489,7 +1506,7 @@ catch(err) {
 /* jshint ignore:start */
 
 if (!runningTests) {
-  require("mobiledoc-experiments/app")["default"].create({"name":"mobiledoc-experiments","version":"0.0.0+a87f0c47"});
+  require("mobiledoc-experiments/app")["default"].create({"name":"mobiledoc-experiments","version":"0.0.0+4d6a44d8"});
 }
 
 /* jshint ignore:end */
