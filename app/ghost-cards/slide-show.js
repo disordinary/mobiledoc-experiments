@@ -9,7 +9,7 @@ export default class SlideShow extends Card {
     this.name = 'slide-show';
     this.previewName = 'image / slideshow';
     this.previewImage = '/assets/cards/picture-preview.png';
-    this.resizeMode  = this.resizeModeEnum.full_width_only;
+    //this.resizeMode  = this.resizeModeEnum.full_width_only;
     
 
   }

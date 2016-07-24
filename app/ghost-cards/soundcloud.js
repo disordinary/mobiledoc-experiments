@@ -32,8 +32,8 @@ export default class SoundCloud extends Card {
         }
       } );
 
-      input.value = payload.url || "https://api.soundcloud.com/tracks/169381837"
-      label.appendChild( document.createTextNode("Paste the URL to the soundcloud song: "));
+      input.value = payload.url || "https://api.soundcloud.com/tracks/2"
+      label.appendChild( document.createTextNode("Paste the URL to the soundcloud file: "));
       label.appendChild( input );
       holder.innerHTML = "";
       holder.appendChild( label );

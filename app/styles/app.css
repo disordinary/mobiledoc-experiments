@@ -202,6 +202,7 @@ a {
 /**SLIDESHOW CARD**/
 .card-slideshow {
 	height:100%;
+	background-color:#000;
 }
 .card-slideshow p, .card-slideshow textarea {
 	display:block;

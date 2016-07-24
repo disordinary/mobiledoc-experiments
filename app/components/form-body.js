@@ -66,7 +66,7 @@ export default Ember.Component.extend({
 
 		editor.render(this.$('.body')[0]);
 		
-
+    window.editor = editor; //make editor a global so that I can inspect it's state with the console.
 
 	}
 });

@@ -107,6 +107,8 @@ define('mobiledoc-experiments/components/form-body', ['exports', 'ember', 'mobil
       };
 
       editor.render(this.$('.body')[0]);
+
+      window.editor = editor; //make editor a global so that I can inspect it's state with the console.
     }
   });
 });
@@ -541,7 +543,7 @@ define('mobiledoc-experiments/ghost-cards/slide-show', ['exports', 'mobiledoc-ex
       this.name = 'slide-show';
       this.previewName = 'image / slideshow';
       this.previewImage = '/assets/cards/picture-preview.png';
-      this.resizeMode = this.resizeModeEnum.full_width_only;
+      //this.resizeMode  = this.resizeModeEnum.full_width_only;
     }
 
     _createClass(SlideShow, [{
@@ -676,8 +678,8 @@ define('mobiledoc-experiments/ghost-cards/soundcloud', ['exports', 'mobiledoc-ex
             }
           });
 
-          input.value = payload.url || "https://api.soundcloud.com/tracks/169381837";
-          label.appendChild(document.createTextNode("Paste the URL to the soundcloud song: "));
+          input.value = payload.url || "https://api.soundcloud.com/tracks/2";
+          label.appendChild(document.createTextNode("Paste the URL to the soundcloud file: "));
           label.appendChild(input);
           holder.innerHTML = "";
           holder.appendChild(label);
@@ -1487,7 +1489,7 @@ catch(err) {
 /* jshint ignore:start */
 
 if (!runningTests) {
-  require("mobiledoc-experiments/app")["default"].create({"name":"mobiledoc-experiments","version":"0.0.0+dfa1218e"});
+  require("mobiledoc-experiments/app")["default"].create({"name":"mobiledoc-experiments","version":"0.0.0+a87f0c47"});
 }
 
 /* jshint ignore:end */
