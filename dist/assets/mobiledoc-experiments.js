@@ -202,6 +202,7 @@ define('mobiledoc-experiments/ghost-cards/card', ['exports'], function (exports)
       this.type = 'dom';
       this.resizeMode = this.resizeModeEnum.both;
       this.handle = createHandle();
+      //this.editor = editor();
     }
 
     _createClass(Card, [{
@@ -212,7 +213,8 @@ define('mobiledoc-experiments/ghost-cards/card', ['exports'], function (exports)
         var payload = _ref.payload;
 
         var el = env.postModel.renderNode.element;
-        el.insertBefore(createHandle(options), el.firstChild);
+
+        el.insertBefore(createHandle(env, options), el.firstChild);
         switch (payload.pos) {
           case "left":
             el.className = "card-left";
@@ -245,7 +247,9 @@ define('mobiledoc-experiments/ghost-cards/card', ['exports'], function (exports)
 
   exports['default'] = Card;
 
-  function createHandle(options) {
+  function createHandle(env, options) {
+
+    console.log(env, options);
     var holder = document.createElement('div');
     holder.contentEditable = "false";
     holder.className = "card-handle";
@@ -264,7 +268,7 @@ define('mobiledoc-experiments/ghost-cards/card', ['exports'], function (exports)
     delButtion.type = "button";
     delButtion.innerHTML = "×";
     delButtion.addEventListener("click", function (e) {
-      return alert("DELETE CARD");
+      return env.remove();
     });
 
     holder.appendChild(delButtion);
@@ -1508,7 +1512,7 @@ catch(err) {
 /* jshint ignore:start */
 
 if (!runningTests) {
-  require("mobiledoc-experiments/app")["default"].create({"name":"mobiledoc-experiments","version":"0.0.0+7557f391"});
+  require("mobiledoc-experiments/app")["default"].create({"name":"mobiledoc-experiments","version":"0.0.0+3ffd917d"});
 }
 
 /* jshint ignore:end */

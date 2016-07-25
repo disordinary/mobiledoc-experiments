@@ -9,14 +9,15 @@ export default class Card {
     this.type = 'dom';
     this.resizeMode  = this.resizeModeEnum.both;
     this.handle = createHandle();
-
+    //this.editor = editor();
  
 
   }
 
   render( { env , options , payload } ) {
     let el = env.postModel.renderNode.element;
-    el.insertBefore( createHandle( options ) , el.firstChild );
+
+    el.insertBefore( createHandle( env , options ) , el.firstChild );
    switch( payload.pos ) {
     case "left":
       el.className = "card-left";
@@ -47,7 +48,9 @@ export default class Card {
 }
 
 
-   function createHandle( options ) {
+   function createHandle( env , options ) {
+
+    console.log( env , options );
       let holder = document.createElement('div');
       holder.contentEditable="false";
       holder.className="card-handle";
@@ -66,7 +69,7 @@ export default class Card {
         delButtion.value = "Del";
         delButtion.type = "button";
         delButtion.innerHTML="×";
-        delButtion.addEventListener("click" ,e => alert("DELETE CARD"));
+        delButtion.addEventListener("click" ,e => env.remove());
 
         holder.appendChild( delButtion );
    
