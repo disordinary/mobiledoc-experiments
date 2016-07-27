@@ -13,6 +13,8 @@ export default class ImageSlide {
     this.holder.className = "slideshow-slide-holder";
     this.holder.style.position = "absolute";
     this.img.style.position = this.caption.style.position = "absolute";
+    this.img.draggable = false;
+    this.img.addEventListener('dragstart' , e => {  e.preventDefault(); return false; } );
     this.holder.style.top = "0px";
     this.holder.style.width = this.img.style.width = this.caption.style.width = "100%";
     this.holder.style.height = "400px";
@@ -94,7 +96,7 @@ export default class ImageSlide {
     let imageHeight = $image.height( );
     let holderHeight = $holder.height(); 
 
-    $holder.css("z-index", 9999);
+    $holder.css("z-index", 100);
     $image.css("top", -((imageHeight  / 2) - (holderHeight / 2))+ 'px');
   }
 }

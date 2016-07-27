@@ -1,7 +1,7 @@
-import Card from './card';
+import Card from '../card';
 import $ from 'jquery';
-import ImageSlide from './slide-show-image-slide';
-
+import ImageSlide from './image-slide';
+import ImageList from './image-list';
 
 export default class SlideShow extends Card {
   constructor( ) {
@@ -14,7 +14,19 @@ export default class SlideShow extends Card {
 
   }
 
+  edit( { env , options , payload } ) {
+    super.edit( { env , options , payload } ); 
+    if( !payload.images ) payload.images = [ ];
+    let holder = document.createElement('div');
+    let image = new ImageSlide( );
+    image.update({ src : "/assets/cards/picture-blank.png" , content : "Drag an image here, drag additional images to create a slideshow." , editable : false });
+
+    
+  }
+
+
   render( { env , options , payload } ) {
+      options.canEdit = true;
      super.render( { env , options , payload } ); 
      if( !payload.images ) payload.images = [ ];
     let holder = document.createElement('div');
@@ -93,6 +105,9 @@ export default class SlideShow extends Card {
  
      }
 
+
+
+     holder.appendChild( new ImageList( payload.images ) );
 
 
     return holder;

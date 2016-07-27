@@ -6,7 +6,7 @@ import atoms from '../ghost-atoms';
 import sections from '../ghost-sections';
 import markups from '../ghost-markups';
 
-let something = "SOMETHING";
+
 
 let emptymobiledoc = {
   version: "0.3.0",

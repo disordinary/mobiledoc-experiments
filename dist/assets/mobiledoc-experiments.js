@@ -49,8 +49,6 @@ define('mobiledoc-experiments/components/card-picker', ['exports', 'ember'], fun
 define('mobiledoc-experiments/components/form-body', ['exports', 'ember', 'mobiledoc-kit', 'mobiledoc-experiments/ghost-cards', 'mobiledoc-experiments/ghost-atoms', 'mobiledoc-experiments/ghost-sections', 'mobiledoc-experiments/ghost-markups'], function (exports, _ember, _mobiledocKit, _mobiledocExperimentsGhostCards, _mobiledocExperimentsGhostAtoms, _mobiledocExperimentsGhostSections, _mobiledocExperimentsGhostMarkups) {
   function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-  var something = "SOMETHING";
-
   var emptymobiledoc = {
     version: "0.3.0",
     markups: [],
@@ -201,20 +199,51 @@ define('mobiledoc-experiments/ghost-cards/card', ['exports'], function (exports)
       this.previewImage = 'http://Chartholdr.io/line/160/100';
       this.type = 'dom';
       this.resizeMode = this.resizeModeEnum.both;
-      this.handle = createHandle();
-      //this.editor = editor();
     }
 
     _createClass(Card, [{
-      key: 'render',
-      value: function render(_ref) {
+      key: 'edit',
+      value: function edit(_ref) {
         var env = _ref.env;
         var options = _ref.options;
         var payload = _ref.payload;
 
         var el = env.postModel.renderNode.element;
+        el.draggable = "false";
+        el.addEventListener('dragstart', function (e) {
+          e.preventDefault();return false;
+        });
+        var handle = createHandle(env, options);
+        handle.draggable = "true";
+        el.insertBefore(handle, el.firstChild);
+        //handle.style.width = $(el).width() + "px";
+        switch (payload.pos) {
+          case "left":
+            el.className = "card-left";
+            break;
+          case "right":
+            el.className = "card-right";
+            break;
+          default:
+            el.className = "card";
+        }
+      }
+    }, {
+      key: 'render',
+      value: function render(_ref2) {
+        var env = _ref2.env;
+        var options = _ref2.options;
+        var payload = _ref2.payload;
 
-        el.insertBefore(createHandle(env, options), el.firstChild);
+        var el = env.postModel.renderNode.element;
+        el.draggable = "false";
+        el.addEventListener('dragstart', function (e) {
+          e.preventDefault();return false;
+        });
+        var handle = createHandle(env, options);
+        handle.draggable = "true";
+        el.insertBefore(handle, el.firstChild);
+        //handle.style.width = $(el).width() + "px";
         switch (payload.pos) {
           case "left":
             el.className = "card-left";
@@ -249,16 +278,15 @@ define('mobiledoc-experiments/ghost-cards/card', ['exports'], function (exports)
 
   function createHandle(env, options) {
 
-    console.log(env, options);
     var holder = document.createElement('div');
     holder.contentEditable = "false";
     holder.className = "card-handle";
-    if (options && options.onEdit) {
+    if (options && options.canEdit) {
       var editButton = document.createElement('button');
       editButton.value = "Edit";
       editButton.type = "button";
       editButton.innerHTML = "Edit";
-      editButton.addEventListener("click", options.onEdit);
+      editButton.addEventListener("click", env.edit);
 
       holder.appendChild(editButton);
     }
@@ -427,7 +455,153 @@ define('mobiledoc-experiments/ghost-cards/related-posts', ['exports', 'mobiledoc
 
   exports['default'] = RelatedPosts;
 });
-define("mobiledoc-experiments/ghost-cards/slide-show-image-slide", ["exports", "jquery"], function (exports, _jquery) {
+define('mobiledoc-experiments/ghost-cards/slide-show/image-list', ['exports', 'jquery'], function (exports, _jquery) {
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+	var imageWidth = 200;
+
+	//drag and drop singletons:
+	if (!window.__drag) {
+		window.__drag = function (e) {};
+		window.__drop = function (e) {};
+
+		window.addEventListener('mousemove', function (e) {
+			return window.__drag(e);
+		});
+		window.addEventListener('mouseup', function (e) {
+			return window.__drop(e);
+		});
+	}
+
+	var ImageList = (function () {
+		function ImageList(imageSlides, width) {
+			_classCallCheck(this, ImageList);
+
+			width = width || 400;
+			var holder = this.holder = document.createElement('div');
+			var lines = this.lines = [[]];
+			holder.className = 'card-slideshow-preview';
+
+			var accumulatedWidth = 0;
+			imageSlides.forEach(function (image) {
+				lines[lines.length - 1].push(new ImagePreview(image, 0, 0));
+				accumulatedWidth += imageWidth;
+				if (accumulatedWidth > width) {
+					lines.push([]);
+					accumulatedWidth = 0;
+				}
+				//			let img = this.createImagePreview( image.src );
+				//			img.style.left = (imageWidth * n ) + "px";
+				//			holder.appendChild( img );
+			});
+
+			this.render();
+
+			return holder;
+		}
+
+		_createClass(ImageList, [{
+			key: 'render',
+			value: function render() {
+				this.holder.innerHTML = "";
+				for (var y = 0; y < this.lines.length; y++) {
+					var line = this.lines[y];
+					for (var x = 0; x < line.length; x++) {
+						line[x].xoffset = x * imageWidth;
+						line[x].yoffset = y * 100;
+						this.holder.appendChild(line[x].image);
+					}
+				}
+			}
+		}]);
+
+		return ImageList;
+	})();
+
+	exports['default'] = ImageList;
+
+	var ImagePreview = (function () {
+		function ImagePreview(image, xoffset, yoffset) {
+			_classCallCheck(this, ImagePreview);
+
+			this.image = this.createImagePreview(image.src);
+			this._xoffset = xoffset || 0;
+			this._yoffset = yoffset || 0;
+			this.image.style.left = this.xoffset + "px";
+			this.image.style.top = this.yoffset + "px";
+			this.image.dragable = 'false';
+			this.dragging = false;
+
+			var dragOffset = { left: 0, top: 0 };
+
+			this.image.addEventListener('dragstart', function (e) {
+				e.preventDefault();return false;
+			});
+			this.image.addEventListener('mousedown', (function (e) {
+				var offset = (0, _jquery['default'])(this.image).offset();
+
+				dragOffset.left = e.pageX - offset.left;
+				dragOffset.top = e.pageY - offset.top;
+
+				document.body.appendChild(this.image);
+				this.image.style.zIndex = '999999';
+
+				window.addEventListener('mousemove', mouseMove.bind(this));
+				window.addEventListener('mouseup', mouseUp.bind(this));
+				function mouseUp(e) {
+					//stop drag
+					this.dragging = false;
+					console.log("UP");
+					window.removeEventListener('mouseup', mouseUp.bind(this));
+					window.removeEventListener('mousemove', mouseMove.bind(this));
+				}
+				function mouseMove(e) {
+
+					this.image.style.position = "absolute";
+					this.image.style.left = e.pageX - dragOffset.left + "px";
+					this.image.style.top = e.pageY - dragOffset.top + "px";
+
+					//console.log( e );
+				}
+			}).bind(this), false);
+		}
+
+		_createClass(ImagePreview, [{
+			key: 'createImagePreview',
+			value: function createImagePreview(path) {
+				var image = document.createElement('img');
+				image.src = path;
+				image.width = imageWidth;
+				image.style.position = "absolute";
+				image.style.top = "0px";
+				return image;
+			}
+		}, {
+			key: 'xoffset',
+			get: function get() {
+				return this._xoffset;
+			},
+			set: function set(value) {
+				this._xoffset = value;
+				this.image.style.left = value + "px";
+			}
+		}, {
+			key: 'yoffset',
+			get: function get() {
+				return this._yoffset;
+			},
+			set: function set(value) {
+				this._yoffset = value;
+				this.image.style.top = value + "px";
+			}
+		}]);
+
+		return ImagePreview;
+	})();
+});
+define("mobiledoc-experiments/ghost-cards/slide-show/image-slide", ["exports", "jquery"], function (exports, _jquery) {
   var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
   function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -446,6 +620,10 @@ define("mobiledoc-experiments/ghost-cards/slide-show-image-slide", ["exports", "
       this.holder.className = "slideshow-slide-holder";
       this.holder.style.position = "absolute";
       this.img.style.position = this.caption.style.position = "absolute";
+      this.img.draggable = false;
+      this.img.addEventListener('dragstart', function (e) {
+        e.preventDefault();return false;
+      });
       this.holder.style.top = "0px";
       this.holder.style.width = this.img.style.width = this.caption.style.width = "100%";
       this.holder.style.height = "400px";
@@ -540,7 +718,7 @@ define("mobiledoc-experiments/ghost-cards/slide-show-image-slide", ["exports", "
         var imageHeight = $image.height();
         var holderHeight = $holder.height();
 
-        $holder.css("z-index", 9999);
+        $holder.css("z-index", 100);
         $image.css("top", -(imageHeight / 2 - holderHeight / 2) + 'px');
       }
     }]);
@@ -550,7 +728,7 @@ define("mobiledoc-experiments/ghost-cards/slide-show-image-slide", ["exports", "
 
   exports["default"] = ImageSlide;
 });
-define('mobiledoc-experiments/ghost-cards/slide-show', ['exports', 'mobiledoc-experiments/ghost-cards/card', 'jquery', 'mobiledoc-experiments/ghost-cards/slide-show-image-slide'], function (exports, _mobiledocExperimentsGhostCardsCard, _jquery, _mobiledocExperimentsGhostCardsSlideShowImageSlide) {
+define('mobiledoc-experiments/ghost-cards/slide-show/index', ['exports', 'mobiledoc-experiments/ghost-cards/card', 'jquery', 'mobiledoc-experiments/ghost-cards/slide-show/image-slide', 'mobiledoc-experiments/ghost-cards/slide-show/image-list'], function (exports, _mobiledocExperimentsGhostCardsCard, _jquery, _mobiledocExperimentsGhostCardsSlideShowImageSlide, _mobiledocExperimentsGhostCardsSlideShowImageList) {
   var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
   var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
@@ -573,12 +751,26 @@ define('mobiledoc-experiments/ghost-cards/slide-show', ['exports', 'mobiledoc-ex
     }
 
     _createClass(SlideShow, [{
-      key: 'render',
-      value: function render(_ref) {
+      key: 'edit',
+      value: function edit(_ref) {
         var env = _ref.env;
         var options = _ref.options;
         var payload = _ref.payload;
 
+        _get(Object.getPrototypeOf(SlideShow.prototype), 'edit', this).call(this, { env: env, options: options, payload: payload });
+        if (!payload.images) payload.images = [];
+        var holder = document.createElement('div');
+        var image = new _mobiledocExperimentsGhostCardsSlideShowImageSlide['default']();
+        image.update({ src: "/assets/cards/picture-blank.png", content: "Drag an image here, drag additional images to create a slideshow.", editable: false });
+      }
+    }, {
+      key: 'render',
+      value: function render(_ref2) {
+        var env = _ref2.env;
+        var options = _ref2.options;
+        var payload = _ref2.payload;
+
+        options.canEdit = true;
         _get(Object.getPrototypeOf(SlideShow.prototype), 'render', this).call(this, { env: env, options: options, payload: payload });
         if (!payload.images) payload.images = [];
         var holder = document.createElement('div');
@@ -649,6 +841,8 @@ define('mobiledoc-experiments/ghost-cards/slide-show', ['exports', 'mobiledoc-ex
             activeImage = image;
           }
         }
+
+        holder.appendChild(new _mobiledocExperimentsGhostCardsSlideShowImageList['default'](payload.images));
 
         return holder;
       }
@@ -733,6 +927,9 @@ define('mobiledoc-experiments/ghost-cards/soundcloud', ['exports', 'mobiledoc-ex
   })(_mobiledocExperimentsGhostCardsCard['default']);
 
   exports['default'] = SoundCloud;
+});
+define("mobiledoc-experiments/ghost-cards/test", ["exports"], function (exports) {
+  console.log("TEST");
 });
 define('mobiledoc-experiments/ghost-cards/trello-card', ['exports', 'mobiledoc-experiments/ghost-cards/card'], function (exports, _mobiledocExperimentsGhostCardsCard) {
   var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -1512,7 +1709,7 @@ catch(err) {
 /* jshint ignore:start */
 
 if (!runningTests) {
-  require("mobiledoc-experiments/app")["default"].create({"name":"mobiledoc-experiments","version":"0.0.0+3ffd917d"});
+  require("mobiledoc-experiments/app")["default"].create({"name":"mobiledoc-experiments","version":"0.0.0+6615c6cf"});
 }
 
 /* jshint ignore:end */

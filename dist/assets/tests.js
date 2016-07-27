@@ -58,7 +58,7 @@ define('mobiledoc-experiments/tests/ghost-cards/card.jshint', ['exports'], funct
   QUnit.module('JSHint | ghost-cards/card.js');
   QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
-    assert.ok(true, 'ghost-cards/card.js should pass jshint.');
+    assert.ok(false, 'ghost-cards/card.js should pass jshint.\nghost-cards/card.js: line 19, col 28, Missing semicolon.\nghost-cards/card.js: line 40, col 28, Missing semicolon.\n\n2 errors');
   });
 });
 define('mobiledoc-experiments/tests/ghost-cards/graph.jshint', ['exports'], function (exports) {
@@ -97,22 +97,31 @@ define('mobiledoc-experiments/tests/ghost-cards/related-posts.jshint', ['exports
     assert.ok(true, 'ghost-cards/related-posts.js should pass jshint.');
   });
 });
-define('mobiledoc-experiments/tests/ghost-cards/slide-show-image-slide.jshint', ['exports'], function (exports) {
+define('mobiledoc-experiments/tests/ghost-cards/slide-show/image-list.jshint', ['exports'], function (exports) {
   'use strict';
 
-  QUnit.module('JSHint | ghost-cards/slide-show-image-slide.js');
+  QUnit.module('JSHint | ghost-cards/slide-show/image-list.js');
   QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
-    assert.ok(true, 'ghost-cards/slide-show-image-slide.js should pass jshint.');
+    assert.ok(false, 'ghost-cards/slide-show/image-list.js should pass jshint.\nghost-cards/slide-show/image-list.js: line 7, col 38, Missing semicolon.\nghost-cards/slide-show/image-list.js: line 8, col 38, Missing semicolon.\nghost-cards/slide-show/image-list.js: line 84, col 75, Missing semicolon.\nghost-cards/slide-show/image-list.js: line 88, col 17, Possible strict violation.\nghost-cards/slide-show/image-list.js: line 90, col 71, Possible strict violation.\nghost-cards/slide-show/image-list.js: line 91, col 75, Possible strict violation.\nghost-cards/slide-show/image-list.js: line 95, col 17, Possible strict violation.\nghost-cards/slide-show/image-list.js: line 96, col 17, Possible strict violation.\nghost-cards/slide-show/image-list.js: line 97, col 17, Possible strict violation.\n\n9 errors');
   });
 });
-define('mobiledoc-experiments/tests/ghost-cards/slide-show.jshint', ['exports'], function (exports) {
+define('mobiledoc-experiments/tests/ghost-cards/slide-show/image-slide.jshint', ['exports'], function (exports) {
   'use strict';
 
-  QUnit.module('JSHint | ghost-cards/slide-show.js');
+  QUnit.module('JSHint | ghost-cards/slide-show/image-slide.js');
   QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
-    assert.ok(true, 'ghost-cards/slide-show.js should pass jshint.');
+    assert.ok(true, 'ghost-cards/slide-show/image-slide.js should pass jshint.');
+  });
+});
+define('mobiledoc-experiments/tests/ghost-cards/slide-show/index.jshint', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('JSHint | ghost-cards/slide-show/index.js');
+  QUnit.test('should pass jshint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'ghost-cards/slide-show/index.js should pass jshint.');
   });
 });
 define('mobiledoc-experiments/tests/ghost-cards/soundcloud.jshint', ['exports'], function (exports) {
@@ -122,6 +131,15 @@ define('mobiledoc-experiments/tests/ghost-cards/soundcloud.jshint', ['exports'],
   QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
     assert.ok(false, 'ghost-cards/soundcloud.js should pass jshint.\nghost-cards/soundcloud.js: line 36, col 73, Missing semicolon.\n\n1 error');
+  });
+});
+define('mobiledoc-experiments/tests/ghost-cards/test.jshint', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('JSHint | ghost-cards/test.js');
+  QUnit.test('should pass jshint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'ghost-cards/test.js should pass jshint.');
   });
 });
 define('mobiledoc-experiments/tests/ghost-cards/trello-card.jshint', ['exports'], function (exports) {

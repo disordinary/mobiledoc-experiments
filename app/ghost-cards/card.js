@@ -8,16 +8,17 @@ export default class Card {
     this.previewImage = 'http://Chartholdr.io/line/160/100';
     this.type = 'dom';
     this.resizeMode  = this.resizeModeEnum.both;
-    this.handle = createHandle();
-    //this.editor = editor();
- 
-
   }
 
-  render( { env , options , payload } ) {
-    let el = env.postModel.renderNode.element;
 
-    el.insertBefore( createHandle( env , options ) , el.firstChild );
+  edit( { env , options , payload } ) {
+    let el = env.postModel.renderNode.element;
+    el.draggable = "false";
+    el.addEventListener('dragstart' , e => {  e.preventDefault(); return false; } );
+    let handle = createHandle( env , options );
+    handle.draggable="true"
+    el.insertBefore( handle , el.firstChild );
+    //handle.style.width = $(el).width() + "px";
    switch( payload.pos ) {
     case "left":
       el.className = "card-left";
@@ -28,6 +29,29 @@ export default class Card {
     default:
       el.className = "card";
    }
+
+  }
+
+  render( { env , options , payload } ) {
+    let el = env.postModel.renderNode.element;
+    el.draggable = "false";
+    el.addEventListener('dragstart' , e => {  e.preventDefault(); return false; } );
+    let handle = createHandle( env , options );
+    handle.draggable="true"
+    el.insertBefore( handle , el.firstChild );
+    //handle.style.width = $(el).width() + "px";
+   switch( payload.pos ) {
+    case "left":
+      el.className = "card-left";
+    break;
+    case "right":
+      el.className = "card-right";
+    break;
+    default:
+      el.className = "card";
+   }
+
+
   }
 
   preview( ) {
@@ -50,16 +74,16 @@ export default class Card {
 
    function createHandle( env , options ) {
 
-    console.log( env , options );
+    
       let holder = document.createElement('div');
       holder.contentEditable="false";
       holder.className="card-handle";
-      if( options && options.onEdit ) {
+      if( options && options.canEdit ) {
         let editButton = document.createElement('button');
         editButton.value = "Edit";
         editButton.type = "button";
         editButton.innerHTML="Edit";
-        editButton.addEventListener("click" , options.onEdit );
+        editButton.addEventListener("click" , env.edit );
 
         holder.appendChild( editButton );
       }

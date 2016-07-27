@@ -9,6 +9,7 @@ module.exports = function(defaults) {
 
   app.import('bower_components/mobiledoc-kit/dist/amd/mobiledoc-kit.js');
   
+  
  // app.import('mobiledoc-kit/dist/amd/mobiledoc-kit.js');
   
 
