@@ -93,7 +93,25 @@ export default class Card {
         delButtion.value = "Del";
         delButtion.type = "button";
         delButtion.innerHTML="×";
-        delButtion.addEventListener("click" ,e => env.remove());
+
+        if( env.strikeOne ) {
+          delButtion.className = "confirm";
+        }
+        delButtion.addEventListener("click" , e => { 
+          if( !env.strikeOne ) {
+            delButtion.className = "confirm";
+            env.strikeOne = true;
+            setTimeout( _ => {
+              delButtion.className = "";
+              delete env.strikeOne;
+            } , 3000 );
+          } else {
+           
+            $( env.postModel.renderNode._element ).slideUp( env.remove );
+           //env.remove(); 
+          }
+          //env.remove();
+        });
 
         holder.appendChild( delButtion );
    

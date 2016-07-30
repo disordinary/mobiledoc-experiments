@@ -74,7 +74,7 @@ export default class ImageList {
   			} else {
   				window.__dragging.$image.fadeOut( 'slow', ( ) => window.__dragging.$image.remove() );
   				this.imageSlides.splice( window.__dragging.offset , 1 );
-  				
+
   			}
   			
   			//otherwise we delete it.
@@ -139,7 +139,7 @@ export default class ImageList {
 	  		if( fade ) {
  				image.$image.hide();
  			
- 				setTimeout( _ => image.$image.fadeIn( ) , ++i * 333 );		
+ 				setTimeout( _ => image.$image.fadeIn( ) , ++i * 100 );		
  			}
  			this.holder.appendChild( image.image );
 

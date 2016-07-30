@@ -10,15 +10,11 @@ export default class SoundCloud extends Card {
     
   }
 
-  render( { env , options , payload } ) {
+  edit( { env , options , payload } ) {
 
-    options.onEdit = ( ) => { doEdit(); };
-    super.render( { env , options , payload } ); 
-    
-    let holder = document.createElement("div");
-    holder.className = "card-soundcloud";
-
-    function doEdit( ) {
+    super.edit( { env , options , payload } ); 
+       let holder = document.createElement("div");
+      holder.className = "card-soundcloud";
       let label = document.createElement("label");
       let input = document.createElement("input");
 
@@ -29,7 +25,7 @@ export default class SoundCloud extends Card {
         if( e.keyCode === 13 ) {
           payload.url = encodeURI(input.value);
           env.save(payload);
-          doRender();
+         
         }
       } );
 
@@ -38,18 +34,28 @@ export default class SoundCloud extends Card {
       label.appendChild( input );
       holder.innerHTML = "";
       holder.appendChild( label );
-      
-    }
 
-    function doRender( ) {
-      holder.innerHTML = '<iframe width="100%" height="450" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=' +   payload.url + '&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false&amp;visual=true"></iframe>';  
-    }
+      return holder;
 
+  }
+
+  render( { env , options , payload } ) {
+
+
+    
+    super.render( { env , options , payload } ); 
+    
     if( !payload.url ) {
-      doEdit( );
-    } else {
-      doRender( );
-    }
+      return env.edit();
+    }  
+
+
+    let holder = document.createElement("div");
+    holder.className = "card-soundcloud";
+
+
+    
+    holder.innerHTML = '<iframe width="100%" height="450" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=' +   payload.url + '&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false&amp;visual=true"></iframe>';  
 
     return holder;
   }

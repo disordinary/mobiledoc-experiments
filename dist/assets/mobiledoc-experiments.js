@@ -295,8 +295,24 @@ define('mobiledoc-experiments/ghost-cards/card', ['exports'], function (exports)
     delButtion.value = "Del";
     delButtion.type = "button";
     delButtion.innerHTML = "×";
+
+    if (env.strikeOne) {
+      delButtion.className = "confirm";
+    }
     delButtion.addEventListener("click", function (e) {
-      return env.remove();
+      if (!env.strikeOne) {
+        delButtion.className = "confirm";
+        env.strikeOne = true;
+        setTimeout(function (_) {
+          delButtion.className = "";
+          delete env.strikeOne;
+        }, 3000);
+      } else {
+
+        $(env.postModel.renderNode._element).slideUp(env.remove);
+        //env.remove();
+      }
+      //env.remove();
     });
 
     holder.appendChild(delButtion);
@@ -612,7 +628,7 @@ define('mobiledoc-experiments/ghost-cards/slide-show/image-list', ['exports', 'j
 
 						setTimeout(function (_) {
 							return image.$image.fadeIn();
-						}, ++i * 333);
+						}, ++i * 100);
 					}
 					_this3.holder.appendChild(image.image);
 
@@ -903,10 +919,16 @@ define('mobiledoc-experiments/ghost-cards/slide-show/index', ['exports', 'mobile
         var payload = _ref.payload;
 
         _get(Object.getPrototypeOf(SlideShow.prototype), 'edit', this).call(this, { env: env, options: options, payload: payload });
-        if (!payload.images) payload.images = [];
         var holder = document.createElement('div');
         var image = new _mobiledocExperimentsGhostCardsSlideShowImageSlide['default']();
-        image.update({ src: "/assets/cards/picture-blank.png", content: "Drag an image here, drag additional images to create a slideshow.", editable: false });
+
+        holder.className = 'card-slideshow';
+        holder.style.position = "relative";
+        holder.appendChild(image.render());
+        image.update(payload.activeSlide);
+
+        holder.appendChild(new _mobiledocExperimentsGhostCardsSlideShowImageList['default'](payload.images));
+        return holder;
       }
     }, {
       key: 'render',
@@ -964,7 +986,7 @@ define('mobiledoc-experiments/ghost-cards/slide-show/index', ['exports', 'mobile
           arrayPosition++;
 
           if (arrayPosition >= payload.images.length) arrayPosition = 0;
-
+          payload.activeSlide = payload.images[arrayPosition];
           toggleImage(payload.images[arrayPosition]);
         }
 
@@ -986,8 +1008,6 @@ define('mobiledoc-experiments/ghost-cards/slide-show/index', ['exports', 'mobile
             activeImage = image;
           }
         }
-
-        holder.appendChild(new _mobiledocExperimentsGhostCardsSlideShowImageList['default'](payload.images));
 
         return holder;
       }
@@ -1020,49 +1040,51 @@ define('mobiledoc-experiments/ghost-cards/soundcloud', ['exports', 'mobiledoc-ex
     }
 
     _createClass(SoundCloud, [{
-      key: 'render',
-      value: function render(_ref) {
+      key: 'edit',
+      value: function edit(_ref) {
         var env = _ref.env;
         var options = _ref.options;
         var payload = _ref.payload;
 
-        options.onEdit = function () {
-          doEdit();
-        };
+        _get(Object.getPrototypeOf(SoundCloud.prototype), 'edit', this).call(this, { env: env, options: options, payload: payload });
+        var holder = document.createElement("div");
+        holder.className = "card-soundcloud";
+        var label = document.createElement("label");
+        var input = document.createElement("input");
+
+        input.addEventListener("keyup", function (e) {
+
+          if (e.keyCode === 13) {
+            payload.url = encodeURI(input.value);
+            env.save(payload);
+          }
+        });
+
+        input.value = payload.url || "https://api.soundcloud.com/tracks/2";
+        label.appendChild(document.createTextNode("Paste the URL to the soundcloud file: "));
+        label.appendChild(input);
+        holder.innerHTML = "";
+        holder.appendChild(label);
+
+        return holder;
+      }
+    }, {
+      key: 'render',
+      value: function render(_ref2) {
+        var env = _ref2.env;
+        var options = _ref2.options;
+        var payload = _ref2.payload;
+
         _get(Object.getPrototypeOf(SoundCloud.prototype), 'render', this).call(this, { env: env, options: options, payload: payload });
+
+        if (!payload.url) {
+          return env.edit();
+        }
 
         var holder = document.createElement("div");
         holder.className = "card-soundcloud";
 
-        function doEdit() {
-          var label = document.createElement("label");
-          var input = document.createElement("input");
-
-          input.addEventListener("keyup", function (e) {
-
-            if (e.keyCode === 13) {
-              payload.url = encodeURI(input.value);
-              env.save(payload);
-              doRender();
-            }
-          });
-
-          input.value = payload.url || "https://api.soundcloud.com/tracks/2";
-          label.appendChild(document.createTextNode("Paste the URL to the soundcloud file: "));
-          label.appendChild(input);
-          holder.innerHTML = "";
-          holder.appendChild(label);
-        }
-
-        function doRender() {
-          holder.innerHTML = '<iframe width="100%" height="450" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=' + payload.url + '&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false&amp;visual=true"></iframe>';
-        }
-
-        if (!payload.url) {
-          doEdit();
-        } else {
-          doRender();
-        }
+        holder.innerHTML = '<iframe width="100%" height="450" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=' + payload.url + '&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false&amp;visual=true"></iframe>';
 
         return holder;
       }
@@ -1854,7 +1876,7 @@ catch(err) {
 /* jshint ignore:start */
 
 if (!runningTests) {
-  require("mobiledoc-experiments/app")["default"].create({"name":"mobiledoc-experiments","version":"0.0.0+a9f83eee"});
+  require("mobiledoc-experiments/app")["default"].create({"name":"mobiledoc-experiments","version":"0.0.0+0047eca6"});
 }
 
 /* jshint ignore:end */

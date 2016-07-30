@@ -16,17 +16,23 @@ export default class SlideShow extends Card {
 
   edit( { env , options , payload } ) {
     super.edit( { env , options , payload } ); 
-    if( !payload.images ) payload.images = [ ];
     let holder = document.createElement('div');
     let image = new ImageSlide( );
-    image.update({ src : "/assets/cards/picture-blank.png" , content : "Drag an image here, drag additional images to create a slideshow." , editable : false });
 
+
+    holder.className='card-slideshow';
+    holder.style.position ="relative";
+    holder.appendChild( image.render() );
+    image.update(payload.activeSlide);
+
+     holder.appendChild( new ImageList( payload.images ) );
+    return holder;
     
   }
 
 
   render( { env , options , payload } ) {
-      options.canEdit = true;
+     options.canEdit = true;
      super.render( { env , options , payload } ); 
      if( !payload.images ) payload.images = [ ];
     let holder = document.createElement('div');
@@ -78,7 +84,7 @@ export default class SlideShow extends Card {
         arrayPosition++;
         
         if( arrayPosition >= payload.images.length ) arrayPosition = 0;
-
+        payload.activeSlide = payload.images[ arrayPosition ];
         toggleImage( payload.images[ arrayPosition ] );
 
       }
@@ -105,9 +111,6 @@ export default class SlideShow extends Card {
  
      }
 
-
-
-     holder.appendChild( new ImageList( payload.images ) );
 
 
     return holder;
