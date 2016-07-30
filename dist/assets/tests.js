@@ -58,7 +58,7 @@ define('mobiledoc-experiments/tests/ghost-cards/card.jshint', ['exports'], funct
   QUnit.module('JSHint | ghost-cards/card.js');
   QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
-    assert.ok(false, 'ghost-cards/card.js should pass jshint.\nghost-cards/card.js: line 19, col 28, Missing semicolon.\nghost-cards/card.js: line 40, col 28, Missing semicolon.\n\n2 errors');
+    assert.ok(true, 'ghost-cards/card.js should pass jshint.');
   });
 });
 define('mobiledoc-experiments/tests/ghost-cards/graph.jshint', ['exports'], function (exports) {
@@ -130,7 +130,7 @@ define('mobiledoc-experiments/tests/ghost-cards/soundcloud.jshint', ['exports'],
   QUnit.module('JSHint | ghost-cards/soundcloud.js');
   QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
-    assert.ok(false, 'ghost-cards/soundcloud.js should pass jshint.\nghost-cards/soundcloud.js: line 32, col 73, Missing semicolon.\n\n1 error');
+    assert.ok(false, 'ghost-cards/soundcloud.js should pass jshint.\nghost-cards/soundcloud.js: line 37, col 73, Missing semicolon.\nghost-cards/soundcloud.js: line 51, col 104, Missing semicolon.\n\n2 errors');
   });
 });
 define('mobiledoc-experiments/tests/ghost-cards/test.jshint', ['exports'], function (exports) {

@@ -11,12 +11,17 @@ export default class SoundCloud extends Card {
   }
 
   edit( { env , options , payload } ) {
-
-    super.edit( { env , options , payload } ); 
+    let label = document.createElement("label");
+    let input = document.createElement("input");
+    
+    super.edit( { env , options , payload , buttons : [ { name : 'save' , onclick : () => {
+          payload.url = encodeURI(input.value);
+          env.save(payload);
+    } } ] }  ); 
        let holder = document.createElement("div");
       holder.className = "card-soundcloud";
-      let label = document.createElement("label");
-      let input = document.createElement("input");
+    
+    
 
 
 
@@ -43,7 +48,7 @@ export default class SoundCloud extends Card {
 
 
     
-    super.render( { env , options , payload } ); 
+    super.render( { env , options , payload , buttons : [ { name : 'edit' , onclick : () => {env.edit()} } ] } ); 
     
     if( !payload.url ) {
       return env.edit();

@@ -293,9 +293,7 @@ a {
 	
 	height:40px;
 	
-	
-	cursor: -webkit-grab;
-	cursor: -moz-grab;
+
 
 	padding:0px 10px 0px 10px;
 	text-align:right;
@@ -326,7 +324,13 @@ a {
 	min-width: 30px;
 	border:1px solid;
 	font-size:20px;
+
 	
+}
+
+.card .card-handle button:hover, .card-left .card-handle button:hover, .card-right .card-handle button:hover {
+	background-color:#718087;
+	color:#fff;
 }
 
 .card .card-handle button.confirm, .card-left .card-handle button.confirm, .card-right .card-handle button.confirm  {
@@ -334,6 +338,18 @@ a {
   	animation-name: rotate;
   	background-color: red;
     color: #e9e8dd;
+}
+
+.card-handle button.move {
+	background-image: url('http://localhost:4200/assets/move.png');
+	background-color: #9fbb58;
+	margin-left:-10px;
+	margin-right:20px;
+
+
+	cursor: -webkit-grab;
+	cursor: -moz-grab;
+
 }
 
 @keyframes rotate {
@@ -349,7 +365,7 @@ a {
   to {
   	-webkit-transform: rotate(360deg);
 	-moz-transform: rotate(360deg);
-    -ms-transform: rotate(360deg);
+    -ms-transform: rotate(-360deg);
     transform: rotate(360deg);
     background-color: red;
     color: #e9e8dd;

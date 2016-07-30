@@ -15,7 +15,11 @@ export default class SlideShow extends Card {
   }
 
   edit( { env , options , payload } ) {
-    super.edit( { env , options , payload } ); 
+      let buttons = [ {
+        name : "save",
+        onclick : _ => { env.save( payload ); }
+     } ];
+    super.edit( { env , options , payload ,  buttons } ); 
     let holder = document.createElement('div');
     let image = new ImageSlide( );
 
@@ -23,7 +27,36 @@ export default class SlideShow extends Card {
     holder.className='card-slideshow';
     holder.style.position ="relative";
     holder.appendChild( image.render() );
-    image.update(payload.activeSlide);
+    image.update(payload.activeSlide || { src : "/assets/cards/picture-blank.png" , content : "Drag an image here, drag additional images to create a slideshow." , editable : false });
+
+
+
+    env.postModel.renderNode.element.style.border = "1px solid black";
+    env.postModel.renderNode.element.style.height='400px';
+    env.postModel.renderNode.element.style.overflow="hidden";
+    env.postModel.renderNode.element.addEventListener("dragover",  e => {
+        
+        e.preventDefault();
+      }, false);
+     env.postModel.renderNode.element.addEventListener("drop",  e => {
+        e.preventDefault();
+        
+        Array.prototype.forEach.call( e.dataTransfer.files , file => {
+          let reader = new FileReader();
+          reader.onload = function( e ) {
+           // let newSlide = { src : e.target.result , content : "" };
+           // payload.images.push( newSlide );
+           // env.save( payload );
+            
+           // env.edit();
+            
+           };
+
+           reader.readAsDataURL( file );
+        });
+       
+     } , false );
+
 
      holder.appendChild( new ImageList( payload.images ) );
     return holder;
@@ -32,8 +65,11 @@ export default class SlideShow extends Card {
 
 
   render( { env , options , payload } ) {
-     options.canEdit = true;
-     super.render( { env , options , payload } ); 
+     let buttons = [ {
+        name : "change order",
+        onclick : _ => env.edit()
+     } ];
+     super.render( { env , options , payload , buttons } ); 
      if( !payload.images ) payload.images = [ ];
     let holder = document.createElement('div');
     let image = new ImageSlide( );
@@ -61,20 +97,22 @@ export default class SlideShow extends Card {
       }, false);
      env.postModel.renderNode.element.addEventListener("drop",  e => {
         e.preventDefault();
-        let file = e.dataTransfer.files[ 0 ];
-        let reader = new FileReader();
-        reader.onload = function( e ) {
-          let newSlide = { src : e.target.result , content : "" };
-          payload.images.push( newSlide );
-          env.save( payload );
-          
-          arrayPosition = payload.images.length - 1;
-          //doFade( true );
-          toggleImage( newSlide );
-          
-         };
+        
+        Array.prototype.forEach.call( e.dataTransfer.files , file => {
+          let reader = new FileReader();
+          reader.onload = function( e ) {
+            let newSlide = { src : e.target.result , content : "" };
+            payload.images.push( newSlide );
+            env.save( payload );
+            
+            arrayPosition = payload.images.length - 1;
+            //doFade( true );
+            toggleImage( newSlide );
+            
+           };
 
-         reader.readAsDataURL( file );
+           reader.readAsDataURL( file );
+        });
        
      } , false );
 

@@ -92,11 +92,16 @@ export default class ImageSlide {
     let $holder = $(this.holder);
     let $image = $(this.img);
 
+    
+    $image.css('min-height', '400px') ;
     $holder.fadeIn();
     let imageHeight = $image.height( );
     let holderHeight = $holder.height(); 
 
+    
+
     $holder.css("z-index", 100);
+    
     $image.css("top", -((imageHeight  / 2) - (holderHeight / 2))+ 'px');
   }
 }

@@ -207,16 +207,25 @@ define('mobiledoc-experiments/ghost-cards/card', ['exports'], function (exports)
         var env = _ref.env;
         var options = _ref.options;
         var payload = _ref.payload;
+        var buttons = _ref.buttons;
 
         var el = env.postModel.renderNode.element;
         el.draggable = "false";
         el.addEventListener('dragstart', function (e) {
           e.preventDefault();return false;
         });
-        var handle = createHandle(env, options);
-        handle.draggable = "true";
-        el.insertBefore(handle, el.firstChild);
-        //handle.style.width = $(el).width() + "px";
+
+        var handle = new Handle({ env: env, options: options, payload: payload });
+        if (buttons) {
+
+          buttons.forEach(function (item) {
+            return handle.addButton(item.name, function (_) {
+              el.removeChild(handle.holder);item.onclick();
+            });
+          });
+        }
+        el.insertBefore(handle.holder, el.firstChild);
+
         switch (payload.pos) {
           case "left":
             el.className = "card-left";
@@ -234,16 +243,28 @@ define('mobiledoc-experiments/ghost-cards/card', ['exports'], function (exports)
         var env = _ref2.env;
         var options = _ref2.options;
         var payload = _ref2.payload;
+        var buttons = _ref2.buttons;
 
         var el = env.postModel.renderNode.element;
         el.draggable = "false";
         el.addEventListener('dragstart', function (e) {
           e.preventDefault();return false;
         });
-        var handle = createHandle(env, options);
-        handle.draggable = "true";
-        el.insertBefore(handle, el.firstChild);
-        //handle.style.width = $(el).width() + "px";
+        //let handle = createHandle( { env , options , payload , canEdit , editName } );
+
+        //el.insertBefore( handle , el.firstChild );
+
+        var handle = new Handle({ env: env, options: options, payload: payload });
+        if (buttons) {
+
+          buttons.forEach(function (item) {
+            return handle.addButton(item.name, function (_) {
+              el.removeChild(handle.holder);item.onclick();
+            });
+          });
+        }
+        el.insertBefore(handle.holder, el.firstChild);
+
         switch (payload.pos) {
           case "left":
             el.className = "card-left";
@@ -276,49 +297,77 @@ define('mobiledoc-experiments/ghost-cards/card', ['exports'], function (exports)
 
   exports['default'] = Card;
 
-  function createHandle(env, options) {
+  var Handle = (function () {
+    function Handle(_ref3) {
+      var _this = this;
 
-    var holder = document.createElement('div');
-    holder.contentEditable = "false";
-    holder.className = "card-handle";
-    if (options && options.canEdit) {
-      var editButton = document.createElement('button');
-      editButton.value = "Edit";
-      editButton.type = "button";
-      editButton.innerHTML = "Edit";
-      editButton.addEventListener("click", env.edit);
+      var env = _ref3.env;
+      var options = _ref3.options;
+      var payload = _ref3.payload;
 
-      holder.appendChild(editButton);
-    }
+      _classCallCheck(this, Handle);
 
-    var delButtion = document.createElement('button');
-    delButtion.value = "Del";
-    delButtion.type = "button";
-    delButtion.innerHTML = "×";
+      var holder = this.holder = document.createElement('div');
 
-    if (env.strikeOne) {
-      delButtion.className = "confirm";
-    }
-    delButtion.addEventListener("click", function (e) {
-      if (!env.strikeOne) {
+      holder.contentEditable = "false";
+      holder.className = "card-handle";
+
+      var dragger = document.createElement('button');
+      dragger.value = "Dragger";
+      dragger.type = "button";
+      dragger.className = 'move';
+      dragger.innerHTML = "&nbsp;";
+      dragger.draggable = "true";
+      dragger.addEventListener('dragstart', function (event) {
+        return window.dragel = _this;
+      });
+      dragger.addEventListener('drag', function (event) {
+        return console.log("DRAGGING", event);
+      });
+      // holder.appendChild( dragger );
+
+      var delButtion = document.createElement('button');
+      delButtion.value = "Del";
+      delButtion.type = "button";
+      delButtion.innerHTML = "×";
+
+      if (env.strikeOne) {
         delButtion.className = "confirm";
-        env.strikeOne = true;
-        setTimeout(function (_) {
-          delButtion.className = "";
-          delete env.strikeOne;
-        }, 3000);
-      } else {
-
-        $(env.postModel.renderNode._element).slideUp(env.remove);
-        //env.remove();
       }
-      //env.remove();
-    });
+      delButtion.addEventListener("click", function (e) {
+        if (!env.strikeOne) {
+          delButtion.className = "confirm";
+          env.strikeOne = true;
+          setTimeout(function (_) {
+            delButtion.className = "";
+            delete env.strikeOne;
+          }, 3000);
+        } else {
 
-    holder.appendChild(delButtion);
+          $(env.postModel.renderNode._element).slideUp(env.remove);
+          //env.remove();
+        }
+        //env.remove();
+      });
 
-    return holder;
-  }
+      holder.appendChild(delButtion);
+    }
+
+    _createClass(Handle, [{
+      key: 'addButton',
+      value: function addButton(name, callback) {
+        var button = document.createElement('button');
+
+        button.type = "button";
+        button.innerHTML = name;
+        button.addEventListener("click", callback);
+
+        this.holder.insertBefore(button, this.holder.getElementsByTagName('button')[0]);
+      }
+    }]);
+
+    return Handle;
+  })();
 });
 define('mobiledoc-experiments/ghost-cards/graph', ['exports', 'mobiledoc-experiments/ghost-cards/card'], function (exports, _mobiledocExperimentsGhostCardsCard) {
    var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -875,11 +924,13 @@ define("mobiledoc-experiments/ghost-cards/slide-show/image-slide", ["exports", "
         var $holder = (0, _jquery["default"])(this.holder);
         var $image = (0, _jquery["default"])(this.img);
 
+        $image.css('min-height', '400px');
         $holder.fadeIn();
         var imageHeight = $image.height();
         var holderHeight = $holder.height();
 
         $holder.css("z-index", 100);
+
         $image.css("top", -(imageHeight / 2 - holderHeight / 2) + 'px');
       }
     }]);
@@ -918,14 +969,45 @@ define('mobiledoc-experiments/ghost-cards/slide-show/index', ['exports', 'mobile
         var options = _ref.options;
         var payload = _ref.payload;
 
-        _get(Object.getPrototypeOf(SlideShow.prototype), 'edit', this).call(this, { env: env, options: options, payload: payload });
+        var buttons = [{
+          name: "save",
+          onclick: function onclick(_) {
+            env.save(payload);
+          }
+        }];
+        _get(Object.getPrototypeOf(SlideShow.prototype), 'edit', this).call(this, { env: env, options: options, payload: payload, buttons: buttons });
         var holder = document.createElement('div');
         var image = new _mobiledocExperimentsGhostCardsSlideShowImageSlide['default']();
 
         holder.className = 'card-slideshow';
         holder.style.position = "relative";
         holder.appendChild(image.render());
-        image.update(payload.activeSlide);
+        image.update(payload.activeSlide || { src: "/assets/cards/picture-blank.png", content: "Drag an image here, drag additional images to create a slideshow.", editable: false });
+
+        env.postModel.renderNode.element.style.border = "1px solid black";
+        env.postModel.renderNode.element.style.height = '400px';
+        env.postModel.renderNode.element.style.overflow = "hidden";
+        env.postModel.renderNode.element.addEventListener("dragover", function (e) {
+
+          e.preventDefault();
+        }, false);
+        env.postModel.renderNode.element.addEventListener("drop", function (e) {
+          e.preventDefault();
+
+          Array.prototype.forEach.call(e.dataTransfer.files, function (file) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+              // let newSlide = { src : e.target.result , content : "" };
+              // payload.images.push( newSlide );
+              // env.save( payload );
+
+              // env.edit();
+
+            };
+
+            reader.readAsDataURL(file);
+          });
+        }, false);
 
         holder.appendChild(new _mobiledocExperimentsGhostCardsSlideShowImageList['default'](payload.images));
         return holder;
@@ -937,8 +1019,13 @@ define('mobiledoc-experiments/ghost-cards/slide-show/index', ['exports', 'mobile
         var options = _ref2.options;
         var payload = _ref2.payload;
 
-        options.canEdit = true;
-        _get(Object.getPrototypeOf(SlideShow.prototype), 'render', this).call(this, { env: env, options: options, payload: payload });
+        var buttons = [{
+          name: "change order",
+          onclick: function onclick(_) {
+            return env.edit();
+          }
+        }];
+        _get(Object.getPrototypeOf(SlideShow.prototype), 'render', this).call(this, { env: env, options: options, payload: payload, buttons: buttons });
         if (!payload.images) payload.images = [];
         var holder = document.createElement('div');
         var image = new _mobiledocExperimentsGhostCardsSlideShowImageSlide['default']();
@@ -966,19 +1053,21 @@ define('mobiledoc-experiments/ghost-cards/slide-show/index', ['exports', 'mobile
         }, false);
         env.postModel.renderNode.element.addEventListener("drop", function (e) {
           e.preventDefault();
-          var file = e.dataTransfer.files[0];
-          var reader = new FileReader();
-          reader.onload = function (e) {
-            var newSlide = { src: e.target.result, content: "" };
-            payload.images.push(newSlide);
-            env.save(payload);
 
-            arrayPosition = payload.images.length - 1;
-            //doFade( true );
-            toggleImage(newSlide);
-          };
+          Array.prototype.forEach.call(e.dataTransfer.files, function (file) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+              var newSlide = { src: e.target.result, content: "" };
+              payload.images.push(newSlide);
+              env.save(payload);
 
-          reader.readAsDataURL(file);
+              arrayPosition = payload.images.length - 1;
+              //doFade( true );
+              toggleImage(newSlide);
+            };
+
+            reader.readAsDataURL(file);
+          });
         }, false);
 
         function doFade(force) {
@@ -1046,11 +1135,15 @@ define('mobiledoc-experiments/ghost-cards/soundcloud', ['exports', 'mobiledoc-ex
         var options = _ref.options;
         var payload = _ref.payload;
 
-        _get(Object.getPrototypeOf(SoundCloud.prototype), 'edit', this).call(this, { env: env, options: options, payload: payload });
-        var holder = document.createElement("div");
-        holder.className = "card-soundcloud";
         var label = document.createElement("label");
         var input = document.createElement("input");
+
+        _get(Object.getPrototypeOf(SoundCloud.prototype), 'edit', this).call(this, { env: env, options: options, payload: payload, buttons: [{ name: 'save', onclick: function onclick() {
+              payload.url = encodeURI(input.value);
+              env.save(payload);
+            } }] });
+        var holder = document.createElement("div");
+        holder.className = "card-soundcloud";
 
         input.addEventListener("keyup", function (e) {
 
@@ -1075,7 +1168,9 @@ define('mobiledoc-experiments/ghost-cards/soundcloud', ['exports', 'mobiledoc-ex
         var options = _ref2.options;
         var payload = _ref2.payload;
 
-        _get(Object.getPrototypeOf(SoundCloud.prototype), 'render', this).call(this, { env: env, options: options, payload: payload });
+        _get(Object.getPrototypeOf(SoundCloud.prototype), 'render', this).call(this, { env: env, options: options, payload: payload, buttons: [{ name: 'edit', onclick: function onclick() {
+              env.edit();
+            } }] });
 
         if (!payload.url) {
           return env.edit();
@@ -1742,7 +1837,7 @@ define("mobiledoc-experiments/templates/components/form-body", ["exports"], func
             "column": 0
           },
           "end": {
-            "line": 17,
+            "line": 19,
             "column": 0
           }
         },
@@ -1757,6 +1852,11 @@ define("mobiledoc-experiments/templates/components/form-body", ["exports"], func
         var el1 = dom.createElement("div");
         dom.setAttribute(el1, "class", "content");
         var el2 = dom.createTextNode("\n	");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2, "class", "body");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n		");
         dom.appendChild(el1, el2);
         var el2 = dom.createElement("div");
         dom.setAttribute(el2, "id", "toolbar");
@@ -1812,19 +1912,14 @@ define("mobiledoc-experiments/templates/components/form-body", ["exports"], func
         var el3 = dom.createTextNode("\n	");
         dom.appendChild(el2, el3);
         dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n	");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createElement("div");
-        dom.setAttribute(el2, "class", "body");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n	\n");
+        var el2 = dom.createTextNode("\n");
         dom.appendChild(el1, el2);
         dom.appendChild(el0, el1);
         var el1 = dom.createTextNode("\n");
         dom.appendChild(el0, el1);
         var el1 = dom.createComment("");
         dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n");
+        var el1 = dom.createTextNode("\n\n\n\n");
         dom.appendChild(el0, el1);
         var el1 = dom.createComment("");
         dom.appendChild(el0, el1);
@@ -1838,7 +1933,7 @@ define("mobiledoc-experiments/templates/components/form-body", ["exports"], func
         morphs[1] = dom.createMorphAt(fragment, 4, 4, contextualElement);
         return morphs;
       },
-      statements: [["inline", "card-picker", [], ["cards", ["subexpr", "@mut", [["get", "cards", ["loc", [null, [15, 20], [15, 25]]]]], [], []]], ["loc", [null, [15, 0], [15, 27]]]], ["content", "yield", ["loc", [null, [16, 0], [16, 9]]]]],
+      statements: [["inline", "card-picker", [], ["cards", ["subexpr", "@mut", [["get", "cards", ["loc", [null, [14, 20], [14, 25]]]]], [], []]], ["loc", [null, [14, 0], [14, 27]]]], ["content", "yield", ["loc", [null, [18, 0], [18, 9]]]]],
       locals: [],
       templates: []
     };
@@ -1876,7 +1971,7 @@ catch(err) {
 /* jshint ignore:start */
 
 if (!runningTests) {
-  require("mobiledoc-experiments/app")["default"].create({"name":"mobiledoc-experiments","version":"0.0.0+0047eca6"});
+  require("mobiledoc-experiments/app")["default"].create({"name":"mobiledoc-experiments","version":"0.0.0+0564566a"});
 }
 
 /* jshint ignore:end */
